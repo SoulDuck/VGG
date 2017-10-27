@@ -66,3 +66,205 @@ def fc_layer_to_clssses(_input , n_classes):
     bias = bias_variable([n_classes])
     logits=tf.matmul(_input, W)+bias
     return logits
+
+
+
+def build_graph(x_ , y_ , is_training ,aug_flag=True , actmap_flag=False , model='vgg-16'):
+    ##### define conv connected layer #######
+    n_classes=int(y_.get_shape()[-1])
+    image_size = int(x_.get_shape()[-2])
+    if model=='vgg-11':
+        conv_out_features=[64,128,256 ,256 ,512,512,512,512]
+        conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+        conv_strides=[1,1,1,1,1]
+        before_act_bn_mode = []
+        after_act_bn_mode = []
+        allow_max_pool_indices=[0,1,3,5,7]
+
+    if model=='vgg-13':
+        conv_out_features = [64, 64 , 128, 128, 256, 256, 512, 512, 512, 512]
+        conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+        conv_strides=[2,2,2,1,1]
+        before_act_bn_mode = []
+        after_act_bn_mode = []
+        allow_max_pool_indices = [1, 3, 5, 7 , 9]
+
+    if model=='vgg-16':
+        conv_out_features = [64, 64, 128, 128, 256, 256, 256 ,512, 512, 512 , 512, 512 ,512 ]
+        conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 ,3]
+        conv_strides=[2,2,2,1,1]
+        before_act_bn_mode = []
+        after_act_bn_mode = []
+        allow_max_pool_indices = [1, 3, 6, 9 ,12]
+
+    if model == 'vgg-19':
+        conv_out_features = [64, 64, 128, 128, 256, 256, 256, 256, 512, 512, 512, 512 ,512, 512, 512 ,512]
+        conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+        conv_strides = [2, 2, 2, 1, 1]
+        before_act_bn_mode = []
+        after_act_bn_mode = []
+        allow_max_pool_indices = [1, 3, 7, 9, 11 , 15]
+
+    ###VGG Paper ###
+    """
+    VGG-11 64 max 128 max 256 256 max 512 512 max 512 512 max 4096 4096 1000  
+    VGG-11 64 LRN max 128 max 256 256 max 512 512 max 512 512 max 4096 4096 1000
+    VGG-13 64 64 LRN max 128 128 max 256 256 max 512 512 max 512 512 max 4096 4096 1000
+    VGG-16 64 64 LRN max 128 128 max 256 256 256 max 512 512 512 max 512 512 512 max 4096 4096 1000
+    VGG-16 64 64 LRN max 128 128 max 256 256 256 max 512 512 512 max 512 512 512 max 4096 4096 1000
+    VGG-16 64 64 LRN max 128 128 max 256 256 256 256 max 512 512 512 512 max 512 512 512 512 max 4096 4096 1000
+    
+    """
+
+    if aug_flag:
+        print 'aug : True'
+        x_=tf.map_fn(lambda image : aug.aug_lv0(image,is_training, image_size=288) , x_ )
+        x_=tf.identity(x_, name='aug_')
+    print x_
+    assert len(conv_out_features) == len(conv_kernel_sizes )== len(conv_strides)
+    layer=x_
+    for i in range(len(conv_out_features)):
+        with tf.variable_scope('conv_{}'.format(str(i))) as scope:
+            if i in before_act_bn_mode:
+                layer=batch_norm(layer , is_training)
+            layer  = conv2d_with_bias(layer, conv_out_features[i], kernel_size=conv_kernel_sizes[i], \
+                                 strides= [ 1, conv_strides[i], conv_strides[i], 1 ], padding='SAME' )
+            if i in allow_max_pool_indices:
+                print 'max pooling layer : {}'.format(i)
+                layer=tf.nn.max_pool(layer , ksize=[1,2,2,1] , strides=[1,2,2,1] , padding='SAME')
+                print layer
+            layer = tf.nn.relu(layer)
+            if i in after_act_bn_mode:
+                layer = batch_norm(layer, is_training)
+            #layer=tf.nn.dropout(layer , keep_prob=conv_keep_prob)
+            layer=tf.cond(is_training , lambda :  tf.nn.dropout(layer ,  keep_prob=1.0)  , lambda : layer)
+
+    end_conv_layer=tf.identity(layer , name='top_conv')
+    layer = tf.contrib.layers.flatten(end_conv_layer)
+    print "num of Classes : ",n_classes
+    logits_gap=cnn.gap('gap' , end_conv_layer, n_classes)
+    cam_ = cam.get_class_map('gap', end_conv_layer, 0, image_size)
+
+
+    ##### define fully connected layer #######
+    fc_out_features = [1024,1024]
+    before_act_bn_mode = []
+    after_act_bn_mode = []
+    for i in range(len(fc_out_features)):
+        with tf.variable_scope('fc_{}'.format(str(i))) as scope:
+            if i in before_act_bn_mode:
+                print 'batch normalization {}'.format(i)
+                layer=batch_norm(layer , is_training)
+            layer=fc_with_bias(layer , fc_out_features[i] )
+            layer=tf.nn.relu(layer)
+            layer=tf.cond(is_training , lambda: tf.nn.dropout(layer , keep_prob=0.5) , lambda: layer)
+            if i in after_act_bn_mode:
+                layer=batch_norm(layer, is_training)
+
+    print n_classes
+    logits_fc=fc_layer_to_clssses(layer , n_classes)
+    if actmap_flag:
+        print "logits from Global Average Pooling , No Fully Connected layer "
+        logits=logits_gap
+    else:
+        print "logits from fully connected layer "
+        logits = logits_fc
+
+    logits=tf.identity(logits , name= 'logits')
+    print "logits's shape : {}".format(logits)
+    return  logits
+
+
+
+def train_algorithm_momentum(logits, labels, learning_rate):
+    prediction = tf.nn.softmax(logits, name='softmax')
+    cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels),
+                                   name='cross_entropy')
+    l2_loss = tf.add_n([tf.nn.l2_loss(var) for var in tf.trainable_variables()], name='l2_loss')
+    momentum = 0.9;
+    weight_decay = 1e-4
+    optimizer = tf.train.MomentumOptimizer(learning_rate, momentum=momentum, use_nesterov=True)
+    train_op = optimizer.minimize(cross_entropy + l2_loss * weight_decay, name='train_op')
+    correct_prediction = tf.equal(
+        tf.argmax(prediction, 1),
+        tf.argmax(labels, 1), name='correct_prediction')
+
+    accuracy = tf.reduce_mean(tf.cast(correct_prediction, dtype=tf.float32), name='accuracy')
+    return train_op, accuracy, cross_entropy, prediction
+
+def train_algorithm_adam(logits, labels, learning_rate , l2_loss):
+    prediction = tf.nn.softmax(logits, name='softmax')
+    cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels),
+                                   name='cross_entropy')
+    optimizer = tf.train.AdamOptimizer(learning_rate)
+    if l2_loss:
+        l2_loss = tf.add_n([tf.nn.l2_loss(var) for var in tf.trainable_variables()], name='l2_loss')
+        weight_decay = 1e-4
+        train_op = optimizer.minimize(cross_entropy + l2_loss * weight_decay, name='train_op')
+    else :
+        train_op = optimizer.minimize(cross_entropy , name='train_op')
+    correct_prediction = tf.equal(
+        tf.argmax(prediction, 1),
+        tf.argmax(labels, 1), name='correct_prediction')
+    accuracy = tf.reduce_mean(tf.cast(correct_prediction, dtype=tf.float32), name='accuracy')
+    return train_op, accuracy, cross_entropy, prediction
+
+def train_algorithm_grad(logits, labels, learning_rate , l2_loss):
+    prediction = tf.nn.softmax(logits, name='softmax')
+    cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels),
+                                   name='cross_entropy')
+    optimizer = tf.train.GradientDescentOptimizer(learning_rate)
+    if l2_loss:
+        l2_loss = tf.add_n([tf.nn.l2_loss(var) for var in tf.trainable_variables()], name='l2_loss')
+        weight_decay = 1e-4
+        train_op = optimizer.minimize(cross_entropy + l2_loss * weight_decay, name='train_op')
+    else :
+        train_op = optimizer.minimize(cross_entropy , name='train_op')
+    correct_prediction = tf.equal(
+        tf.argmax(prediction, 1),
+        tf.argmax(labels, 1), name='correct_prediction')
+    accuracy = tf.reduce_mean(tf.cast(correct_prediction, dtype=tf.float32), name='accuracy')
+    return train_op, accuracy, cross_entropy, prediction
+
+
+
+
+def define_inputs(shape, n_classes):
+    images = tf.placeholder(
+        tf.float32,
+        shape=shape,
+        name='x_')
+
+    labels = tf.placeholder(
+        tf.float32,
+        shape=[None, n_classes],
+        name='y_')
+
+    learning_rate = tf.placeholder(
+        tf.float32,
+        shape=[],
+        name='learning_rate')
+    is_training = tf.placeholder(tf.bool, shape=[] ,name='is_training_')
+    return images, labels, learning_rate, is_training
+
+def sess_start(logs_path):
+    saver=tf.train.Saver()
+    sess=tf.Session()
+    summary_writer = tf.summary.FileWriter(logs_path)
+    summary_writer.add_graph(tf.get_default_graph())
+    init = tf.group(tf.global_variables_initializer() , tf.local_variables_initializer())
+    sess.run(init)
+    return sess, saver , summary_writer
+
+
+def write_acc_loss(summary_writer ,prefix , loss , acc  , step):
+    summary = tf.Summary(value=[tf.Summary.Value(tag='loss_{}'.format(prefix), simple_value=float(loss)),
+                                tf.Summary.Value(tag='accuracy_{}'.format(prefix), simple_value=float(acc))])
+    summary_writer.add_summary(summary, step)
+
+if __name__ == '__main__':
+    x_ , y_ , lr_ , is_training =define_inputs(shape=[None , 299,299, 3 ] , n_classes=2 )
+    build_graph( x_=x_ , y_=y_ ,is_training=is_training )
+
+
+
