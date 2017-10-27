@@ -121,7 +121,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag=True , actmap_flag=False , model
         x_=tf.map_fn(lambda image : aug.aug_lv0(image,is_training, image_size=224) , x_ )
         x_=tf.identity(x_, name='aug_')
     print x_
-    assert len(conv_out_features) == len(conv_kernel_sizes )== len(conv_strides) , 'conv_out_feature : {} , conv_kernel_size'
+    assert len(conv_out_features) == len(conv_kernel_sizes )== len(conv_strides)
     layer=x_
     for i in range(len(conv_out_features)):
         with tf.variable_scope('conv_{}'.format(str(i))) as scope:
