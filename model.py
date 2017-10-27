@@ -75,7 +75,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag=True , actmap_flag=False , model
     image_size = int(x_.get_shape()[-2])
     if model=='vgg-11':
         conv_out_features=[64,128,256 ,256 ,512,512,512,512]
-        conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+        conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3]
         conv_strides=[1,1,1,1,1]
         before_act_bn_mode = []
         after_act_bn_mode = []
@@ -83,24 +83,24 @@ def build_graph(x_ , y_ , is_training ,aug_flag=True , actmap_flag=False , model
 
     if model=='vgg-13':
         conv_out_features = [64, 64 , 128, 128, 256, 256, 512, 512, 512, 512]
-        conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
-        conv_strides=[2,2,2,1,1]
+        conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+        conv_strides=[1,1,1,1,1]
         before_act_bn_mode = []
         after_act_bn_mode = []
         allow_max_pool_indices = [1, 3, 5, 7 , 9]
 
     if model=='vgg-16':
         conv_out_features = [64, 64, 128, 128, 256, 256, 256 ,512, 512, 512 , 512, 512 ,512 ]
-        conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 ,3]
-        conv_strides=[2,2,2,1,1]
+        conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+        conv_strides=[1,1,1,1,1]
         before_act_bn_mode = []
         after_act_bn_mode = []
         allow_max_pool_indices = [1, 3, 6, 9 ,12]
 
     if model == 'vgg-19':
         conv_out_features = [64, 64, 128, 128, 256, 256, 256, 256, 512, 512, 512, 512 ,512, 512, 512 ,512]
-        conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
-        conv_strides = [2, 2, 2, 1, 1]
+        conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+        conv_strides = [1, 1, 1, 1, 1]
         before_act_bn_mode = []
         after_act_bn_mode = []
         allow_max_pool_indices = [1, 3, 7, 9, 11 , 15]
@@ -118,7 +118,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag=True , actmap_flag=False , model
 
     if aug_flag:
         print 'aug : True'
-        x_=tf.map_fn(lambda image : aug.aug_lv0(image,is_training, image_size=288) , x_ )
+        x_=tf.map_fn(lambda image : aug.aug_lv0(image,is_training, image_size=224) , x_ )
         x_=tf.identity(x_, name='aug_')
     print x_
     assert len(conv_out_features) == len(conv_kernel_sizes )== len(conv_strides)

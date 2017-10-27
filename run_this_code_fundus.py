@@ -6,7 +6,7 @@ import fundus
 import numpy as np
 import tensorflow as tf
 import aug
-resize=(288,288)
+resize=(299,299)
 train_imgs ,train_labs ,train_fnames, test_imgs ,test_labs , test_fnames=fundus.type2(tfrecords_dir='./fundus_300' , onehot=True , resize=resize)
 #normalize
 
@@ -22,7 +22,7 @@ n_classes=np.shape(train_labs)[-1]
 print 'the # classes : {}'.format(n_classes)
 
 x_ , y_ , lr_ , is_training = model.define_inputs(shape=[None, h ,w, ch ] , n_classes=n_classes )
-logits=model.build_graph(x_=x_ , y_=y_ ,is_training=is_training , aug_flag=True , actmap_flag=True)
+logits=model.build_graph(x_=x_ , y_=y_ ,is_training=is_training , aug_flag=True , actmap_flag=True )
 #train_op, accuracy_op , loss_op , pred_op =model.train_algorithm_adam(logits=logits,labels=y_ , learning_rate=lr_ , l2_loss=False)
 train_op, accuracy_op , loss_op , pred_op = model.train_algorithm_momentum(logits=logits,labels=y_ , learning_rate=lr_)
 log_count =0;
