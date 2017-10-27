@@ -50,7 +50,7 @@ while True:
 
 max_iter=80000
 ckpt=100
-batch_size=80
+batch_size=60
 start_time=0
 train_acc=0
 train_val=0
