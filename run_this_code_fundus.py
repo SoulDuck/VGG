@@ -29,7 +29,7 @@ print 'random crop size : ',args.random_crop_resize
 print 'l2 loss: ',args.l2_loss
 print 'batch size : ',args.batch_size
 print 'max iter  : ',args.max_iter
-
+print 'vgg model : ',args.vgg_model
 resize=(299,299)
 train_imgs ,train_labs ,train_fnames, test_imgs ,test_labs , test_fnames=fundus.type2(tfrecords_dir='./fundus_300' , onehot=True , resize=resize)
 
