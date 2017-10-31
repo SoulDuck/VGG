@@ -251,7 +251,7 @@ def define_inputs(shape, n_classes):
     return images, labels, learning_rate, is_training
 
 def sess_start(logs_path):
-    saver=tf.train.Saver()
+    saver=tf.train.Saver(max_to_keep=10000000)
     sess=tf.Session()
     summary_writer = tf.summary.FileWriter(logs_path)
     summary_writer.add_graph(tf.get_default_graph())
