@@ -76,7 +76,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
     if model=='vgg_11':
         conv_out_features=[64,128,256 ,256 ,512,512,512,512]
         conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3]
-        conv_strides=[1, 1, 1, 1, 1, 1, 1, 1]
+        conv_strides=[3, 1, 1, 1, 1, 1, 1, 1]
         before_act_bn_mode = []
         after_act_bn_mode = []
         allow_max_pool_indices=[0,1,3,5,7]
