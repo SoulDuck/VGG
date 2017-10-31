@@ -69,7 +69,7 @@ def fc_layer_to_clssses(_input , n_classes):
 
 
 
-def build_graph(x_ , y_ , is_training ,aug_flag=True , actmap_flag=False , model='vgg-16'):
+def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_crop_resize):
     ##### define conv connected layer #######
     n_classes=int(y_.get_shape()[-1])
     image_size = int(x_.get_shape()[-2])
@@ -118,7 +118,9 @@ def build_graph(x_ , y_ , is_training ,aug_flag=True , actmap_flag=False , model
 
     if aug_flag:
         print 'aug : True'
-        x_=tf.map_fn(lambda image : aug.aug_lv0(image,is_training, image_size=224) , x_ )
+        if random_crop_resize is None:
+            random_crop_resize = int(x_.get_shape()[-2])
+        x_=tf.map_fn(lambda image : aug.aug_lv0(image,is_training, image_size=random_crop_resize) , x_ )
         x_=tf.identity(x_, name='aug_')
     print x_
     assert len(conv_out_features) == len(conv_kernel_sizes )== len(conv_strides)
