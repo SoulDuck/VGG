@@ -73,7 +73,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
     ##### define conv connected layer #######
     n_classes=int(y_.get_shape()[-1])
     image_size = int(x_.get_shape()[-2])
-    if model=='vgg-11':
+    if model=='vgg_11':
         conv_out_features=[64,128,256 ,256 ,512,512,512,512]
         conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3]
         conv_strides=[1, 1, 1, 1, 1, 1, 1, 1]
@@ -81,7 +81,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
         after_act_bn_mode = []
         allow_max_pool_indices=[0,1,3,5,7]
 
-    if model=='vgg-13':
+    if model=='vgg_13':
         conv_out_features = [64, 64 , 128, 128, 256, 256, 512, 512, 512, 512]
         conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
         conv_strides= [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
@@ -89,7 +89,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
         after_act_bn_mode = []
         allow_max_pool_indices = [1, 3, 5, 7 , 9]
 
-    if model=='vgg-16':
+    if model=='vgg_16':
         conv_out_features = [64, 64, 128, 128, 256, 256, 256 ,512, 512, 512 , 512, 512 ,512 ]
         conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
         conv_strides=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
@@ -97,7 +97,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
         after_act_bn_mode = []
         allow_max_pool_indices = [1, 3, 6, 9 ,12]
 
-    if model == 'vgg-19':
+    if model == 'vgg_19':
         conv_out_features = [64, 64, 128, 128, 256, 256, 256, 256, 512, 512, 512, 512 ,512, 512, 512 ,512]
         conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
         conv_strides = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
