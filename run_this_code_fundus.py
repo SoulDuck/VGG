@@ -48,6 +48,7 @@ x_ , y_ , lr_ , is_training = model.define_inputs(shape=[None, h ,w, ch ] , n_cl
 
 logits=model.build_graph(x_=x_ , y_=y_ ,is_training=is_training , aug_flag=args.augmentation,\
                          actmap_flag=args.actmap  , random_crop_resize=args.random_crop_resize  , model=args.vgg_model)
+exit()
 if args.optimizer=='sgd':
     train_op, accuracy_op , loss_op , pred_op = model.train_algorithm_grad(logits=logits,labels=y_ , learning_rate=lr_ ,
                                                                            l2_loss=args.l2_loss)
