@@ -3,8 +3,6 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | 
 | SGD | O | O | O | FC | X |  VGG 11  | ? | ? | ? |
 | SGD | O | O | O | GAP | X |  VGG 11  | ? | ? | ? |
-| Momentum | O | O | O | FC | X |  VGG 11  | ? | ? | ? |
-| Momentum | O | O | O | GAP | X |  VGG 11  | ? | ? | ? |
 | Momentum+ | O | O | O | FC | X |  VGG 11  | ? | ? | ? |
 | Momentum+ | O | O | O | GAP | X |  VGG 11  | ? | ? | ? |
 | ADAM | O | O | O | GAP | X |  VGG 11  | ? | ? | ? |
@@ -15,8 +13,6 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | 
 | SGD | O | O | O | FC | X |  VGG 13  | ? | ? | ? |
 | SGD | O | O | O | GAP | X |  VGG 13  | ? | ? | ? |
-| Momentum | O | O | O | FC | X |  VGG 13  | ? | ? | ? |
-| Momentum | O | O | O | GAP | X |  VGG 13  | ? | ? | ? |
 | Momentum+ | O | O | O | FC | X |  VGG 13  | ? | ? | ? |
 | Momentum+ | O | O | O | GAP | X |  VGG 13  | ? | ? | ? |
 | ADAM | O | O | O | GAP | X |  VGG 13  | ? | ? | ? |
@@ -42,8 +38,6 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | 
 | SGD | O | O | O | FC | X |  VGG 19  | ? | ? | ? |
 | SGD | O | O | O | GAP | X |  VGG 19  | ? | ? | ? |
-| Momentum | O | O | O | FC | X |  VGG 19  | ? | ? | ? |
-| Momentum | O | O | O | GAP | X |  VGG 19  | ? | ? | ? |
 | Momentum+ | O | O | O | FC | X |  VGG 19  | ? | ? | ? |
 | Momentum+ | O | O | O | GAP | X |  VGG 19  | ? | ? | ? |
 | ADAM | O | O | O | GAP | X |  VGG 19  | ? | ? | ? |
