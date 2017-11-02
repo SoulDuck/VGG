@@ -97,6 +97,8 @@ train_val=0
 share=len(test_labs)/batch_size
 remainder=len(test_labs)/batch_size
 
+train_acc=0.
+train_loss=1000.
 
 for step in range(max_iter):
     #### learning rate schcedule
