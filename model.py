@@ -76,7 +76,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
     if model=='vgg_11':
         conv_out_features=[64,128,256 ,256 ,512,512,512,512]
         conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3]
-        conv_strides=[3, 1, 1, 1, 1, 1, 1, 1]
+        conv_strides=[1, 1, 1, 1, 1, 1, 1, 1]
         before_act_bn_mode = []
         after_act_bn_mode = []
         allow_max_pool_indices=[0,1,3,5,7]
@@ -179,22 +179,28 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
 
 
 
-def train_algorithm_momentum(logits, labels, learning_rate):
+def train_algorithm_momentum(logits, labels, learning_rate , use_nesterov , l2_loss):
+    print 'Optimizer : Momentum'
+    print 'Use Nesterov : ', use_nesterov
+    print 'L2 Loss : ', l2_loss
     prediction = tf.nn.softmax(logits, name='softmax')
     cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels),
                                    name='cross_entropy')
-    l2_loss = tf.add_n([tf.nn.l2_loss(var) for var in tf.trainable_variables()], name='l2_loss')
+
     momentum = 0.9;
-    weight_decay = 1e-4
-    optimizer = tf.train.MomentumOptimizer(learning_rate, momentum=momentum, use_nesterov=True)
-    train_op = optimizer.minimize(cross_entropy + l2_loss * weight_decay, name='train_op')
+    optimizer = tf.train.MomentumOptimizer(learning_rate, momentum=momentum, use_nesterov=use_nesterov)
+    if l2_loss:
+        l2_loss = tf.add_n([tf.nn.l2_loss(var) for var in tf.trainable_variables()], name='l2_loss')
+        weight_decay = 1e-4
+        train_op = optimizer.minimize(cross_entropy + l2_loss * weight_decay, name='train_op')
+    else:
+        train_op = optimizer.minimize(cross_entropy, name='train_op')
     correct_prediction = tf.equal(
         tf.argmax(prediction, 1),
         tf.argmax(labels, 1), name='correct_prediction')
 
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, dtype=tf.float32), name='accuracy')
     return train_op, accuracy, cross_entropy, prediction
-
 def train_algorithm_adam(logits, labels, learning_rate , l2_loss):
     prediction = tf.nn.softmax(logits, name='softmax')
     cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels),
