@@ -1,8 +1,8 @@
 # VGG 11
 |Optimizer| augmentation | random crop | L2 loss | Fc or gap | batch norm | structure | acc | loss |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | 
-| SGD | O | O | O | GAP | X |  VGG 11  | 80.33% | 0.46 |
-| SGD | O | O | O | FC | X |  VGG 11  | 82.00% | 0.44 |
+| SGD | O | O | O | FC | X |  VGG 11  | 80.33% | 0.46 |
+| SGD | O | O | O | GAP | X |  VGG 11  | 82.00% | 0.44 |
 | Momentum+ | O | O | O | FC | X |  VGG 11  | 82.33% | 0.417 | 
 | Momentum+ | O | O | O | GAP | X |  VGG 11  | 82.21% | 0.43 |
 | ADAM | O | O | O | GAP | X |  VGG 11  | ? | ? | 
