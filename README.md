@@ -24,8 +24,6 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | 
 | SGD | O | O | O | FC | X |  VGG 11  | ? | 82.53| 0.417 |
 | SGD | O | O | O | GAP | X |  VGG 11  | ? | 83.83  | 0.412  |
-| Momentum | O | O | O | FC | X |  VGG 16  | ? | ? | ? |
-| Momentum | O | O | O | GAP | X |  VGG 16  | ? | ? | ? |
 | Momentum+ | O | O | O | FC | X |  VGG 16  | ? | ? | ? |
 | Momentum+ | O | O | O | GAP | X |  VGG 16  | ? | ? | ? |
 | ADAM | O | O | O | GAP | X |  VGG 16  | ? | ? | ? |
