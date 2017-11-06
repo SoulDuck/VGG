@@ -21,9 +21,9 @@
 
 # VGG 16
 |Optimizer| augmentation | random crop | L2 loss | Fc or gap | batch norm | structure | acc | loss |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | 
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | SGD | O | O | O | FC | X |  VGG 13  | 83.8 | 0.411 | 
-| SGD | O | O | O | GAP | X |  VGG 13  | 82.5 | 0.413 | 
+| SGD | O | O | O | GAP | X |  VGG 13  | 82.5 | 0.413 |
 | Momentum+ | O | O | O | FC | X |  VGG 16  | ? | ? | 
 | Momentum+ | O | O | O | GAP | X |  VGG 16  | ? | ? |
 | ADAM | O | O | O | GAP | X |  VGG 16  | ? | ? | 
