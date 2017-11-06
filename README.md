@@ -5,7 +5,7 @@
 | SGD | O | O | O | GAP | X |  VGG 11  | 82.00% | 0.44 |
 | Momentum+ | O | O | O | FC | X |  VGG 11  | 82.33% | 0.417 | 
 | Momentum+ | O | O | O | GAP | X |  VGG 11  | 82.21% | 0.43 |
-| ADAM | O | O | O | GAP | X |  VGG 11  | ? | ? | 
+| ADAM | O | O | O | FC | X |  VGG 11  | ? | ? | 
 | ADAM | O | O | O | GAP | X |  VGG 11  | ? | ? | 
 
 # VGG 13
@@ -15,7 +15,7 @@
 | SGD | O | O | O | GAP | X |  VGG 13  | 83.39%  | 0.412 |
 | Momentum+ | O | O | O | FC | X |  VGG  13 | ? | ? | 
 | Momentum+ | O | O | O | GAP | X |  VGG 13  | ? | ? |
-| ADAM | O | O | O | GAP | X |  VGG 13  | ? | ? | 
+| ADAM | O | O | O | FC | X |  VGG 13  | ? | ? | 
 | ADAM | O | O | O | GAP | X |  VGG 13  | ? | ? | 
 
 
@@ -26,7 +26,7 @@
 | SGD | O | O | O | GAP | X |  VGG 16  | 82.5 | 0.413 |
 | Momentum+ | O | O | O | FC | X |  VGG 16  | ? | ? | 
 | Momentum+ | O | O | O | GAP | X |  VGG 16  | ? | ? |
-| ADAM | O | O | O | GAP | X |  VGG 16  | ? | ? | 
+| ADAM | O | O | O | FC | X |  VGG 16  | ? | ? | 
 | ADAM | O | O | O | GAP | X |  VGG 16  | ? | ? | 
 
 
@@ -38,7 +38,7 @@
 | SGD | O | O | O | GAP | X |  VGG 19  | ? | ? | 
 | Momentum+ | O | O | O | FC | X |  VGG 19  | ? | ? |
 | Momentum+ | O | O | O | GAP | X |  VGG 19  | ? | ? |
-| ADAM | O | O | O | GAP | X |  VGG 19  | ? | ? | 
+| ADAM | O | O | O | FC | X |  VGG 19  | ? | ? | 
 | ADAM | O | O | O | GAP | X |  VGG 19  | ? | ? |
 
 
