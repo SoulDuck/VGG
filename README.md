@@ -6,7 +6,7 @@
 | Momentum+ | O | O | O | FC | X |  VGG 11  | 82.33% | 0.417 | 
 | Momentum+ | O | O | O | GAP | X |  VGG 11  | 82.21% | 0.43 |
 | ADAM | O | O | O | FC | X |  VGG 11  | ? | ? | 
-| ADAM | O | O | O | GAP | X |  VGG 11  | ? | ? | 
+| ADAM | O | O | O | GAP | X |  VGG 11  | 84.66 | 0.38| 
 
 # VGG 13
 |Optimizer| augmentation | random crop | L2 loss | Fc or gap | batch norm | structure | acc | loss |
