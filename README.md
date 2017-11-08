@@ -28,7 +28,7 @@
 | SGD | O | O | O | GAP | X |  VGG 16  | 82.50% | 0.413 |
 | Momentum+ | O | O | O | FC | X |  VGG 16  | 83.5%  | 0.415 | 
 | Momentum+ | O | O | O | GAP | X |  VGG 16  | 83.6% | 0.41 |
-| ADAM | O | O | O | FC | X |  VGG 16  | 84.66 | 0.38  | 
+| ADAM | O | O | O | FC | X |  VGG 16  | 84.66% | 0.38  | 
 | ADAM | O | O | O | GAP | X |  VGG 16  | 84.80% | 0.391 | 
 
 
