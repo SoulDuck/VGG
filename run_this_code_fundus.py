@@ -148,7 +148,7 @@ for step in range(max_iter):
         model.write_acc_loss( summary_writer, 'validation', loss=val_loss_mean, acc=val_acc_mean, step=step)
         model_path=os.path.join(model_root_path, str(step))
         os.mkdir(model_path) # e.g) models/fundus_300/100/model.ckpt or model.meta
-        saver.save(sess=sess,save_path=os.path.join(model_path,'model'))
+        #saver.save(sess=sess,save_path=os.path.join(model_path,'model'))
 
         """image augmentation debug code"""
         """
