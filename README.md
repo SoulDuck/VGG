@@ -17,8 +17,8 @@
 | SGD | O | O | O | GAP | X |  VGG 13  | 83.39%  | 0.412 |
 | Momentum+ | O | O | O | FC | X |  VGG  13 | 83.33% | 0.41 | 
 | Momentum+ | O | O | O | GAP | X |  VGG 13  | 83.75% | 0.39 |
-| ADAM | O | O | O | FC | X |  VGG 13  | ? | ? | 
-| ADAM | O | O | O | GAP | X |  VGG 13  | ? | ? | 
+| ADAM | O | O | O | FC | X |  VGG 13  | 84.10% | 39.4 | 
+| ADAM | O | O | O | GAP | X |  VGG 13  | 83.21% | 40.2 | 
 
 
 # VGG 16
