@@ -36,12 +36,12 @@
 # VGG 19
 |Optimizer| augmentation | random crop | L2 loss | Fc or gap | batch norm | structure | acc | loss |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | 
-| SGD | O | O | O | FC | X |  VGG 19  | ? | ? | 
-| SGD | O | O | O | GAP | X |  VGG 19  | ? | ? | 
-| Momentum+ | O | O | O | FC | X |  VGG 19  | ? | ? |
-| Momentum+ | O | O | O | GAP | X |  VGG 19  | ? | ? |
-| ADAM | O | O | O | FC | X |  VGG 19  | ? | ? | 
-| ADAM | O | O | O | GAP | X |  VGG 19  | ? | ? |
+| SGD | O | O | O | FC | X |  VGG 19  | 81.16% | 0.41 | 
+| SGD | O | O | O | GAP | X |  VGG 19  | 80.83% | 0.45 | 
+| Momentum+ | O | O | O | FC | X |  VGG 19  | 82.16% | 0.42 |
+| Momentum+ | O | O | O | GAP | X |  VGG 19  |  | ? |
+| ADAM | O | O | O | FC | X |  VGG 19  | 83.33% | 0.38 | 
+| ADAM | O | O | O | GAP | X |  VGG 19  | 0.81 | 0.42 |
 
 
 
