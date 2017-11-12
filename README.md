@@ -41,7 +41,7 @@
 | Momentum+ | O | O | O | FC | X |  VGG 19  | 82.16% | 0.42 |
 | Momentum+ | O | O | O | GAP | X |  VGG 19  |  | ? |
 | ADAM | O | O | O | FC | X |  VGG 19  | 83.33% | 0.38 | 
-| ADAM | O | O | O | GAP | X |  VGG 19  | 0.81 | 0.42 |
+| ADAM | O | O | O | GAP | X |  VGG 19  | 81.07% | 0.42 |
 
 
 
