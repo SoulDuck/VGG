@@ -102,10 +102,10 @@ train_loss=1000.
 
 for step in range(max_iter):
     #### learning rate schcedule
-    if step < 80000:
-        learning_rate = 0.00001
-    elif step < 150000:
-        learning_rate = 0.00001
+    if step < 20000:
+        learning_rate = 0.001
+    elif step < 80000:
+        learning_rate = 0.0001
     elif step  < 160000:
         learning_rate = 0.00001
     elif step < 180000:
