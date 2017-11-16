@@ -44,7 +44,7 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
         k_max_acc = 0
         k_max_list = []
         print 'K : {}'.format(k)
-        for cbn_models in itertools.combinations(pred_dic.keys(),10):
+        for cbn_models in itertools.combinations(pred_dic.keys(),k):
             #print cbn_models
             #cbn_preds=map(lambda cbn_model: pred_dic[cbn_model],cbn_models)
             for idx, model in enumerate(cbn_models):
