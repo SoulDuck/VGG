@@ -36,9 +36,8 @@ def eval(model_path ,test_images , batch_size=60):
     is_training_=tf.get_default_graph().get_tensor_by_name('is_training:0')
     top_conv = tf.get_default_graph().get_tensor_by_name('top_conv:0')
     logits = tf.get_default_graph().get_tensor_by_name('logits:0')
-
+    cam_ = tf.get_default_graph().get_tensor_by_name('classmap:0')
     try:
-        cam_=tf.get_default_graph().get_tensor_by_name('classmap:0')
         vis_abnormal, vis_normal = cam.eval_inspect_cam(sess, cam_, top_conv, test_images[:1], 1 , x_, y_, is_training_, logits)
         print np.shape(vis_abnormal)
         vis_normal=vis_normal.reshape([h,w])
