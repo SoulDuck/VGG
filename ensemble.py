@@ -27,7 +27,7 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
             #./models/vgg_11/step_12500_acc_0.841666698456 --> ./models/vgg_11/step_12500_acc_0.841666698456/model
             try:
                 tmp_pred = eval.eval(path, test_images)
-                assert tmp_pred != None
+                print tmp_pred
             except Exception as e :
                 print e
                 print 'Error Path ',path
