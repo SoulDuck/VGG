@@ -124,10 +124,11 @@ if __name__ == '__main__':
     train_images, train_labels, train_filenames, test_images, test_labels, test_filenames = fundus.type1(
         './fundus_300', resize=(299, 299))
     acc, max_list=ensemble_with_all_combibation(model_paths ,test_images , test_labels)
+    """
     pred_sum=ensemble('./models', test_images )
     acc =eval.get_acc(pred_sum , test_labels)
     print acc
-
+    """
 
 
 
