@@ -39,7 +39,6 @@ def eval(model_path ,test_images):
 
     try:
         cam_=tf.get_default_graph().get_tensor_by_name('classmap:0')
-
         vis_abnormal, vis_normal = cam.eval_inspect_cam(sess, cam_, top_conv, test_images[:1], 1 , x_, y_, is_training_, logits)
         print np.shape(vis_abnormal)
         vis_normal=vis_normal.reshape([h,w])
@@ -51,9 +50,9 @@ def eval(model_path ,test_images):
     except Exception as e :
         print e
         pass
-    pred_ = sess.run(pred_ , feed_dict={x_ : test_images[:1],is_training_:False})
+    pred_ = sess.run(pred_ , feed_dict={x_ : test_images[:],is_training_:False})
     tf.reset_default_graph()
-    print pred_
+    print pred_[:1]
 if __name__ =='__main__':
     model_path ='./models/step_118000_acc_0.838333427906/model'
     pred=eval(model_path, test_images)
