@@ -48,6 +48,7 @@ def eval(model_path ,test_images , batch_size=60):
         plt.imshow(vis_abnormal)
         plt.show()
     except Exception as e :
+        print 'a'
         print e
         pass
     share=test_images/batch_size
