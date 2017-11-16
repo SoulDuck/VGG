@@ -1,7 +1,13 @@
 import tensorflow as tf
 import numpy as np
-import eval
 import os
+import matplotlib
+if "DISPLAY" not in os.environ:
+    # remove Travis CI Error
+    matplotlib.use('Agg')
+
+import eval
+
 import fundus
 import itertools
 import pickle
