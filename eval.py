@@ -19,7 +19,7 @@ test_labs = mnist.test.labels
 train_images, train_labels, train_filenames, test_images, test_labels, test_filenames=fundus.type1('./fundus_300' , resize=(299,299))
 
 
-def eval(model_path ,test_images):
+def eval(model_path ,test_images , batch_size=60):
 
     b,h,w,c=np.shape(test_images)
 
@@ -50,7 +50,15 @@ def eval(model_path ,test_images):
     except Exception as e :
         print e
         pass
-    pred_ = sess.run(pred_ , feed_dict={x_ : test_images[:],is_training_:False})
+    share=test_images/batch_size
+    remainder=test_images%batch_size
+    predList=[]
+    for s in range(share):
+        pred_ = sess.run(pred_ , feed_dict={x_ : test_images[s*batch_size:(s+1)*batch_size],is_training_:False})
+        predList.extend(pred_)
+    pred_ = sess.run(pred_, feed_dict={x_: test_images[-1*remainder:], is_training_: False})
+    predList.extend(pred_)
+    assert len(predList) == len(test_images)
     tf.reset_default_graph()
     print pred_[:1]
     return pred_
