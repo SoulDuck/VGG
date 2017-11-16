@@ -28,7 +28,6 @@ def eval(model_path ,test_images , batch_size=60):
     sess = tf.Session()
 
     saver = tf.train.import_meta_graph(meta_graph_or_file=model_path+'.meta') #example model path ./models/fundus_300/5/model_1.ckpt
-    print 'a'
     saver.restore(sess, save_path=model_path) # example model path ./models/fundus_300/5/model_1.ckpt
 
     x_ = tf.get_default_graph().get_tensor_by_name('x_:0')
@@ -38,9 +37,9 @@ def eval(model_path ,test_images , batch_size=60):
     top_conv = tf.get_default_graph().get_tensor_by_name('top_conv:0')
     logits = tf.get_default_graph().get_tensor_by_name('logits:0')
     cam_ = tf.get_default_graph().get_tensor_by_name('classmap:0')
-    print 'b'
+    vis_abnormal, vis_normal = cam.eval_inspect_cam(sess, cam_, top_conv, test_images[:1], 1, x_, y_, is_training_,
+                                                    logits)
     try:
-        vis_abnormal, vis_normal = cam.eval_inspect_cam(sess, cam_, top_conv, test_images[:1], 1 , x_, y_, is_training_, logits)
         print np.shape(vis_abnormal)
         vis_normal=vis_normal.reshape([h,w])
         vis_abnormal = vis_abnormal.reshape([h,w])
