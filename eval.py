@@ -16,7 +16,7 @@ test_imgs = mnist.test.images.reshape([-1,28,28,1])
 test_labs = mnist.test.labels
 """
 #for Fundus_300
-train_images, train_labels, train_filenames, test_images, test_labels, test_filenames=fundus.type1('./fundus_300_debug' , resize=(299,299))
+train_images, train_labels, train_filenames, test_images, test_labels, test_filenames=fundus.type1('./fundus_300' , resize=(299,299))
 
 
 def eval(model_path ,test_images):
