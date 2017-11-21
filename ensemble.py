@@ -7,7 +7,6 @@ from skimage import color
 from skimage import io
 
 import matplotlib
-
 if "DISPLAY" not in os.environ:
     # remove Travis CI Error
     matplotlib.use('Agg')
@@ -193,11 +192,12 @@ if __name__ == '__main__':
         './fundus_300', resize=(299, 299))
     acc, max_list=ensemble_with_all_combibation(models_path ,test_images , test_labels)
 
-
+    """
     pred_sum=ensemble('./models', test_images )
     acc =eval.get_acc(pred_sum , test_labels)
     print acc
 
+    """
     """
     model_list=['step_13600_acc_0.840000033379' ,'step_14600_acc_0.841666817665' ,'step_15900_acc_0.843333363533']
     print model_list

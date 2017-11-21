@@ -1,5 +1,5 @@
-import matplotlib
 import os
+import matplotlib
 if "DISPLAY" not in os.environ:
     # remove Travis CI Error
     matplotlib.use('Agg')
