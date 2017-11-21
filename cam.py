@@ -60,7 +60,6 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs , x, y_ ,phase_train, y , s
     if not os.path.isdir(save_root_folder):
         os.mkdir(save_root_folder)
     for s in range(num_images):
-
         save_dir='./{}/img_{}'.format(save_root_folder,s)
         try:os.mkdir(save_dir);
         except Exception as e :
@@ -72,7 +71,7 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs , x, y_ ,phase_train, y , s
             plt.imsave('{}/image_test.png'.format(save_dir) ,test_imgs[s].reshape([test_imgs[s].shape[0] , test_imgs.shape[1]]))
         else :
             plt.imsave('{}/image_test.png'.format(save_dir), test_imgs[s])
-        img=test_imgs[s]
+        img=test_imgs[s].reshape(1 ,test_imgs[s].shape[0] ,test_imgs[s].shape[1] ,-1 )
         conv_val , output_val =sess.run([top_conv , y] , feed_dict={x:img , phase_train:False})
 
         cam_ans_abnormal= sess.run( cam ,  feed_dict={ y_:ABNORMAL_LABEL , top_conv:conv_val ,phase_train:False })
@@ -87,7 +86,6 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs , x, y_ ,phase_train, y , s
         plt.imshow(cam_vis_abnormal, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
         plt.imsave('{}/abnormal_actmap.png'.format(save_dir), cam_vis_abnormal)
         plt.imsave('{}/normal_actmap.png'.format(save_dir), cam_vis_abnormal)
-
         """
         print np.shape(cam_vis_abnormal)
         print np.shape(cam_vis_normal)
@@ -108,4 +106,4 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs , x, y_ ,phase_train, y , s
             plt.imshow(vis_normal, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
             plt.imsave('{}/normal_actmap.png'.format(save_dir), vis_normal)
         """
-        return cam_vis_abnormal , cam_vis_normal
+

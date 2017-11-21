@@ -59,7 +59,7 @@ def eval(model_path ,test_images , batch_size  , save_root_folder):
     top_conv = tf.get_default_graph().get_tensor_by_name('top_conv:0')
     logits = tf.get_default_graph().get_tensor_by_name('logits:0')
     cam_ = tf.get_default_graph().get_tensor_by_name('classmap:0')
-    vis_abnormal, vis_normal = cam.eval_inspect_cam(sess, cam_, top_conv, test_images[:], x_, y_, is_training_,
+    cam.eval_inspect_cam(sess, cam_, top_conv, test_images[:], x_, y_, is_training_,
                                                     logits,save_root_folder)
 
     """
