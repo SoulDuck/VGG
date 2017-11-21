@@ -1,12 +1,18 @@
 #-*- coding:utf-8 -*-
 import tensorflow as tf
+from PIL import Image
 import numpy as np
-import os
+import os , glob
+from skimage import color
+from skimage import io
+
 import matplotlib
+"""
 if "DISPLAY" not in os.environ:
     # remove Travis CI Error
     matplotlib.use('Agg')
-
+"""
+import matplotlib.pyplot as plt
 import eval
 
 import fundus
@@ -19,6 +25,51 @@ parser.add_argument('--models_path')
 args=parser.parse_args()
 
 
+def get_ensemble_actmap(model_list , actmap_folder):
+    """
+    :param model_list: []
+    :return:
+    """
+    tmp_path = os.path.join(actmap_folder, model_list[0])
+    _ , subfolders , files =os.walk(tmp_path).next()
+    act_imgs=[]
+    act_imgs=[]
+    for subfolder in subfolders:
+        for i, model in enumerate(model_list):
+            print model
+            act_img_path=os.path.join(actmap_folder , model , subfolder , 'normal_actmap.png') #./activation_map/step_5900_acc_0.84/img_0
+            ori_img_path = os.path.join(actmap_folder, model, subfolder,
+                                        'image_test.png')  # ./activation_map/step_5900_acc_0.84/img_0
+            ori_img = Image.open(ori_img_path).convert("RGBA")
+            act_img = Image.open(act_img_path).convert("RGBA")
+            act_imgs.append(act_img)
+        print len(act_imgs)
+        while len(act_imgs) != 1 :
+            tmp_act_imgs=[]
+            remainder=len(act_imgs) % 2
+            share=len(act_imgs) / 2
+            for s in range(share):
+                tmp_act_imgs.append(Image.blend(act_imgs[s*i] ,act_imgs[(s*i)+1] , 0.5))
+            if remainder ==1 :
+                act_imgs[-1].putalpha(128)
+                tmp_act_imgs.append(act_imgs[-1])
+            act_imgs=tmp_act_imgs
+            print 'n actimgs ',len(act_imgs)
+            print len(tmp_act_imgs  )
+        #ori_img = plt.rgb2gray(ori_img);
+        overlay_img=Image.blend(ori_img , act_imgs[0] , 0.5)
+        plt.imshow(overlay_img , cmap=plt.cm.jet)
+        plt.show()
+
+    """
+    background = original_img.convert("RGBA")
+    overlay = vis_abnormal.convert("RGBA")
+
+    overlay_img = Image.blend(background, overlay, 0.5)
+    plt.imshow(overlay_img, cmap=plt.cm.jet)
+    plt.show()
+    overlay_img.save(filename)
+    """
 
 
 def get_models_paths(dir_path):
@@ -135,16 +186,21 @@ def ensemble(model_paths , test_images):
 
 
 if __name__ == '__main__':
+
     models_path=get_models_paths(args.models_path)
     print 'number of model paths : {}'.format(len(models_path))
     train_images, train_labels, train_filenames, test_images, test_labels, test_filenames = fundus.type1(
         './fundus_300', resize=(299, 299))
     acc, max_list=ensemble_with_all_combibation(models_path ,test_images , test_labels)
-    """
+
+
     pred_sum=ensemble('./models', test_images )
     acc =eval.get_acc(pred_sum , test_labels)
     print acc
+
     """
+    model_list=['step_13600_acc_0.840000033379' ,'step_14600_acc_0.841666817665' ,'step_15900_acc_0.843333363533']
+    print model_list
 
-
-
+    get_ensemble_actmap(model_list,'./activation_map')
+    """
