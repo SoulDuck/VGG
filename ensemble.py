@@ -7,11 +7,11 @@ from skimage import color
 from skimage import io
 
 import matplotlib
-"""
+
 if "DISPLAY" not in os.environ:
     # remove Travis CI Error
     matplotlib.use('Agg')
-"""
+
 import matplotlib.pyplot as plt
 import eval
 
