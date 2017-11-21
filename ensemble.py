@@ -39,13 +39,9 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
             path=os.path.join(path , 'model')
 
             #./models/vgg_11/step_12500_acc_0.841666698456 --> ./models/vgg_11/step_12500_acc_0.841666698456/model
-            try:
-                tmp_pred = eval.eval(path, test_images)
-                print 'tmp_pred' , tmp_pred
-            except Exception as e :
-                print e
-                print 'Error Path ',path
 
+            tmp_pred = eval.eval(path, test_images)
+            print 'tmp_pred' , tmp_pred
             pred_dic[path]=tmp_pred
         #pred_model_path_list=zip(pred_list , model_paths)
         pickle.dump(pred_dic,p)
