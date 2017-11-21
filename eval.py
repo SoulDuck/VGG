@@ -34,7 +34,7 @@ def get_acc(preds , trues):
     else:
         preds_cls=preds
         trues_cls = trues
-    acc=np.sum([preds_cls == trues_cls])/len(preds_cls)
+    acc=np.sum([preds_cls == trues_cls])/float(len(preds_cls))
     return acc
 
 
