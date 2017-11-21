@@ -45,6 +45,7 @@ def eval(model_path ,test_images , batch_size=60 ):
     cam_ = tf.get_default_graph().get_tensor_by_name('classmap:0')
     vis_abnormal, vis_normal = cam.eval_inspect_cam(sess, cam_, top_conv, test_images[:1], 1, x_, y_, is_training_,
                                                     logits)
+    """
     try:
         print np.shape(vis_abnormal)
         vis_normal=vis_normal.reshape([h,w])
@@ -56,6 +57,7 @@ def eval(model_path ,test_images , batch_size=60 ):
     except Exception as e :
         print e
         pass
+    """
     share=test_images/batch_size
     remainder=test_images%batch_size
     predList=[]
