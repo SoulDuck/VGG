@@ -47,7 +47,8 @@ def inspect_cam(sess, cam , top_conv ,test_imgs, test_labs, global_step , num_im
             plt.close();
 
 
-def eval_inspect_cam(sess, cam , top_conv ,test_imgs, num_images , x, y_ ,phase_train, y , save_root_folder):
+def eval_inspect_cam(sess, cam , top_conv ,test_imgs , x, y_ ,phase_train, y , save_root_folder):
+    num_images=len(test_imgs[:])
     ABNORMAL_LABEL =np.asarray([[0,1]])
     NORMAL_LABEL = np.asarray([[1,0]])
 
@@ -71,7 +72,7 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs, num_images , x, y_ ,phase_
             plt.imsave('{}/image_test.png'.format(save_dir) ,test_imgs[s].reshape([test_imgs[s].shape[0] , test_imgs.shape[1]]))
         else :
             plt.imsave('{}/image_test.png'.format(save_dir), test_imgs[s])
-        img=test_imgs
+        img=test_imgs[s]
         conv_val , output_val =sess.run([top_conv , y] , feed_dict={x:img , phase_train:False})
 
         cam_ans_abnormal= sess.run( cam ,  feed_dict={ y_:ABNORMAL_LABEL , top_conv:conv_val ,phase_train:False })
