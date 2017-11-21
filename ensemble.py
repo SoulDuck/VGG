@@ -36,6 +36,7 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
         pred_dic={}
         for path in model_paths:
             path=os.path.join(path , 'model')
+
             #./models/vgg_11/step_12500_acc_0.841666698456 --> ./models/vgg_11/step_12500_acc_0.841666698456/model
             try:
                 tmp_pred = eval.eval(path, test_images)

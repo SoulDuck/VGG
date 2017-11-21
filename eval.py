@@ -26,7 +26,7 @@ train_images, train_labels, train_filenames, test_images, test_labels, test_file
 
 
 def eval(model_path ,test_images , batch_size=60 ):
-
+    print 'eval'
     b,h,w,c=np.shape(test_images)
 
     if np.max(test_images) > 1:
