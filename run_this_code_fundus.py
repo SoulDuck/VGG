@@ -176,6 +176,8 @@ for step in range(max_iter):
     _ , train_acc, train_loss = sess.run( fetches=train_fetches, feed_dict=train_feedDict )
     #print 'train acc : {} loss : {}'.format(train_acc, train_loss)
     model.write_acc_loss(summary_writer ,'train' , loss= train_loss , acc=train_acc  ,step= step)
+    summary = tf.Summary(value=[tf.Summary.Value(tag='learning rate' , simple_value=learning_rate)])
+    summary_writer.add_summary(summary, step)
 
 
 
