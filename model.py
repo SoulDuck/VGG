@@ -69,7 +69,7 @@ def fc_layer_to_clssses(_input , n_classes):
 
 
 
-def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_crop_resize):
+def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_crop_resize , bn_flag):
     ##### define conv connected layer #######
     n_classes=int(y_.get_shape()[-1])
     image_size = int(x_.get_shape()[-2])
@@ -79,6 +79,8 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
         conv_strides=[1, 1, 1, 1, 1, 1, 1, 1]
         before_act_bn_mode = []
         after_act_bn_mode = []
+        if bn_flag==True:
+            before_act_bn_mode = [True , True , True , True , True , True , True , True ]
         allow_max_pool_indices=[0,1,3,5,7]
 
     if model=='vgg_13':
@@ -87,6 +89,8 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
         conv_strides= [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         before_act_bn_mode = []
         after_act_bn_mode = []
+        if bn_flag == True:
+            before_act_bn_mode = [True, True, True, True, True, True, True, True , True , True ]
         allow_max_pool_indices = [1, 3, 5, 7 , 9]
 
     if model=='vgg_16':
@@ -95,6 +99,9 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
         conv_strides=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         before_act_bn_mode = []
         after_act_bn_mode = []
+        if bn_flag == True:
+            before_act_bn_mode = [True, True, True, True, True, True, True, True, True, True,True, True, True]
+
         allow_max_pool_indices = [1, 3, 6, 9 ,12]
 
     if model == 'vgg_19':
@@ -103,6 +110,9 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
         conv_strides = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         before_act_bn_mode = []
         after_act_bn_mode = []
+        if bn_flag == True:
+            before_act_bn_mode = [True, True, True, True, True, True, True, True, True, True,True, True, True ,True, True, True]
+
         allow_max_pool_indices = [1, 3, 7, 9, 11 , 15]
 
     ###VGG Paper ###
