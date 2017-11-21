@@ -83,6 +83,7 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs, num_images , x, y_ ,phase_
                 plt.imshow( 1-ori.reshape([ori.shape[0] , ori.shape[1]]))
             vis_abnormal=vis.reshape([vis.shape[0], vis.shape[1]])
             plt.imshow( vis_abnormal, cmap=plt.cm.jet , alpha=0.5 , interpolation='nearest' , vmin=0 , vmax=1)
+            print 'actmap shape : ',np.shape(vis_abnormal)
             plt.imsave('{}/abnormal_actmap.png'.format(save_dir), vis_abnormal)
         for vis, ori in zip(cam_vis_normal, img):
 
