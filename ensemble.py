@@ -58,6 +58,7 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
             #cbn_preds=map(lambda cbn_model: pred_dic[cbn_model],cbn_models)
             for idx, model in enumerate(cbn_models):
 
+
                 pred = pred_dic[model]
                 print 'pred shape : {}'.format(np.shape(pred))
                 #print idx
@@ -76,6 +77,7 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
                 else:
                     pred_sum += pred
             """
+            print len(cbn_models)
             pred_sum = pred_sum / float(len(cbn_models))
             acc=eval.get_acc(pred_sum , test_labels)
             #print cbn_models ,':',acc
