@@ -1,6 +1,10 @@
+import matplotlib
+import os
+if "DISPLAY" not in os.environ:
+    # remove Travis CI Error
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import tensorflow as tf
-import os
 import numpy as np
 from skimage.io import imsave
 import scipy.misc
