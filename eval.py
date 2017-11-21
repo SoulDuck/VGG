@@ -59,6 +59,7 @@ def eval(model_path ,test_images , batch_size=60 ):
         pass
     """
     share=test_images/batch_size
+    print share
     remainder=test_images%batch_size
     predList=[]
     for s in range(share):
