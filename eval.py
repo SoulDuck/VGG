@@ -63,6 +63,8 @@ def eval(model_path ,test_images , batch_size=60 ):
     predList=[]
     for s in range(share):
         pred_ = sess.run(pred_ , feed_dict={x_ : test_images[s*batch_size:(s+1)*batch_size],is_training_:False})
+        print pred_
+        exit()
         predList.extend(pred_)
     pred_ = sess.run(pred_, feed_dict={x_: test_images[-1*remainder:], is_training_: False})
     predList.extend(pred_)

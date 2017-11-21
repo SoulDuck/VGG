@@ -18,7 +18,6 @@ parser.add_argument('--models_path')
 args=parser.parse_args()
 
 
-
 def get_models_paths(dir_path):
     subdir_paths=[path[0] for path in os.walk(dir_path)]
     #subdir_paths = map(lambda name: os.path.join(dir_path, name), subdir_names)
@@ -41,7 +40,6 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
             try:
                 tmp_pred = eval.eval(path, test_images)
                 print 'tmp_pred' , tmp_pred
-                exit()
             except Exception as e :
                 print e
                 print 'Error Path ',path
@@ -49,11 +47,9 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
             pred_dic[path]=tmp_pred
         #pred_model_path_list=zip(pred_list , model_paths)
         pickle.dump(pred_dic,p)
-
     else:
         p = open('predcitions.pkl', 'r')
         pred_dic=pickle.load(p)
-
     print pred_dic.keys()
     for k in range(2,len(pred_dic.keys())+1):
         k_max_acc = 0
@@ -105,7 +101,6 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
     return acc , max_list
 
 
-
 def ensemble(model_paths , test_images):
     """
     :param models:
@@ -125,6 +120,7 @@ def ensemble(model_paths , test_images):
             pred_sum+=pred
     pred_sum=pred_sum/float(i+1)
     return pred_sum
+
 
 if __name__ == '__main__':
     models_path=get_models_paths(args.models_path)
