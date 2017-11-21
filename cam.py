@@ -91,7 +91,7 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs , x, y_ ,phase_train, y , s
         cam_vis_normal = cam_vis_normal.reshape([img.shape[1], img.shape[2]])
 
         cmap = plt.cm.jet
-        plt.imshow(cam_vis_abnormal, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
+        #plt.imshow(cam_vis_abnormal, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
         cam_vis_abnormal=cmap(cam_vis_abnormal)
         plt.imsave('{}/abnormal_actmap.png'.format(save_dir), cam_vis_abnormal)
         plt.imsave('{}/normal_actmap.png'.format(save_dir), cam_vis_normal)
