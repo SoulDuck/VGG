@@ -66,24 +66,26 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs, num_images , x, y_ ,phase_
             print e;
         if __debug__ ==True:
             print 'test imgs shape : ',test_imgs[s].shape
+
         if test_imgs[s].shape[-1]==1:
             plt.imsave('{}/image_test.png'.format(save_dir) ,test_imgs[s].reshape([test_imgs[s].shape[0] , test_imgs.shape[1]]))
         else :
             plt.imsave('{}/image_test.png'.format(save_dir), test_imgs[s])
         img=test_imgs
         conv_val , output_val =sess.run([top_conv , y] , feed_dict={x:img , phase_train:False})
+
         cam_ans_abnormal= sess.run( cam ,  feed_dict={ y_:ABNORMAL_LABEL , top_conv:conv_val ,phase_train:False })
         cam_ans_normal = sess.run(cam, feed_dict={y_: NORMAL_LABEL, top_conv: conv_val , phase_train:False})
-
         cam_vis_abnormal=list(map(lambda x: (x-x.min())/(x.max()-x.min()) , cam_ans_abnormal))
         cam_vis_normal=list(map(lambda x: (x-x.min())/(x.max()-x.min()) , cam_ans_normal))
-        for vis , ori in zip(cam_vis_abnormal , img):
+        cam_vis_abnormal, cam_vis_normal = map(lambda x: np.squeeze(x), [cam_vis_abnormal, cam_vis_normal])
 
+        for vis , ori in zip(cam_vis_abnormal , img):
             if ori.shape[-1]==1: #grey
                 plt.imshow( 1-ori.reshape([ori.shape[0] , ori.shape[1]]))
             vis_abnormal=vis.reshape([vis.shape[0], vis.shape[1]])
+            print 'vis shape ' , np.shape(vis)
             plt.imshow( vis_abnormal, cmap=plt.cm.jet , alpha=0.5 , interpolation='nearest' , vmin=0 , vmax=1)
-            print 'actmap shape : ',np.shape(vis_abnormal)
             plt.imsave('{}/abnormal_actmap.png'.format(save_dir), vis_abnormal)
         for vis, ori in zip(cam_vis_normal, img):
 
