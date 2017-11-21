@@ -16,7 +16,7 @@ def get_class_map(name,x , label , im_width):
     classmap = tf.reshape(classmap ,[-1 , im_width , im_width] ,name='classmap_reshape')
     return classmap
 
-def inspect_cam(sess, cam , top_conv ,test_imgs, test_labs, global_step , num_images , x_ , y_ , phase_train , y ):
+def inspect_cam(sess, cam , top_conv ,test_imgs, test_labs, global_step , num_images , x_ , y_ , phase_train , y  , ):
     debug_flag=False
     try:
         os.mkdir('./out');

@@ -37,12 +37,15 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
         p = open('predcitions.pkl' , 'w')
         pred_dic={}
         for path in model_paths:
-            print path
+            name=path.split('./')[-1]
+            print 'path : ', path
+            print 'name : ', name
+
             path=os.path.join(path , 'model')
 
             #./models/vgg_11/step_12500_acc_0.841666698456 --> ./models/vgg_11/step_12500_acc_0.841666698456/model
 
-            tmp_pred = eval.eval(path, test_images)
+            tmp_pred = eval.eval(path, test_images , batch_size=60 , save_root_folder='./out/{}'.format(name))
             print 'tmp_pred' , tmp_pred
             pred_dic[path]=tmp_pred
         #pred_model_path_list=zip(pred_list , model_paths)
