@@ -58,9 +58,9 @@ def eval(model_path ,test_images , batch_size=60 ):
         print e
         pass
     """
-    share=test_images/batch_size
+    share=len(test_images)/batch_size
     print share
-    remainder=test_images%batch_size
+    remainder=len(test_images)%batch_size
     predList=[]
     for s in range(share):
         pred = sess.run(pred_ , feed_dict={x_ : test_images[s*batch_size:(s+1)*batch_size],is_training_:False})
