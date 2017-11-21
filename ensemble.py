@@ -51,6 +51,7 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
         p = open('predcitions.pkl', 'r')
         pred_dic=pickle.load(p)
     print pred_dic.keys()
+    max_list=[]
     for k in range(2,len(pred_dic.keys())+1):
         k_max_acc = 0
         k_max_list = []
@@ -82,6 +83,7 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
             print len(cbn_models)
             pred_sum = pred_sum / float(len(cbn_models))
             acc=eval.get_acc(pred_sum , test_labels)
+            print acc
             #print cbn_models ,':',acc
             #print pred_sum[:10]
             p = open('predcitions.pkl', 'r')
