@@ -67,7 +67,7 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs , x, y_ ,phase_train, y , s
         try:os.mkdir(save_dir);
         except Exception as e :
             print e;
-        if __debug__ ==True:
+        if __debug__ ==False:
             print 'test imgs shape : ',test_imgs[s].shape
 
         if test_imgs[s].shape[-1]==1:
