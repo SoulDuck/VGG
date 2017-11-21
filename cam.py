@@ -60,6 +60,9 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs , x, y_ ,phase_train, y , s
     if not os.path.isdir(save_root_folder):
         os.mkdir(save_root_folder)
     for s in range(num_images):
+        msg='{}/{}'.format(s , num_images)
+        sys.stdout.write(msg)
+        sys.stdout.flush()
         save_dir='./{}/img_{}'.format(save_root_folder,s)
         try:os.mkdir(save_dir);
         except Exception as e :
@@ -93,6 +96,7 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs , x, y_ ,phase_train, y , s
             print 'vis shape : ',np.shape(vis)
             print 'ori shape : ',np.shape(ori)
             if ori.shape[-1]==1: #grey
+            
                 plt.imshow( 1-ori.reshape([ori.shape[1] , ori.shape[2]]))
             vis_abnormal=vis.reshape([ori.shape[0], ori.shape[1]])
             print 'vis shape ' , np.shape(vis)
