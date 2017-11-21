@@ -38,7 +38,7 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
         p = open('predcitions.pkl' , 'w')
         pred_dic={}
         for path in model_paths:
-            name=path.split('./')[-2]
+            name=path.split('/')[-1]
             print 'path : ', path
             print 'name : ', name
 
@@ -47,6 +47,7 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
             # activation 이 저장될 세이브 장소를 만든다
             # 파일 경로는 ./activation_map/model_name/
             save_root_folder = './activation_map/{}'.format(name)
+
             os.mkdir(save_root_folder)
             tmp_pred = eval.eval(path, test_images , batch_size=60 , save_root_folder=save_root_folder)
             print 'tmp_pred' , tmp_pred
