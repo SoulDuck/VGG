@@ -120,6 +120,7 @@ def ensemble(model_paths , test_images):
         else:
             pred_sum+=pred
     pred_sum=pred_sum/float(i+1)
+
     return pred_sum
 
 
