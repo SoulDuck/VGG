@@ -80,10 +80,22 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs, num_images , x, y_ ,phase_
         cam_vis_normal=list(map(lambda x: (x-x.min())/(x.max()-x.min()) , cam_ans_normal))
         cam_vis_abnormal, cam_vis_normal = map(lambda x: np.squeeze(x), [cam_vis_abnormal, cam_vis_normal])
 
+        cam_vis_abnormal = cam_vis_abnormal.reshape([img.shape[1] , img.shape[2]])
+        cam_vis_normal = cam_vis_normal.reshape([img.shape[1], img.shape[2]])
+
+        plt.imshow(cam_vis_abnormal, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
+        plt.imsave('{}/abnormal_actmap.png'.format(save_dir), cam_vis_abnormal)
+        plt.imsave('{}/normal_actmap.png'.format(save_dir), cam_vis_abnormal)
+
+        """
+        print np.shape(cam_vis_abnormal)
+        print np.shape(cam_vis_normal)
         for vis , ori in zip(cam_vis_abnormal , img):
+            print 'vis shape : ',np.shape(vis)
+            print 'ori shape : ',np.shape(ori)
             if ori.shape[-1]==1: #grey
-                plt.imshow( 1-ori.reshape([ori.shape[0] , ori.shape[1]]))
-            vis_abnormal=vis.reshape([vis.shape[0], vis.shape[1]])
+                plt.imshow( 1-ori.reshape([ori.shape[1] , ori.shape[2]]))
+            vis_abnormal=vis.reshape([ori.shape[0], ori.shape[1]])
             print 'vis shape ' , np.shape(vis)
             plt.imshow( vis_abnormal, cmap=plt.cm.jet , alpha=0.5 , interpolation='nearest' , vmin=0 , vmax=1)
             plt.imsave('{}/abnormal_actmap.png'.format(save_dir), vis_abnormal)
@@ -94,4 +106,5 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs, num_images , x, y_ ,phase_
             vis_normal = vis.reshape([vis.shape[0], vis.shape[1]])
             plt.imshow(vis_normal, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
             plt.imsave('{}/normal_actmap.png'.format(save_dir), vis_normal)
-        return vis_abnormal , vis_normal
+        """
+        return cam_vis_abnormal , cam_vis_normal
