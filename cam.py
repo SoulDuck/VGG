@@ -60,9 +60,6 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs, num_images , x, y_ ,phase_
         os.mkdir(save_root_folder)
     for s in range(num_images):
 
-        msg='{}/{}'.format( s,num_images)
-        sys.stdout.write(msg)
-        sys.stdout.flush()
         save_dir='./{}/img_{}'.format(save_root_folder,s)
         try:os.mkdir(save_dir);
         except Exception as e :
@@ -86,12 +83,12 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs, num_images , x, y_ ,phase_
                 plt.imshow( 1-ori.reshape([ori.shape[0] , ori.shape[1]]))
             vis_abnormal=vis.reshape([vis.shape[0], vis.shape[1]])
             plt.imshow( vis_abnormal, cmap=plt.cm.jet , alpha=0.5 , interpolation='nearest' , vmin=0 , vmax=1)
-
+            plt.imsave('{}/abnormal_actmap.png'.format(save_dir), vis_abnormal)
         for vis, ori in zip(cam_vis_normal, img):
 
             if ori.shape[-1] == 1:  # grey
                 plt.imshow(1 - ori.reshape([ori.shape[0], ori.shape[1]]))
             vis_normal = vis.reshape([vis.shape[0], vis.shape[1]])
             plt.imshow(vis_normal, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
-
+            plt.imsave('{}/normal_actmap.png'.format(save_dir), vis_normal)
         return vis_abnormal , vis_normal
