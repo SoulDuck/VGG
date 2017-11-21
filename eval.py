@@ -62,12 +62,11 @@ def eval(model_path ,test_images , batch_size=60 ):
     remainder=test_images%batch_size
     predList=[]
     for s in range(share):
-        pred_ = sess.run(pred_ , feed_dict={x_ : test_images[s*batch_size:(s+1)*batch_size],is_training_:False})
-        print pred_
-        exit()
-        predList.extend(pred_)
-    pred_ = sess.run(pred_, feed_dict={x_: test_images[-1*remainder:], is_training_: False})
-    predList.extend(pred_)
+        pred = sess.run(pred_ , feed_dict={x_ : test_images[s*batch_size:(s+1)*batch_size],is_training_:False})
+        print 'pred_ ' ,pred
+        predList.extend(pred)
+    pred = sess.run(pred_, feed_dict={x_: test_images[-1*remainder:], is_training_: False})
+    predList.extend(pred)
     assert len(predList) == len(test_images)
     tf.reset_default_graph()
     print 'pred sample ',predList[:1]
