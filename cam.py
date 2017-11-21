@@ -60,7 +60,7 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs, num_images , x, y_ ,phase_
         os.mkdir(save_root_folder)
     for s in range(num_images):
 
-        msg='{}/{}'.format( s,len(num_images))
+        msg='{}/{}'.format( s,num_images)
         sys.stdout.write(msg)
         sys.stdout.flush()
         save_dir='./{}/img_{}'.format(save_root_folder,s)
