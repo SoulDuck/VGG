@@ -25,6 +25,22 @@ test_labs = mnist.test.labels
 train_images, train_labels, train_filenames, test_images, test_labels, test_filenames=fundus.type1('./fundus_300' , resize=(299,299))
 
 
+def get_acc(preds , trues):
+    #onehot vector check
+    np.ndim(preds) == np.ndim(trues) , 'predictions and True Values has same shape and has to be OneHot Vector'
+    if np.ndim(preds) == 2:
+        preds_cls =np.argmax(preds , axis=1)
+        trues_cls = np.argmax(trues, axis=1)
+    else:
+        preds_cls=preds
+        trues_cls = trues
+    acc=np.sum([preds_cls == trues_cls])/len(preds_cls)
+    return acc
+
+
+
+
+
 def eval(model_path ,test_images , batch_size=60 ):
     print 'eval'
     b,h,w,c=np.shape(test_images)

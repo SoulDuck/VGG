@@ -18,6 +18,8 @@ parser.add_argument('--models_path')
 args=parser.parse_args()
 
 
+
+
 def get_models_paths(dir_path):
     subdir_paths=[path[0] for path in os.walk(dir_path)]
     #subdir_paths = map(lambda name: os.path.join(dir_path, name), subdir_names)
