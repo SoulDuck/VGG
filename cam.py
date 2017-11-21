@@ -38,7 +38,6 @@ def inspect_cam(sess, cam , top_conv ,test_imgs, test_labs, global_step , num_im
         cam_ans= sess.run( cam ,  feed_dict={ y_:label , top_conv:conv_val })
         cam_vis=list(map(lambda x: (x-x.min())/(x.max()-x.min()) , cam_ans))
         for vis , ori in zip(cam_vis , img):
-
             if ori.shape[-1]==1: #grey
                 plt.imshow( 1-ori.reshape([ori.shape[0] , ori.shape[1]]))
             plt.imshow( vis.reshape([vis.shape[0] , vis.shape[1]]) , cmap=plt.cm.jet , alpha=0.5 , interpolation='nearest' , vmin=0 , vmax=1)
@@ -47,7 +46,7 @@ def inspect_cam(sess, cam , top_conv ,test_imgs, test_labs, global_step , num_im
             plt.close();
 
 
-def eval_inspect_cam(sess, cam , top_conv ,test_imgs, num_images , x, y_ ,phase_train, y):
+def eval_inspect_cam(sess, cam , top_conv ,test_imgs, num_images , x, y_ ,phase_train, y , save_folder):
     ABNORMAL_LABEL =np.asarray([[0,1]])
     NORMAL_LABEL = np.asarray([[1,0]])
 
@@ -56,9 +55,11 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs, num_images , x, y_ ,phase_
     except Exception as e :
         print e
         pass;
+    if not os.path.isdir(save_folder):
+        os.mkdir(save_folder)
 
     for s in range(num_images):
-        save_dir='./out/img_{}'.format(s)
+        save_dir='./{}/img_{}'.format(save_folder,s)
         try:os.mkdir(save_dir);
         except Exception as e :
             print e;
