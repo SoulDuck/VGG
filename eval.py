@@ -25,7 +25,7 @@ test_labs = mnist.test.labels
 train_images, train_labels, train_filenames, test_images, test_labels, test_filenames=fundus.type1('./fundus_300' , resize=(299,299))
 
 
-def eval(model_path ,test_images , batch_size=60):
+def eval(model_path ,test_images , batch_size=60 ):
 
     b,h,w,c=np.shape(test_images)
 
