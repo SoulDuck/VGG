@@ -69,7 +69,7 @@ def fc_layer_to_clssses(_input , n_classes):
 
 
 
-def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_crop_resize , bn_flag):
+def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_crop_resize , bn):
     ##### define conv connected layer #######
     n_classes=int(y_.get_shape()[-1])
     image_size = int(x_.get_shape()[-2])
@@ -79,7 +79,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
         conv_strides=[1, 1, 1, 1, 1, 1, 1, 1]
         before_act_bn_mode = []
         after_act_bn_mode = []
-        if bn_flag==True:
+        if bn==True:
             before_act_bn_mode = [True , True , True , True , True , True , True , True ]
         allow_max_pool_indices=[0,1,3,5,7]
 
@@ -89,7 +89,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
         conv_strides= [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         before_act_bn_mode = []
         after_act_bn_mode = []
-        if bn_flag == True:
+        if bn == True:
             before_act_bn_mode = [True, True, True, True, True, True, True, True , True , True ]
         allow_max_pool_indices = [1, 3, 5, 7 , 9]
 
@@ -99,7 +99,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
         conv_strides=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         before_act_bn_mode = []
         after_act_bn_mode = []
-        if bn_flag == True:
+        if bn == True:
             before_act_bn_mode = [True, True, True, True, True, True, True, True, True, True,True, True, True]
 
         allow_max_pool_indices = [1, 3, 6, 9 ,12]
@@ -110,9 +110,8 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
         conv_strides = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         before_act_bn_mode = []
         after_act_bn_mode = []
-        if bn_flag == True:
+        if bn == True:
             before_act_bn_mode = [True, True, True, True, True, True, True, True, True, True,True, True, True ,True, True, True]
-
         allow_max_pool_indices = [1, 3, 7, 9, 11 , 15]
 
     ###VGG Paper ###
@@ -282,7 +281,7 @@ def write_acc_loss(summary_writer ,prefix , loss , acc  , step):
     summary_writer.add_summary(summary, step)
 
 if __name__ == '__main__':
-    x_ , y_ , lr_ , is_training =define_inputs(shape=[None , 299,299, 3 ] , n_classes=2 )
+    x_ , y_ , lr_ , is_training =define_inputs(shape=[ None , 299,299, 3 ] , n_classes=2 )
     build_graph( x_=x_ , y_=y_ ,is_training=is_training, aug_flag=True , actmap_flag=True , model='vgg_11' , random_crop_resize=224 )
 
 
