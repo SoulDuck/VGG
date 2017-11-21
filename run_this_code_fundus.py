@@ -8,28 +8,46 @@ import argparse
 import tensorflow as tf
 import aug
 
+
 parser =argparse.ArgumentParser()
+#parser.add_argument('--saves' , dest='should_save_model' , action = 'store_true')
+#parser.add_argument('--no-saves' , dest='should_save_model', action ='store_false')
+
 parser.add_argument('--optimizer' ,'-o' , type=str ,choices=['sgd','momentum','adam'],help='optimizer')
 parser.add_argument('--use_nesterov' , type=bool , help='only for momentum , use nesterov')
-parser.add_argument('--augmentation' ,'-aug', type=bool , help='augmentation')
-parser.add_argument('--actmap', type=bool)
-parser.add_argument('--random_crop_resize' , '-r',  type = int  , help='if you use random crop resize , you can choice random crop')
+
+parser.add_argument('--aug' , dest='use_aug', action='store_true' , help='augmentation')
+parser.add_argument('--no_aug' , dest='use_aug', action='store_false' , help='augmentation')
+
+parser.add_argument('--actmap', dest='use_actmap' ,action='store_true')
+parser.add_argument('--no_actmap', dest='use_actmap', action='store_false')
+
+parser.add_argument('--random_crop_resize' , '-r',  type = int  , help='if you use random crop resize , you can choice randdom crop ')
+
 parser.add_argument('--batch_size' ,'-b' , type=int , help='batch size')
 parser.add_argument('--max_iter', '-i' , type=int , help='iteration')
-parser.add_argument('--l2_loss', '-l' , type=bool , help='l2 loss true or False')
-parser.add_argument('--vgg_model' , type=str ,choices=['vgg_11','vgg_13','vgg_16' ,'vgg_19'] , help='VGG model')
 
+parser.add_argument('--l2_loss', dest='use_l2_loss', action='store_true' ,help='l2 loss true or False')
+parser.add_argument('--no_l2_loss', dest='use_l2_loss', action='store_false' ,help='l2 loss true or False')
+
+
+parser.add_argument('--BN' , dest='use_BN'  , action='store_true' ,   help = 'bn True or not')
+parser.add_argument('--no_BN',dest='use_BN' , action = 'store_false', help = 'bn True or not')
+
+parser.add_argument('--folder_name' ,help='ex model/fundus_300/folder_name/0 .. logs/fundus_300/folder_name/0 , type2/folder_name/0')
 args=parser.parse_args()
+
+print 'aug : ' , args.use_aug
+print 'actmap : ' , args.use_actmap
+print 'use_l2_loss: ' , args.use_l2_loss
+print 'BN : ' , args.use_BN
 
 print 'optimizer : ', args.optimizer
 print 'use nesterov : ',args.use_nesterov
-print 'augmentation : ',args.augmentation
-print 'actmap : ' , args.actmap
 print 'random crop size : ',args.random_crop_resize
-print 'l2 loss: ',args.l2_loss
 print 'batch size : ',args.batch_size
 print 'max iter  : ',args.max_iter
-print 'vgg model : ',args.vgg_model
+
 resize=(299,299)
 train_imgs ,train_labs ,train_fnames, test_imgs ,test_labs , test_fnames=fundus.type2(tfrecords_dir='./fundus_300' , onehot=True , resize=resize)
 
@@ -46,22 +64,33 @@ n_classes=np.shape(train_labs)[-1]
 print 'the # classes : {}'.format(n_classes)
 x_ , y_ , lr_ , is_training = model.define_inputs(shape=[None, h ,w, ch ] , n_classes=n_classes )
 
-logits=model.build_graph(x_=x_ , y_=y_ ,is_training=is_training , aug_flag=args.augmentation,\
-                         actmap_flag=args.actmap  , random_crop_resize=args.random_crop_resize  , model=args.vgg_model)
+
+logits=model.build_graph(x_=x_ , y_=y_ ,is_training=is_training , aug_flag=args.use_aug, \
+                         actmap_flag=args.use_actmap  , random_crop_resize=args.random_crop_resize , bn = args.use_BN)
+
 if args.optimizer=='sgd':
     train_op, accuracy_op , loss_op , pred_op = model.train_algorithm_grad(logits=logits,labels=y_ , learning_rate=lr_ ,
-                                                                           l2_loss=args.l2_loss)
+                                                                           l2_loss=args.use_l2_loss)
 if args.optimizer=='momentum':
     train_op, accuracy_op, loss_op, pred_op = model.train_algorithm_momentum(logits=logits, labels=y_,
                                                                              learning_rate=lr_,
-                                                                             use_nesterov=args.use_nesterov , l2_loss=args.l2_loss)
+                                                                             use_nesterov=args.use_nesterov , l2_loss=args.use_l2_loss)
 if args.optimizer == 'adam':
     train_op, accuracy_op, loss_op, pred_op = model.train_algorithm_adam(logits=logits, labels=y_, learning_rate=lr_,
-                                                                         l2_loss=args.l2_loss)
+                                                                         l2_loss=args.use_l2_loss)
+
 
 log_count =0;
 while True:
-    logs_path='./logs/fundus_300/{}'.format(log_count)
+    logs_root_path='./logs/fundus_300/{}'.format(args.folder_name )
+    try:
+        os.makedirs(logs_root_path)
+    except Exception as e :
+        print e
+        pass;
+    print logs_root_path
+
+    logs_path=os.path.join( logs_root_path , str(log_count))
     if not os.path.isdir(logs_path):
         os.mkdir(logs_path)
         break;
@@ -70,17 +99,26 @@ while True:
 sess, saver , summary_writer =model.sess_start(logs_path)
 
 
+
+
 model_count =0;
 while True:
-    model_root_path='./models/fundus_300/{}'.format(model_count)
-    if not os.path.isdir(model_root_path):
-        os.mkdir(model_root_path)
+    models_root_path='./models/fundus_300/{}'.format(args.folder_name)
+    try:
+        os.makedirs(models_root_path)
+    except Exception as e:
+        print e
+        pass;
+    models_path=os.path.join(models_root_path , str(model_count))
+    if not os.path.isdir(models_path):
+        os.mkdir(models_path)
         break;
     else:
         model_count+=1
 
-best_acc_root = os.path.join(model_root_path, 'best_acc')
-best_loss_root = os.path.join(model_root_path, 'best_loss')
+
+best_acc_root = os.path.join(models_path, 'best_acc')
+best_loss_root = os.path.join(models_path, 'best_loss')
 os.mkdir(best_acc_root)
 os.mkdir(best_loss_root)
 
@@ -102,6 +140,7 @@ train_loss=1000.
 
 for step in range(max_iter):
     #### learning rate schcedule
+    """
     if step < 20000:
         learning_rate = 0.00001
     elif step < 80000:
@@ -112,7 +151,20 @@ for step in range(max_iter):
         learning_rate = 0.00001
     else:
         learning_rate = 0.000001
-    ####
+    """
+    for step in range(max_iter):
+        #### learning rate schcedule
+        if step < 5000:
+            learning_rate = 0.1
+        elif step < 45000:
+            learning_rate = 0.01
+        elif step < 60000:
+            learning_rate = 0.001
+        elif step < 120000:
+            learning_rate = 0.0001
+        else:
+            learning_rate = 0.00001
+            ####
     if step % ckpt==0:
         """ #### testing ### """
         test_fetches = [ accuracy_op, loss_op, pred_op ]
@@ -144,12 +196,10 @@ for step in range(max_iter):
                        save_path=os.path.join(best_loss_folder, 'model'))
 
         print 'validation acc : {} loss : {}'.format( val_acc_mean, val_loss_mean )
-        print 'Train acc : {} loss : {}'.format(train_acc, train_loss)
         model.write_acc_loss( summary_writer, 'validation', loss=val_loss_mean, acc=val_acc_mean, step=step)
-        model_path=os.path.join(model_root_path, str(step))
+        model_path=os.path.join(models_path, str(step))
         os.mkdir(model_path) # e.g) models/fundus_300/100/model.ckpt or model.meta
-        #saver.save(sess=sess,save_path=os.path.join(model_path,'model'))
-
+        #saver.save(sess=sess,save_path=os.path.join(model_path,'model' , folder_name))
         """image augmentation debug code"""
         """
         aug_images_train = tf.get_default_graph().get_tensor_by_name('aug_:0')
@@ -158,7 +208,6 @@ for step in range(max_iter):
         merged = tf.summary.merge_all()
         summary_train = sess.run(merged, feed_dict={x_: test_imgs[:3], y_: test_labs[:3], lr_: 0.001, is_training: True})
         summary_writer.add_summary(summary_train, step)
-
         aug_images_test = tf.get_default_graph().get_tensor_by_name('aug_:0')
         tf.summary.image(name='aug_images_test', tensor=aug_images_test)
         summary_test = sess.run(aug_images_test, feed_dict={x_: test_imgs[:3], y_: test_labs[:3], lr_: 0.001, is_training: False})
@@ -176,8 +225,6 @@ for step in range(max_iter):
     _ , train_acc, train_loss = sess.run( fetches=train_fetches, feed_dict=train_feedDict )
     #print 'train acc : {} loss : {}'.format(train_acc, train_loss)
     model.write_acc_loss(summary_writer ,'train' , loss= train_loss , acc=train_acc  ,step= step)
-    summary = tf.Summary(value=[tf.Summary.Value(tag='learning rate' , simple_value=learning_rate)])
-    summary_writer.add_summary(summary, step)
 
 
 

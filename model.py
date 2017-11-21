@@ -128,7 +128,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
     layer=x_
     for i in range(len(conv_out_features)):
         with tf.variable_scope('conv_{}'.format(str(i))) as scope:
-            if i in before_act_bn_mode:
+            if before_act_bn_mode[i] == True:
                 layer=batch_norm(layer , is_training)
             layer  = conv2d_with_bias(layer, conv_out_features[i], kernel_size=conv_kernel_sizes[i], \
                                  strides= [ 1, conv_strides[i], conv_strides[i], 1 ], padding='SAME' )
@@ -137,7 +137,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
                 layer=tf.nn.max_pool(layer , ksize=[1,2,2,1] , strides=[1,2,2,1] , padding='SAME')
                 print layer
             layer = tf.nn.relu(layer)
-            if i in after_act_bn_mode:
+            if after_act_bn_mode[i] == True:
                 layer = batch_norm(layer, is_training)
             #layer=tf.nn.dropout(layer , keep_prob=conv_keep_prob)
             layer=tf.cond(is_training , lambda :  tf.nn.dropout(layer ,  keep_prob=1.0)  , lambda : layer)
@@ -155,13 +155,13 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
     after_act_bn_mode = []
     for i in range(len(fc_out_features)):
         with tf.variable_scope('fc_{}'.format(str(i))) as scope:
-            if i in before_act_bn_mode:
+            if before_act_bn_mode[i] ==True :
                 print 'batch normalization {}'.format(i)
                 layer=batch_norm(layer , is_training)
-            layer=fc_with_bias(layer , fc_out_features[i] )
+            layer=fc_with_bias(layer , fc_out_features[i])
             layer=tf.nn.relu(layer)
             layer=tf.cond(is_training , lambda: tf.nn.dropout(layer , keep_prob=0.5) , lambda: layer)
-            if i in after_act_bn_mode:
+            if after_act_bn_mode[i]==True:
                 layer=batch_norm(layer, is_training)
 
     print n_classes
@@ -273,7 +273,7 @@ def write_acc_loss(summary_writer ,prefix , loss , acc  , step):
 
 if __name__ == '__main__':
     x_ , y_ , lr_ , is_training =define_inputs(shape=[None , 299,299, 3 ] , n_classes=2 )
-    build_graph( x_=x_ , y_=y_ ,is_training=is_training )
+    build_graph( x_=x_ , y_=y_ ,is_training=is_training, aug_flag=True , actmap_flag=True , model='vgg_11' , random_crop_resize=224 )
 
 
 
