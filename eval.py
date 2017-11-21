@@ -66,8 +66,8 @@ def eval(model_path ,test_images , batch_size=60 ):
     predList.extend(pred_)
     assert len(predList) == len(test_images)
     tf.reset_default_graph()
-    print pred_[:1]
-    return pred_
+    print 'pred sample ',predList[:1]
+    return predList
 if __name__ =='__main__':
     model_path ='./models/step_118000_acc_0.838333427906/model'
     pred=eval(model_path, test_images)
