@@ -59,6 +59,7 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
             for idx, model in enumerate(cbn_models):
 
                 pred = pred_dic[model]
+                print 'pred shape : {}'.format(np.shape(pred))
                 #print idx
                 #print 'pred' ,pred[:10]
                 if idx == 0:
