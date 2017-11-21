@@ -4,6 +4,7 @@ import os
 import numpy as np
 from skimage.io import imsave
 import scipy.misc
+import sys
 def get_class_map(name,x , label , im_width):
     out_ch = int(x.get_shape()[-1])
     conv_resize=tf.image.resize_bilinear(x,[im_width , im_width])
@@ -46,7 +47,7 @@ def inspect_cam(sess, cam , top_conv ,test_imgs, test_labs, global_step , num_im
             plt.close();
 
 
-def eval_inspect_cam(sess, cam , top_conv ,test_imgs, num_images , x, y_ ,phase_train, y , save_folder):
+def eval_inspect_cam(sess, cam , top_conv ,test_imgs, num_images , x, y_ ,phase_train, y , save_root_folder):
     ABNORMAL_LABEL =np.asarray([[0,1]])
     NORMAL_LABEL = np.asarray([[1,0]])
 
@@ -55,11 +56,14 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs, num_images , x, y_ ,phase_
     except Exception as e :
         print e
         pass;
-    if not os.path.isdir(save_folder):
-        os.mkdir(save_folder)
-
+    if not os.path.isdir(save_root_folder):
+        os.mkdir(save_root_folder)
     for s in range(num_images):
-        save_dir='./{}/img_{}'.format(save_folder,s)
+
+        msg='{}/{}'.format( s,len(num_images))
+        sys.stdout.write(msg)
+        sys.stdout.flush()
+        save_dir='./{}/img_{}'.format(save_root_folder,s)
         try:os.mkdir(save_dir);
         except Exception as e :
             print e;
