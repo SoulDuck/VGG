@@ -48,5 +48,6 @@ def plotROC(predStrength , labels):
     if __debug__==debug_flag:
         print '# of True :' ,n_pos
         print '# of False :' ,n_neg
-    plt.show()
+    plt.savefig('roc.png')
+    #plt.show()
     print 'The Area Under Curve is :' , ySum*x_step
