@@ -1,5 +1,5 @@
 import os
-
+import pickle
 import matplotlib
 if "DISPLAY" not in os.environ:
     # remove Travis CI Error
@@ -62,5 +62,6 @@ def plotROC(predStrength , labels):
     print 'The Area Under Curve is :' , ySum*x_step
 
 if '__main__' == __name__ :
-
-    plotROC(predStrength, labels)
+    preds=pickle.load('best_pred.pkl')
+    labels = pickle.load('label.pkl')
+    plotROC(preds, labels)
