@@ -62,7 +62,8 @@ def get_ensemble_actmap(model_list , actmap_folder):
             print len(tmp_act_imgs  )
         #ori_img = plt.rgb2gray(ori_img);
         overlay_img=Image.blend(ori_img , act_imgs[0] , 0.5)
-        plt.imshow(overlay_img , cmap=plt.cm.jet)
+        cmap=plt.cm.jet
+        overlay_img=cmap(overlay_img)
         plt.imsave( os.path.join(overlay_img_path , '{}.png'.format(subfolder)), overlay_img)
 
 
