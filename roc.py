@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 if "DISPLAY" not in os.environ:
     # remove Travis CI Error
+    print 'DISPLAY not in this enviroment'
     matplotlib.use('Agg')
 
 import numpy as np
