@@ -191,7 +191,10 @@ if __name__ == '__main__':
     train_images, train_labels, train_filenames, test_images, test_labels, test_filenames = fundus.type1(
         './fundus_300', resize=(299, 299))
     acc, max_list=ensemble_with_all_combibation(models_path ,test_images , test_labels)
-
+    names=map(lambda path: path.split('/')[-1]  ,max_list)
+    print 'best model list : ',names
+    exit()
+    get_ensemble_actmap('./activation_map')
     """
     pred_sum=ensemble('./models', test_images )
     acc =eval.get_acc(pred_sum , test_labels)
