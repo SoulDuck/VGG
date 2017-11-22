@@ -50,12 +50,10 @@ def get_ensemble_actmap(model_list , actmap_folder):
             tmp_act_imgs=[]
             remainder=len(act_imgs) % 2
             share=len(act_imgs) / 2
-
             print 'remainder {}' , remainder
             print 'share {}', share
-
             for s in range(share):
-                tmp_act_imgs.append(Image.blend(act_imgs[s*i] ,act_imgs[(s*i)+1] , 0.5))
+                tmp_act_imgs.append(Image.blend(act_imgs[2*s] ,act_imgs[2*s+1] , 0.5))
             if remainder ==1 :
                 act_imgs[-1].putalpha(128)
                 tmp_act_imgs.append(act_imgs[-1])
