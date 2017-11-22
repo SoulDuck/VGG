@@ -29,6 +29,8 @@ def get_ensemble_actmap(model_list , actmap_folder):
     :param model_list: []
     :return:
     """
+    overlay_img_path=os.path.join(actmap_folder, 'overlay')
+    os.mkdir(overlay_img_path)
     tmp_path = os.path.join(actmap_folder, model_list[0])
     _ , subfolders , files =os.walk(tmp_path).next()
     act_imgs=[]
@@ -58,7 +60,8 @@ def get_ensemble_actmap(model_list , actmap_folder):
         #ori_img = plt.rgb2gray(ori_img);
         overlay_img=Image.blend(ori_img , act_imgs[0] , 0.5)
         plt.imshow(overlay_img , cmap=plt.cm.jet)
-        plt.show()
+        plt.imsave( os.path.join(overlay_img_path , '{}.png'.format(subfolder)), overlay_img)
+
 
     """
     background = original_img.convert("RGBA")
@@ -193,8 +196,8 @@ if __name__ == '__main__':
     acc, max_list=ensemble_with_all_combibation(models_path ,test_images , test_labels)
     names=map(lambda path: path.split('/')[-2]  ,max_list)
     print 'best model list : ',names
-    exit()
-    get_ensemble_actmap('./activation_map')
+
+    get_ensemble_actmap(names , './activation_map')
     """
     pred_sum=ensemble('./models', test_images )
     acc =eval.get_acc(pred_sum , test_labels)
@@ -205,5 +208,5 @@ if __name__ == '__main__':
     model_list=['step_13600_acc_0.840000033379' ,'step_14600_acc_0.841666817665' ,'step_15900_acc_0.843333363533']
     print model_list
 
-    get_ensemble_actmap(model_list,'./activation_map')
+    
     """
