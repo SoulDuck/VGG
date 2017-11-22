@@ -63,6 +63,6 @@ def plotROC(predStrength , labels):
 
 if '__main__' == __name__ :
     preds=pickle.load('best_pred.pkl')
-    labels = pickle.load('label.pkl','r')
+    labels = pickle.load('label.pkl')
     print preds
     plotROC(preds, labels)
