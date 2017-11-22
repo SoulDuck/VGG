@@ -1,3 +1,9 @@
+import os
+import matplotlib
+if "DISPLAY" not in os.environ:
+    # remove Travis CI Error
+    matplotlib.use('Agg')
+
 import numpy as np
 import matplotlib.pyplot as plt
 debug_flag=True
