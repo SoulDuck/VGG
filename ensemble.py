@@ -122,13 +122,12 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
         k_max_list = []
         print 'K : {}'.format(k)
         for cbn_models in itertools.combinations(pred_dic.keys(),k):
-            #print cbn_models
+            print cbn_models
             #cbn_preds=map(lambda cbn_model: pred_dic[cbn_model],cbn_models)
             for idx, model in enumerate(cbn_models):
                 pred = pred_dic[model]
                 print 'pred shape : {}'.format(np.shape(pred))
                 #print idx
-                #print 'pred' ,pred[:10]
                 if idx == 0:
                     pred_sum = pred
                 else:
@@ -145,14 +144,15 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
                     pred_sum += pred
             """
             print len(cbn_models)
+
             pred_sum = pred_sum / float(len(cbn_models))
+            print 'pred' ,pred[:10]
             acc=eval.get_acc(pred_sum , test_labels)
-            print acc
+            print 'accuracy : {}'.format(acc)
             #print cbn_models ,':',acc
-            #print pred_sum[:10]
+
             p = open('predcitions.pkl', 'r')
             pred_dic=pickle.load(p)
-
             if max_acc < acc :
                 max_acc=acc
                 max_pred=pred_sum
@@ -198,6 +198,7 @@ if __name__ == '__main__':
     print 'number of model paths : {}'.format(len(models_path))
     train_images, train_labels, train_filenames, test_images, test_labels, test_filenames = fundus.type1(
         './fundus_300', resize=(299, 299))
+
     acc, max_list , pred =ensemble_with_all_combibation(models_path ,test_images , test_labels)
     names=map(lambda path: path.split('/')[-2]  ,max_list)
     print 'best model list : ',names

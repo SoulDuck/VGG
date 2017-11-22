@@ -31,6 +31,7 @@ def get_acc(preds , trues):
     if np.ndim(preds) == 2:
         preds_cls =np.argmax(preds , axis=1)
         trues_cls = np.argmax(trues, axis=1)
+
     else:
         preds_cls=preds
         trues_cls = trues
