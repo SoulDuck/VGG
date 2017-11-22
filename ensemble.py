@@ -201,11 +201,13 @@ if __name__ == '__main__':
         './fundus_300', resize=(299, 299))
 
     acc, max_list , pred =ensemble_with_all_combibation(models_path ,test_images , test_labels)
+    f=open('best_pred.pkl' , 'w')
+    pickle.dump(pred  , f)
     names=map(lambda path: path.split('/')[-2]  ,max_list)
     print 'best model list : ',names
-    #get_ensemble_actmap(names , './activation_map')
 
-    roc.plotROC(pred , test_labels )
+    #get_ensemble_actmap(names , './activation_map')
+    #roc.plotROC(pred , test_labels )
 
     """
     pred_sum=ensemble('./models', test_images )

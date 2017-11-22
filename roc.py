@@ -60,3 +60,7 @@ def plotROC(predStrength , labels):
     plt.savefig('roc.png')
     #plt.show()
     print 'The Area Under Curve is :' , ySum*x_step
+
+if '__main__' == __name__ :
+
+    plotROC(predStrength, labels)
