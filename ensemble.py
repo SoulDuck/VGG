@@ -13,7 +13,7 @@ if "DISPLAY" not in os.environ:
 
 import matplotlib.pyplot as plt
 import eval
-
+import roc
 import fundus
 import itertools
 import pickle
@@ -90,6 +90,8 @@ def get_models_paths(dir_path):
 
 def ensemble_with_all_combibation(model_paths , test_images , test_labels):
     max_acc=0
+    max_pred=None
+    max_list = []
     f = open('best_ensemble.txt', 'w')
     if not os.path.isfile('predcitions.pkl'):
         p = open('predcitions.pkl' , 'w')
@@ -115,7 +117,6 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
         p = open('predcitions.pkl', 'r')
         pred_dic=pickle.load(p)
     print pred_dic.keys()
-    max_list=[]
     for k in range(2,len(pred_dic.keys())+1):
         k_max_acc = 0
         k_max_list = []
@@ -124,8 +125,6 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
             #print cbn_models
             #cbn_preds=map(lambda cbn_model: pred_dic[cbn_model],cbn_models)
             for idx, model in enumerate(cbn_models):
-
-
                 pred = pred_dic[model]
                 print 'pred shape : {}'.format(np.shape(pred))
                 #print idx
@@ -135,7 +134,8 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
                 else:
                     pred_sum += pred
 
-            """for idx ,pred in enumerate(cbn_preds):
+            """
+                for idx ,pred in enumerate(cbn_preds):
                 print cbn_models[idx]
                 print idx
                 print pred[:10]
@@ -155,6 +155,7 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
 
             if max_acc < acc :
                 max_acc=acc
+                max_pred=pred_sum
                 max_list=cbn_models
             if k_max_acc < acc:
                 k_max_acc = acc
@@ -166,7 +167,7 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
     f.write(msg)
     f.flush()
 
-    return acc , max_list
+    return acc , max_list , max_pred
 
 
 def ensemble(model_paths , test_images):
@@ -197,11 +198,13 @@ if __name__ == '__main__':
     print 'number of model paths : {}'.format(len(models_path))
     train_images, train_labels, train_filenames, test_images, test_labels, test_filenames = fundus.type1(
         './fundus_300', resize=(299, 299))
-    acc, max_list=ensemble_with_all_combibation(models_path ,test_images , test_labels)
+    acc, max_list , pred =ensemble_with_all_combibation(models_path ,test_images , test_labels)
     names=map(lambda path: path.split('/')[-2]  ,max_list)
     print 'best model list : ',names
+    #get_ensemble_actmap(names , './activation_map')
 
-    get_ensemble_actmap(names , './activation_map')
+    roc.plotROC(pred , test_labels )
+
     """
     pred_sum=ensemble('./models', test_images )
     acc =eval.get_acc(pred_sum , test_labels)
