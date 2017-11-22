@@ -1,11 +1,12 @@
 import os
+import matplotlib.pyplot as plt
 import matplotlib
 if "DISPLAY" not in os.environ:
     # remove Travis CI Error
     matplotlib.use('Agg')
 
 import numpy as np
-import matplotlib.pyplot as plt
+
 debug_flag=True
 def plotROC(predStrength , labels):
     assert np.ndim(predStrength) == np.ndim(labels)
