@@ -1,10 +1,11 @@
 import os
-import matplotlib.pyplot as plt
+
 import matplotlib
 if "DISPLAY" not in os.environ:
     # remove Travis CI Error
     print 'DISPLAY not in this enviroment'
     matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 import numpy as np
 
 debug_flag=True
