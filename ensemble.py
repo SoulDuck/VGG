@@ -30,7 +30,8 @@ def get_ensemble_actmap(model_list , actmap_folder):
     :return:
     """
     overlay_img_path=os.path.join(actmap_folder, 'overlay')
-    os.mkdir(overlay_img_path)
+    if not os.path.isdir(overlay_img_path):
+        os.mkdir(overlay_img_path)
     tmp_path = os.path.join(actmap_folder, model_list[0])
     _ , subfolders , files =os.walk(tmp_path).next()
     act_imgs=[]
