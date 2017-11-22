@@ -45,10 +45,14 @@ def get_ensemble_actmap(model_list , actmap_folder):
             act_img = Image.open(act_img_path).convert("RGBA")
             act_imgs.append(act_img)
         print len(act_imgs)
-        while len(act_imgs) != 1 :
+        while len(act_imgs) != 1:
             tmp_act_imgs=[]
             remainder=len(act_imgs) % 2
             share=len(act_imgs) / 2
+
+            print 'remainder {}' , remainder
+            print 'share {}', share
+
             for s in range(share):
                 tmp_act_imgs.append(Image.blend(act_imgs[s*i] ,act_imgs[(s*i)+1] , 0.5))
             if remainder ==1 :
