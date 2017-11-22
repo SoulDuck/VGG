@@ -2,6 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 debug_flag=True
 def plotROC(predStrength , labels):
+    assert np.ndim(predStrength) == np.ndim(labels)
+    if np.ndim(predStrength) ==2:
+        predStrength=np.argmax(predStrength , axis=1)
+        labels=np.argmax(labels, axis=1)
+
+
+
     #how to input?
 
     cursor=(1.0,1.0) #initial cursor
