@@ -203,8 +203,10 @@ if __name__ == '__main__':
     acc, max_list , pred =ensemble_with_all_combibation(models_path ,test_images , test_labels)
     f=open('best_pred.pkl' , 'w')
     pickle.dump(pred  , f)
+    f.close()
     f = open('label.pkl', 'w')
     pickle.dump(test_labels, f)
+    f.close()
     names=map(lambda path: path.split('/')[-2]  ,max_list)
     print 'best model list : ',names
 
