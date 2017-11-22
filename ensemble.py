@@ -39,27 +39,27 @@ def get_ensemble_actmap(model_list , actmap_folder):
     for subfolder in subfolders:
         for i, model in enumerate(model_list):
             print model
-            act_img_path=os.path.join(actmap_folder , model , subfolder , 'normal_actmap.png') #./activation_map/step_5900_acc_0.84/img_0
+            act_img_path=os.path.join(actmap_folder , model , subfolder , 'abnormal_actmap.png') #./activation_map/step_5900_acc_0.84/img_0
             ori_img_path = os.path.join(actmap_folder, model, subfolder,
                                         'image_test.png')  # ./activation_map/step_5900_acc_0.84/img_0
             ori_img = Image.open(ori_img_path).convert("RGBA")
             act_img = Image.open(act_img_path).convert("RGBA")
             act_imgs.append(act_img)
-        print len(act_imgs)
+        #print len(act_imgs)
         while len(act_imgs) != 1:
             tmp_act_imgs=[]
             remainder=len(act_imgs) % 2
             share=len(act_imgs) / 2
-            print 'remainder {}' , remainder
-            print 'share {}', share
+            #print 'remainder {}' , remainder
+            #print 'share {}', share
             for s in range(share):
                 tmp_act_imgs.append(Image.blend(act_imgs[2*s] ,act_imgs[2*s+1] , 0.5))
             if remainder ==1 :
                 act_imgs[-1].putalpha(128)
                 tmp_act_imgs.append(act_imgs[-1])
             act_imgs=tmp_act_imgs
-            print 'n actimgs ',len(act_imgs)
-            print len(tmp_act_imgs  )
+            #print 'n actimgs ',len(act_imgs)
+            #print len(tmp_act_imgs  )
         #ori_img = plt.rgb2gray(ori_img);
         overlay_img=Image.blend(ori_img , act_imgs[0] , 0.5)
         #cmap=plt.cm.jet
