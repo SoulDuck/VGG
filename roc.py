@@ -5,11 +5,11 @@ if "DISPLAY" not in os.environ:
     # remove Travis CI Error
     print 'DISPLAY not in this enviroment'
     matplotlib.use('Agg')
-
 import numpy as np
 
 debug_flag=True
 def plotROC(predStrength , labels):
+    matplotlib.use('Agg')
     assert np.ndim(predStrength) == np.ndim(labels)
     if np.ndim(predStrength) ==2:
         predStrength=np.argmax(predStrength , axis=1)
