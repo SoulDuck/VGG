@@ -62,7 +62,7 @@ def plotROC(predStrength , labels):
     print 'The Area Under Curve is :' , ySum*x_step
 
 if '__main__' == __name__ :
-    preds=pickle.load('best_pred.pkl')
-    labels = pickle.load('label.pkl')
+    preds=np.load('best_preds.npy')
+    labels = np.load('labels.npy')
     print preds
     plotROC(preds, labels)
