@@ -7,11 +7,13 @@ from skimage import color
 from skimage import io
 
 import matplotlib
+import matplotlib.pyplot as plt
 if "DISPLAY" not in os.environ:
     # remove Travis CI Error
+    print 'DISPLAY not in this enviroment'
     matplotlib.use('Agg')
 
-import matplotlib.pyplot as plt
+
 import eval
 import roc
 import fundus
