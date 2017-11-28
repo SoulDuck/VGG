@@ -202,7 +202,8 @@ if __name__ == '__main__':
 
     acc, max_list , pred =ensemble_with_all_combibation(models_path ,test_images , test_labels)
     np.save('./best_preds', pred)
-    np.save('./labels', test_labels)
+    np.save('./test_labels', test_labels) #
+    np.save('./test_images',train_images)
 
     names=map(lambda path: path.split('/')[-2]  ,max_list)
     print 'best model list : ',names
@@ -210,12 +211,12 @@ if __name__ == '__main__':
     #get_ensemble_actmap(names , './activation_map')
     #roc.plotROC(pred , test_labels )
 
-    """
-    pred_sum=ensemble('./models', test_images )
-    acc =eval.get_acc(pred_sum , test_labels)
-    print acc
 
-    """
+    #pred_sum=ensemble('./models', test_images )
+    #acc =eval.get_acc(pred_sum , test_labels)
+    #print acc
+
+
     """
     model_list=['step_13600_acc_0.840000033379' ,'step_14600_acc_0.841666817665' ,'step_15900_acc_0.843333363533']
     print model_list

@@ -13,7 +13,7 @@ except:
     pass
 print a
 
-
+"""
 a_cls=np.zeros(3)
 b_cls=np.ones(3)
 a=[[0,1],[0,1]]
@@ -62,4 +62,20 @@ plt.show()
 overlay_img = Image.blend(background, overlay_1, 0.5)
 plt.imshow(overlay_img, cmap=plt.cm.jet)
 plt.show()
+"""
+
+trues=np.load('labels.npy')
+preds=np.load('best_preds.npy')
+
+trues_cls=np.argmax(trues , axis=1)
+preds_cls=np.argmax(preds , axis=1)
+print trues_cls
+print preds_cls
+tmp=[trues_cls==preds_cls]
+print tmp
+
+
+np.load(
+
+
 

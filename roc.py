@@ -1,10 +1,11 @@
 import os
 import pickle
 import matplotlib
-if "DISPLAY" not in os.environ:
+"""if "DISPLAY" not in os.environ:
     # remove Travis CI Error
     print 'DISPLAY not in this enviroment'
     matplotlib.use('Agg')
+"""
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -32,11 +33,12 @@ def plotROC(predStrength , labels):
     fig.clf()
     ax=plt.subplot(1,1,1)
     if __debug__ == debug_flag:
-        print 'labels',labels
-        print 'predStrength',predStrength.T
-        print 'sortedIndices',sortedIndices.T
+        print 'labels',labels[:10]
+        print 'predStrength',predStrength.T[:10]
+        print 'sortedIndices',sortedIndices.T[:10]
+        print  sortedIndices.tolist()[:10]
     for ind in sortedIndices.tolist():
-        ind=int(ind[0]);
+        print ind
         if labels[ind] ==1.0:
             DelX=0; DelY=y_step
         else :
@@ -52,7 +54,7 @@ def plotROC(predStrength , labels):
             print 'cursor[0]-DelX :',cursor[0],'cursor[1]-DelY :',cursor[1]
     ax.plot([0,1],[0,1],'b--')
     plt.xlabel('False Positive Rate');plt.ylabel('True Positive Rate')
-    plt.title('ROC curve for AdaBoost Horse Colic Detection System')
+    plt.title('ROC curve for Fundus Classification System')
     ax.axis([0,1,0,1])
     if __debug__==debug_flag:
         print '# of True :' ,n_pos
