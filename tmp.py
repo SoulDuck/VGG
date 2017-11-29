@@ -134,7 +134,7 @@ def find_images(src_root_dir , target_filenames , save_folder):
 
         for filepath in f :
             if target_name in filepath:
-                if 'abnormal' in filepath:
+                if 'normal' in filepath:
                     shutil.copy(src= filepath , dst = os.path.join(save_folder,'abnormal' , target_name+'.png'))
                 else:
                     shutil.copy(src=filepath, dst=os.path.join(save_folder,'normal', target_name+'.png'))
