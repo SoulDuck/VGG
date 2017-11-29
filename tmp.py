@@ -123,7 +123,7 @@ def find_images(src_root_dir , target_filenames , save_folder):
     print overlap(target_filenames)
     f=[]
     #assert len(set(target_filenames)) == len(list(target_filenames)) , \
-        '# target filenames set : {} list : {}'.format(len(set(target_filenames)) , len(list(target_filenames)))
+    #'# target filenames set : {} list : {}'.format(len(set(target_filenames)) , len(list(target_filenames)))
     for (dirpath, dirnames, filenames) in os.walk(src_root_dir):
         print dirpath
         filepaths = map(lambda filename: os.path.join(dirpath, filename), filenames)
