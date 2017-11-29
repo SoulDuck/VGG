@@ -2,6 +2,7 @@ import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
 import fundus
+import pickle
 
 a=[1,2,3,4,5,6]
 print a[-1:]
@@ -80,7 +81,8 @@ tmp = list(tmp)
 
 resize=(299,299)
 train_imgs ,train_labs ,train_fnames, test_imgs ,test_labs , test_fnames = fundus.type2(tfrecords_dir='./fundus_300' , onehot=True , resize=resize)
-
+f=open('./test_filenames.pkl','w')
+pickle.dump(test_fnames , f )
 
 """
 for i,t in enumerate(tmp):
