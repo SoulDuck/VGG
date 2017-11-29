@@ -94,6 +94,24 @@ for (dirpath, dirnames, filenames) in os.walk('./activation_map_/step_5900_acc_0
 ##3def tmp(root_folder , target_filenames):
 #    os.walk(f)
 
+
+
+
+def  overlap(list_):
+    dict_={}
+    for l in list_:
+        if not l in dict_:
+            dict_[l]=0
+        else :
+            dict_[l] +=1
+    overlap_list=[]
+    for k in dict_.keys():
+        if dict_[k] > 0 :
+            overlap_list.append(k)
+
+
+    return overlap_list
+
 def find_images(src_root_dir , target_filenames , save_folder):
     """
 
@@ -117,22 +135,6 @@ def find_images(src_root_dir , target_filenames , save_folder):
             if target_name in filepath:
                 shutil.copy(src= filepath , dst = os.path.join(save_folder , target_name))
 
-
-
-def  overlap(list_):
-    dict_={}
-    for l in list_:
-        if not l in dict_:
-            dict_[l]=0
-        else :
-            dict_[l] +=1
-    overlap_list=[]
-    for k in dict_.keys():
-        if dict_[k] > 0 :
-            overlap_list.append(k)
-
-
-    return overlap_list
 
 if '__main__' == __name__:
     src_root_dir='../fundus_data/original_fundus'
