@@ -114,7 +114,6 @@ def  overlap(list_):
 
 def find_images(src_root_dir , target_filenames , save_folder):
     """
-
     :param root_dir:  folder that source original images saved
     :param target_filenames: filename which you want to find from src_root_dir
     :param save_folder: image will save this folder
@@ -123,7 +122,7 @@ def find_images(src_root_dir , target_filenames , save_folder):
     #이름이 겹치는게 없는지 확인해야 함
     print overlap(target_filenames)
     f=[]
-    assert len(set(target_filenames)) == len(list(target_filenames)) , \
+    #assert len(set(target_filenames)) == len(list(target_filenames)) , \
         '# target filenames set : {} list : {}'.format(len(set(target_filenames)) , len(list(target_filenames)))
     for (dirpath, dirnames, filenames) in os.walk(src_root_dir):
         print dirpath
