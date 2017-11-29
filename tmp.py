@@ -128,12 +128,16 @@ def find_images(src_root_dir , target_filenames , save_folder):
         print dirpath
         filepaths = map(lambda filename: os.path.join(dirpath, filename), filenames)
         f.extend(filepaths)
+
+
     for target_name in target_filenames:
 
         for filepath in f :
             if target_name in filepath:
-                shutil.copy(src= filepath , dst = os.path.join(save_folder , target_name))
-
+                if 'normal' in filepaths:
+                    shutil.copy(src= filepath , dst = os.path.join(save_folder,'normal' , target_name))
+                else:
+                    shutil.copy(src=filepath, dst=os.path.join(save_folder,'abnormal', target_name))
 
 if '__main__' == __name__:
     src_root_dir='../fundus_data/original_fundus'
@@ -141,6 +145,11 @@ if '__main__' == __name__:
     save_folder='./original_test_images'
     if not os.path.isdir(save_folder):
         os.mkdir(save_folder)
+    if not os.path.isdir(os.path.join(save_folder , 'normal')):
+        os.mkdir(os.path.join(save_folder , 'normal'))
+    if not os.path.isdir(os.path.join(save_folder , 'abnormal')):
+        os.mkdir(os.path.join(save_folder , 'abnormal'))
+
     find_images(src_root_dir=src_root_dir , target_filenames=target_filenames , save_folder=save_folder)
 
 
