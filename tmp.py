@@ -118,14 +118,6 @@ def find_images(src_root_dir , target_filenames , save_folder):
                 shutil.copy(src= filepath , dst = os.path.join(save_folder , target_name))
 
 
-if '__main__' == __name__:
-    src_root_dir='../fundus_data/original_fundus'
-    target_filenames=test_fnames
-    save_folder='./original_test_images'
-    if not os.path.isdir(save_folder):
-        os.mkdir(save_folder)
-    find_images(src_root_dir=src_root_dir , target_filenames=target_filenames , save_folder=save_folder)
-
 
 def  overlap(list_):
     dict_={}
@@ -141,6 +133,14 @@ def  overlap(list_):
 
 
     return overlap_list
+
+if '__main__' == __name__:
+    src_root_dir='../fundus_data/original_fundus'
+    target_filenames=test_fnames
+    save_folder='./original_test_images'
+    if not os.path.isdir(save_folder):
+        os.mkdir(save_folder)
+    find_images(src_root_dir=src_root_dir , target_filenames=target_filenames , save_folder=save_folder)
 
 
 """
