@@ -75,14 +75,11 @@ trues_cls=np.argmax(trues , axis=1)
 preds_cls=np.argmax(preds , axis=1)
 print trues_cls[:310]
 print preds_cls
-
+"""
 tmp=[trues_cls==preds_cls]
 
 tmp=np.squeeze(tmp)
-tmp = list(tmp)
-
-
-resize=(299,299)
+tmp = list(tmp)resize=(299,299)
 train_imgs ,train_labs ,train_fnames, test_imgs ,test_labs , test_fnames = fundus.type2(tfrecords_dir='./fundus_300' , onehot=True , resize=resize)
 print os.walk('./activation_map_')
 f = []
@@ -90,7 +87,7 @@ for (dirpath, dirnames, filenames) in os.walk('./activation_map_/step_5900_acc_0
     print dirpath
     filepaths=map(lambda filename : os.path.join(dirpath , filename) , filenames)
     f.extend(filepaths)
-
+"""
 
 ##3def tmp(root_folder , target_filenames):
 #    os.walk(f)
