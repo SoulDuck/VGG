@@ -103,7 +103,7 @@ def find_images(src_root_dir , target_filenames , save_folder):
     :return:
     """
     #이름이 겹치는게 없는지 확인해야 함
-    overlap(target_filenames)
+    print overlap(target_filenames)
     f=[]
     assert len(set(target_filenames)) == len(list(target_filenames)) , \
         '# target filenames set : {} list : {}'.format(len(set(target_filenames)) , len(list(target_filenames)))
