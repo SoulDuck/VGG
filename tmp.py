@@ -138,7 +138,7 @@ def find_images(src_root_dir , target_filenames , save_folder):
 
 if '__main__' == __name__:
     src_root_dir='../fundus_data/original_fundus'
-    target_filenames=test_fnames[:580]
+    target_filenames=test_fnames[:570]
     save_folder='./original_test_images'
     if not os.path.isdir(save_folder):
         os.mkdir(save_folder)
