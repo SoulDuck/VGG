@@ -3,7 +3,8 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import fundus
 import pickle
-
+import os
+import shutil
 a=[1,2,3,4,5,6]
 print a[-1:]
 print a[:-1]
@@ -73,6 +74,7 @@ trues_cls=np.argmax(trues , axis=1)
 preds_cls=np.argmax(preds , axis=1)
 print trues_cls[:310]
 print preds_cls
+
 tmp=[trues_cls==preds_cls]
 
 tmp=np.squeeze(tmp)
@@ -81,8 +83,48 @@ tmp = list(tmp)
 
 resize=(299,299)
 train_imgs ,train_labs ,train_fnames, test_imgs ,test_labs , test_fnames = fundus.type2(tfrecords_dir='./fundus_300' , onehot=True , resize=resize)
-f=open('./test_filenames.pkl','w')
-pickle.dump(test_fnames , f )
+print os.walk('./activation_map_')
+f = []
+for (dirpath, dirnames, filenames) in os.walk('./activation_map_/step_5900_acc_0.841071486473'):
+    print dirpath
+    filepaths=map(lambda filename : os.path.join(dirpath , filename) , filenames)
+    f.extend(filepaths)
+
+
+##3def tmp(root_folder , target_filenames):
+#    os.walk(f)
+
+def find_images(src_root_dir , target_filenames , save_folder):
+    """
+
+    :param root_dir:  folder that source original images saved
+    :param target_filenames: filename which you want to find from src_root_dir
+    :param save_folder: image will save this folder
+    :return:
+    """
+    #이름이 겹치는게 없는지 확인해야 함
+
+    assert len(set(target_filenames)) == len(list(target_filenames))
+    for (dirpath, dirnames, filenames) in os.walk(src_root_dir):
+        print dirpath
+        filepaths = map(lambda filename: os.path.join(dirpath, filename), filenames)
+        f.extend(filepaths)
+    for target_name in target_filenames:
+        for filepath in filepaths:
+            if target_name in filepath:
+                shutil.copy(src= filepath , dst = os.path.join(save_folder , target_name))
+
+
+if '__main__' == __name__:
+    src_root_dir='../fundus_data/original_fundus'
+    target_filenames=test_fnames
+    save_folder='./original_test_images'
+    if not os.path.isdir(save_folder):
+        os.mkdir(save_folder)
+    find_images(src_root_dir=src_root_dir , target_filenames=target_filenames , save_folder=save_folder)
+
+
+
 
 """
 for i,t in enumerate(tmp):
