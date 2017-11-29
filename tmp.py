@@ -103,6 +103,7 @@ def find_images(src_root_dir , target_filenames , save_folder):
     :return:
     """
     #이름이 겹치는게 없는지 확인해야 함
+    overlap(target_filenames)
     f=[]
     assert len(set(target_filenames)) == len(list(target_filenames)) , \
         '# target filenames set : {} list : {}'.format(len(set(target_filenames)) , len(list(target_filenames)))
@@ -111,6 +112,7 @@ def find_images(src_root_dir , target_filenames , save_folder):
         filepaths = map(lambda filename: os.path.join(dirpath, filename), filenames)
         f.extend(filepaths)
     for target_name in target_filenames:
+
         for filepath in f :
             if target_name in filepath:
                 shutil.copy(src= filepath , dst = os.path.join(save_folder , target_name))
@@ -125,6 +127,20 @@ if '__main__' == __name__:
     find_images(src_root_dir=src_root_dir , target_filenames=target_filenames , save_folder=save_folder)
 
 
+def  overlap(list_):
+    dict_={}
+    for l in list_:
+        if not l in dict_:
+            dict_[l]=0
+        else :
+            dict_[l] +=1
+    overlap_list=[]
+    for k in dict_.keys():
+        if dict_[k] > 0 :
+            overlap_list.append(k)
+
+
+    return overlap_list
 
 
 """
