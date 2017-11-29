@@ -1,6 +1,7 @@
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
+import fundus
 
 a=[1,2,3,4,5,6]
 print a[-1:]
@@ -66,16 +67,27 @@ plt.show()
 
 trues=np.load('labels.npy')
 preds=np.load('best_preds.npy')
-
+#imgs = np.load('test_images.npy')
 trues_cls=np.argmax(trues , axis=1)
 preds_cls=np.argmax(preds , axis=1)
-print trues_cls
+print trues_cls[:310]
 print preds_cls
 tmp=[trues_cls==preds_cls]
-print tmp
+
+tmp=np.squeeze(tmp)
+tmp = list(tmp)
 
 
-np.load(
+resize=(299,299)
+train_imgs ,train_labs ,train_fnames, test_imgs ,test_labs , test_fnames = fundus.type2(tfrecords_dir='./fundus_300' , onehot=True , resize=resize)
 
 
+"""
+for i,t in enumerate(tmp):
+    img = Image.fromarray(imgs[i])
+    if t == True:
+        print t , i
+        plt.imsave('./out/trues/{}.png'.format(i) , img )
+
+"""
 
