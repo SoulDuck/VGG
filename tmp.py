@@ -105,7 +105,7 @@ def find_images(src_root_dir , target_filenames , save_folder):
     #이름이 겹치는게 없는지 확인해야 함
     f=[]
     assert len(set(target_filenames)) == len(list(target_filenames)) , \
-        '# target filenames set : {} list : {}'.format(set(target_filenames) , list(target_filenames))
+        '# target filenames set : {} list : {}'.format(len(set(target_filenames)) , len(list(target_filenames)))
     for (dirpath, dirnames, filenames) in os.walk(src_root_dir):
         print dirpath
         filepaths = map(lambda filename: os.path.join(dirpath, filename), filenames)
