@@ -137,7 +137,7 @@ def find_images(src_root_dir , target_filenames , save_folder):
                 if 'abnormal' in filepath:
                     shutil.copy(src= filepath , dst = os.path.join(save_folder,'abnormal' , target_name+'.png'))
                 else:
-                    shutil.copy(src=filepath, dst=os.path.join(save_folder,'abnormal', target_name))
+                    shutil.copy(src=filepath, dst=os.path.join(save_folder,'normal', target_name+'.png'))
 
 if '__main__' == __name__:
     src_root_dir='../fundus_data/original_fundus'
