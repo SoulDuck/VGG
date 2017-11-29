@@ -67,7 +67,7 @@ overlay_img = Image.blend(background, overlay_1, 0.5)
 plt.imshow(overlay_img, cmap=plt.cm.jet)
 plt.show()
 """
-
+"""
 trues=np.load('labels.npy')
 preds=np.load('best_preds.npy')
 #imgs = np.load('test_images.npy')
@@ -75,12 +75,14 @@ trues_cls=np.argmax(trues , axis=1)
 preds_cls=np.argmax(preds , axis=1)
 print trues_cls[:310]
 print preds_cls
-"""
+
 tmp=[trues_cls==preds_cls]
 
 tmp=np.squeeze(tmp)
 tmp = list(tmp)resize=(299,299)
-train_imgs ,train_labs ,train_fnames, test_imgs ,test_labs , test_fnames = fundus.type2(tfrecords_dir='./fundus_300' , onehot=True , resize=resize)
+"""
+train_imgs ,train_labs ,train_fnames, test_imgs ,test_labs , test_fnames = fundus.type2(tfrecords_dir='./fundus_300' , onehot=True , resize=(299,299))
+"""
 print os.walk('./activation_map_')
 f = []
 for (dirpath, dirnames, filenames) in os.walk('./activation_map_/step_5900_acc_0.841071486473'):
