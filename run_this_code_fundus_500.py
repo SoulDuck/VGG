@@ -31,6 +31,7 @@ parser.add_argument('--max_iter', '-i' , type=int , help='iteration')
 parser.add_argument('--l2_loss', dest='use_l2_loss', action='store_true' ,help='l2 loss true or False')
 parser.add_argument('--no_l2_loss', dest='use_l2_loss', action='store_false' ,help='l2 loss true or False')
 
+parser.add_argument('--vgg_model' ,'-m' , choices=['vgg_11','vgg_13','vgg_16', 'vgg_19'])
 
 parser.add_argument('--BN' , dest='use_BN'  , action='store_true' ,   help = 'bn True or not')
 parser.add_argument('--no_BN',dest='use_BN' , action = 'store_false', help = 'bn True or not')
@@ -137,13 +138,13 @@ print np.shape(bg_test_imgs)
 print np.shape(bg_test_labs)
 
 
-val_imgs=np.vstack([roi_test_imgs , bg_test_imgs ])
-val_labs=np.vstack([roi_test_labs , bg_test_labs])
+test_imgs=np.vstack([roi_test_imgs , bg_test_imgs ])
+test_labs=np.vstack([roi_test_labs , bg_test_labs])
 roi_test_imgs=None
 bg_test_imgs=None
 
-resize=(299,299)
-train_imgs ,train_labs ,train_fnames, test_imgs ,test_labs , test_fnames=fundus.type2(tfrecords_dir='./fundus_300' , onehot=True , resize=resize)
+#resize=(299,299)
+#train_imgs ,train_labs ,train_fnames, test_imgs ,test_labs , test_fnames=fundus.type2(tfrecords_dir='./fundus_300' , onehot=True , resize=resize)
 
 #normalize
 print np.shape(test_labs)
@@ -163,7 +164,7 @@ x_ , y_ , lr_ , is_training = model.define_inputs(shape=[None, h ,w, ch ] , n_cl
 
 
 logits=model.build_graph(x_=x_ , y_=y_ ,is_training=is_training , aug_flag=args.use_aug, \
-                         actmap_flag=args.use_actmap  , random_crop_resize=args.random_crop_resize , bn = args.use_BN)
+                         actmap_flag=args.use_actmap  , model=args.vgg_model,random_crop_resize=args.random_crop_resize , bn = args.use_BN)
 
 if args.optimizer=='sgd':
     train_op, accuracy_op , loss_op , pred_op = model.train_algorithm_grad(logits=logits,labels=y_ , learning_rate=lr_ ,
@@ -179,7 +180,7 @@ if args.optimizer == 'adam':
 
 log_count =0;
 while True:
-    logs_root_path='./logs/fundus_300/{}'.format(args.folder_name )
+    logs_root_path='./logs/fundus_500/{}'.format(args.folder_name )
     try:
         os.makedirs(logs_root_path)
     except Exception as e :
@@ -200,7 +201,7 @@ sess, saver , summary_writer =model.sess_start(logs_path)
 
 model_count =0;
 while True:
-    models_root_path='./models/fundus_300/{}'.format(args.folder_name)
+    models_root_path='./models/fundus_500/{}'.format(args.folder_name)
     try:
         os.makedirs(models_root_path)
     except Exception as e:
