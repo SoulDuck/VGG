@@ -266,6 +266,7 @@ for step in range(max_iter):
             ####
     if step % ckpt==0:
         """ #### testing ### """
+        print 'test'
         test_fetches = [ accuracy_op, loss_op, pred_op ]
         val_acc_mean , val_loss_mean , pred_all = [] , [] , []
         for i in range(share): #여기서 테스트 셋을 sess.run()할수 있게 쪼갭니다
