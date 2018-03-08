@@ -4,6 +4,7 @@ import cam
 import numpy as np
 import os
 import matplotlib
+from PIL import Image
 
 if "DISPLAY" not in os.environ:
     # remove Travis CI Error
@@ -86,12 +87,19 @@ def eval(model_path ,test_images , batch_size  , save_root_folder):
         predList.extend(pred)
     pred = sess.run(pred_, feed_dict={x_: test_images[-1*remainder:], is_training_: False})
     predList.extend(pred)
-    assert len(predList) == len(test_images)
+    assert len(predList) == len(test_images) , '{} {}'.format(len(predList) , len(test_images))
     tf.reset_default_graph()
     print 'pred sample ',predList[:1]
     return np.asarray(predList)
 if __name__ =='__main__':
-    model_path ='./models/step_118000_acc_0.838333427906/model'
-    pred=eval(model_path, test_images)
+
+    #test_images = Image.open('/Users/seongjungkim/PycharmProjects/VGG/fundus_300/1_L.jpg')#.convert(RGB)
+    #test_images=test_images.resize((299, 299), Image.ANTIALIAS)
+
+    test_images=np.load('/Users/seongjungkim/PycharmProjects/VGG/fundus_300/russian_eyes.npy')
+    print np.shape(test_images)
+    test_images=np.reshape(test_images,[-1,299,299,3])
+    model_path = '/Users/seongjungkim/PycharmProjects/VGG/models/ensemble/step_5900_acc_0.841071486473/model'
+    pred=eval(model_path, test_images,batch_size =1 , save_root_folder= './activation_map_/russian_eye_actmap')
     print np.shape(pred)
 

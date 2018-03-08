@@ -75,7 +75,8 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs , x, y_ ,phase_train, y , s
             print 'test imgs shape : ',test_imgs[s].shape
 
         if test_imgs[s].shape[-1]==1:
-            plt.imsave('{}/image_test.png'.format(save_dir) ,test_imgs[s].reshape([test_imgs[s].shape[0] , test_imgs.shape[1]]))
+            plt.imsave('{}/image_test.png'.format(save_dir) ,test_imgs[s].reshape([test_imgs[s].shape[0] \
+                                                                                      , test_imgs.shape[1]]))
         else :
             plt.imsave('{}/image_test.png'.format(save_dir), test_imgs[s])
         img=test_imgs[s].reshape(1 ,test_imgs[s].shape[0] ,test_imgs[s].shape[1] ,-1 )

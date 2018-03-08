@@ -1,11 +1,15 @@
 #-*- coding:utf-8 -*-
 import numpy as np
+import time
+import PIL
 from PIL import Image
 import matplotlib.pyplot as plt
 import fundus
 import pickle
 import os
 import shutil
+import PIL
+import glob
 a=[1,2,3,4,5,6]
 print a[-1:]
 print a[:-1]
@@ -94,6 +98,84 @@ for (dirpath, dirnames, filenames) in os.walk('./activation_map_/step_5900_acc_0
 ##3def tmp(root_folder , target_filenames):
 #    os.walk(f)
 
+#####
+"""
+아래 사용 설명서를읽기 바람
+
+아래 코드는 임형택 선생님에게 코드를 주기 위해서 만든 코드이다 .
+테스트 파일에서 (fundus.type1)  을 하면 테스트 이미지 , 테스트 라벨 , 테스트 파일 이름이 나온다 
+
+
+테스트 파일 이름 리스트를  overlap에다 건내줘서 
+중복 이름이 있나 확인한다 30개의 이름이 중복되어 있다 왜 그럴까?
+ 
+ 
+1. 노말 이미지중에 겹치는게 뭐가 있는지 확인해야 한다 --> abnormal만 겹침 
+
+2. abnormal 이미지중에 cataract_glaucoma 는 cataract , glaucoma 두개 다 들어 가있을 가능성이 매우 높다.
+
+find_images 란 함수에 src_root_dir , target_filenames , save_folder 3가지 파라미터가 있다 
+ 
+src_root_dir 에는 원본 사진들이 들어있다
+os.walk() 함수를 이용해 모든 list 들을 가져온다 
+
+그다음에 target_filenames 는 내가 찾고 싶은 filenames 이다 .
+src_root_dir 의 모든 파일중에  target_filename 이 있으면 if 구문 으로 들어간다 
+그리고 
+ 
+
+
+"""
+####
+
+def crop_resize_fundus(path):
+    debug_flag = False
+    """
+    file name =1002959_20130627_L.png
+    """
+    name = path.split('/')[-1]
+    start_time = time.time()
+    im = Image.open(path)  # Can be many different formats.
+    np_img = np.asarray(im)
+    mean_pix = np.mean(np_img)
+    pix = im.load()
+    height, width = im.size  # Get the width and hight of the image for iterating over
+    # pix[1000,1000] #Get the RGBA Value of the a pixel of an image
+    c_x, c_y = (int(height / 2), int(width / 2))
+
+    for y in range(c_y):
+        if sum(pix[c_x, y]) > mean_pix:
+            left = (c_x, y)
+            break;
+
+    for x in range(c_x):
+        if sum(pix[x, c_y]) > mean_pix:
+            up = (x, c_y)
+            break;
+
+    crop_img = im.crop((up[0], left[1], left[0], up[1]))
+
+    # plt.imshow(crop_img)
+
+    diameter_height = up[1] - left[1]
+    diameter_width = left[0] - up[0]
+
+    crop_img = im.crop((up[0], left[1], left[0] + diameter_width, up[1] + diameter_height))
+    end_time = time.time()
+
+    if __debug__ == debug_flag:
+        print end_time - start_time
+        print np.shape(np_img)
+
+    return crop_img, path
+
+
+def img2np(path , resize):
+    img=Image.open(path)
+    img=img.resize(resize , PIL.Image.ANTIALIAS)
+    img=np.asarray(img)
+    return img
+
 
 
 
@@ -135,11 +217,30 @@ def find_images(src_root_dir , target_filenames , save_folder):
         for filepath in f :
             if target_name in filepath:
                 if 'normal' in filepath:
-                    shutil.copy(src= filepath , dst = os.path.join(save_folder,'abnormal' , target_name+'.png'))
+                    shutil.copy(src= filepath , dst = os.path.join(save_folder,'normal' , target_name+'.png'))
                 else:
-                    shutil.copy(src=filepath, dst=os.path.join(save_folder,'normal', target_name+'.png'))
+                    shutil.copy(src=filepath, dst=os.path.join(save_folder,'abnormal', target_name+'.png'))
 
 if '__main__' == __name__:
+
+    img_paths=glob.glob('./fundus_300/*.jpg')
+    print img_paths
+    imgs_paths = map(lambda img_path : crop_resize_fundus(img_path) , img_paths)
+    imgs=[]
+    for i in range(4):
+        img=imgs_paths[i][0]
+        imgs.append(img)
+
+
+    #imgs = map(lambda img: Image.fromarray(img), imgs)
+    imgs = map(lambda img: img.resize((299,299) , PIL.Image.ANTIALIAS), imgs)
+    imgs = map(lambda img: np.asarray(img), imgs)
+    print np.shape(imgs)
+    np.save('./fundus_300/russian_eyes', imgs )
+    for img in imgs:
+        plt.imsave('./fundus_300/{}.jpg'.format(i))
+
+    """
     src_root_dir='../fundus_data/original_fundus'
     target_filenames=test_fnames[:]
     save_folder='./original_test_images'
@@ -151,7 +252,7 @@ if '__main__' == __name__:
         os.mkdir(os.path.join(save_folder , 'abnormal'))
 
     find_images(src_root_dir=src_root_dir , target_filenames=target_filenames , save_folder=save_folder)
-
+    """
 
 """
 for i,t in enumerate(tmp):
