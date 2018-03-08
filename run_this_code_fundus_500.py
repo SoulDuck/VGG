@@ -56,7 +56,7 @@ ABNORMAL =1
 #blood 500 Image을 불러온다
 start=time.time()
 paths=[]
-for dir , subdirs , files in os.walk('./margin_crop_rois'):
+for dir , subdirs , files in os.walk('../lesion_detection/margin_crop_rois'):
     for file in files:
         path=os.path.join(dir ,file)
         paths.append(path)
@@ -76,7 +76,7 @@ print """ -------------------------------------------------------"""
 #normal Data 1000장을 불러온다
 start=time.time()
 paths=[]
-for dir , subdirs , files in os.walk('cropped_bg_500_clahe/'):
+for dir , subdirs , files in os.walk('../lesion_detection/cropped_bg_500_clahe/'):
     for file in files:
         path=os.path.join(dir ,file)
         paths.append(path)
@@ -100,7 +100,7 @@ print """ -----------------------------------------------------"""
 start=time.time()
 count =0
 paths=[]
-for dir , subdirs , files in os.walk('./blood_cropped_rois'):
+for dir , subdirs , files in os.walk('../lesion_detection/blood_cropped_rois'):
     for file in files:
         path=os.path.join(dir ,file)
         paths.append(path)
@@ -121,7 +121,7 @@ print """ -------------------------------------------------------"""
 start=time.time()
 paths=[]
 count=0
-for dir , subdirs , files in os.walk('./bg_cropped_rois'):
+for dir , subdirs , files in os.walk('../lesion_detection/bg_cropped_rois'):
     for file in files:
         path=os.path.join(dir ,file)
         paths.append(path)
