@@ -77,7 +77,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
         conv_out_features=[64,128,256 ,256 ,512,512,512,512]
         conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3]
         conv_strides=[1, 1, 1, 1, 1, 1, 1, 1]
-        before_act_bn_mode = []
+        before_act_bn_mode = [False, False, False, False, False, False, False, False]
         after_act_bn_mode = [False, False, False, False, False, False, False, False]
         if bn==True:
             before_act_bn_mode = [True , True , True , True , True , True , True , True ]
@@ -150,13 +150,11 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
                 layer = batch_norm(layer, is_training)
             #layer=tf.nn.dropout(layer , keep_prob=conv_keep_prob)
             layer=tf.cond(is_training , lambda :  tf.nn.dropout(layer ,  keep_prob=1.0)  , lambda : layer)
-
     end_conv_layer=tf.identity(layer , name='top_conv')
     layer = tf.contrib.layers.flatten(end_conv_layer)
     print "num of Classes : ",n_classes
     logits_gap=cnn.gap('gap' , end_conv_layer, n_classes)
     cam_ = cam.get_class_map('gap', end_conv_layer, 0, image_size)
-
 
     ##### define fully connected layer #######
     fc_out_features = [1024,1024]
