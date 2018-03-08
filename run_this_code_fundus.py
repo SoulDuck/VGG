@@ -220,7 +220,7 @@ for step in range(max_iter):
     """ #### training ### """
 
     train_fetches = [train_op, accuracy_op, loss_op]
-    batch_xs, batch_ys, batch_fs = input.next_batch(batch_size, train_imgs, train_labs, train_fnames)
+    batch_xs, batch_ys = input.next_batch(batch_size, train_imgs, train_labs)
     train_feedDict = {x_: batch_xs, y_: batch_ys, lr_: learning_rate, is_training: True}
     _ , train_acc, train_loss = sess.run( fetches=train_fetches, feed_dict=train_feedDict )
     #print 'train acc : {} loss : {}'.format(train_acc, train_loss)

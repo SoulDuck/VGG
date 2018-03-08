@@ -7,7 +7,8 @@ import numpy as np
 import argparse
 import tensorflow as tf
 import aug
-
+from PIL import Image
+import time
 
 parser =argparse.ArgumentParser()
 #parser.add_argument('--saves' , dest='should_save_model' , action = 'store_true')
@@ -48,6 +49,99 @@ print 'random crop size : ',args.random_crop_resize
 print 'batch size : ',args.batch_size
 print 'max iter  : ',args.max_iter
 
+print """ ----------------Load ROI Train Data-------------------"""
+print """ -------------------------------------------------------"""
+NORMAL=0
+ABNORMAL =1
+#blood 500 Image을 불러온다
+start=time.time()
+paths=[]
+for dir , subdirs , files in os.walk('./margin_crop_rois'):
+    for file in files:
+        path=os.path.join(dir ,file)
+        paths.append(path)
+imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:10000])
+roi_train_imgs=np.asarray(imgs)
+roi_train_labs=np.zeros([len(roi_train_imgs),2])
+roi_train_labs[:,ABNORMAL]=1
+print np.shape(roi_train_imgs)
+print np.shape(roi_train_labs)
+print time.time() -start
+
+paths=[]
+
+
+print """ ------------- Load Normal Train Data ------------------"""
+print """ -------------------------------------------------------"""
+#normal Data 1000장을 불러온다
+start=time.time()
+paths=[]
+for dir , subdirs , files in os.walk('cropped_bg_500_clahe/'):
+    for file in files:
+        path=os.path.join(dir ,file)
+        paths.append(path)
+imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:10000])
+bg_train_imgs=np.asarray(imgs)
+bg_train_labs=np.zeros([len(bg_train_imgs),2])
+bg_train_labs[:,NORMAL]=1
+print time.time() -start
+print np.shape(bg_train_imgs)
+print np.shape(bg_train_labs)
+
+train_imgs=np.vstack([roi_train_imgs , bg_train_imgs ])
+train_labs=np.vstack([roi_train_labs , bg_train_labs])
+roi_train_imgs=None
+bg_train_imgs=None
+
+
+
+print """ ----------------Load ROI Test Data-------------------"""
+print """ -----------------------------------------------------"""
+start=time.time()
+count =0
+paths=[]
+for dir , subdirs , files in os.walk('./blood_cropped_rois'):
+    for file in files:
+        path=os.path.join(dir ,file)
+        paths.append(path)
+        count +=1
+print count
+
+imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:500])
+roi_test_imgs=np.asarray(imgs)
+roi_test_labs=np.zeros([len(roi_test_imgs),2])
+roi_test_labs[:,ABNORMAL]=1
+print np.shape(roi_test_imgs)
+print np.shape(roi_test_labs)
+print time.time() -start
+
+print """ ------------- Load Normal Test Data ------------------"""
+print """ -------------------------------------------------------"""
+#normal Data 1000장을 불러온다
+start=time.time()
+paths=[]
+count=0
+for dir , subdirs , files in os.walk('./bg_cropped_rois'):
+    for file in files:
+        path=os.path.join(dir ,file)
+        paths.append(path)
+        count+=1
+print count
+
+imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:1000])
+bg_test_imgs=np.asarray(imgs)
+bg_test_labs=np.zeros([len(bg_test_imgs),2])
+bg_test_labs[:,NORMAL]=1
+print time.time() -start
+print np.shape(bg_test_imgs)
+print np.shape(bg_test_labs)
+
+
+val_imgs=np.vstack([roi_test_imgs , bg_test_imgs ])
+val_labs=np.vstack([roi_test_labs , bg_test_labs])
+roi_test_imgs=None
+bg_test_imgs=None
+
 resize=(299,299)
 train_imgs ,train_labs ,train_fnames, test_imgs ,test_labs , test_fnames=fundus.type2(tfrecords_dir='./fundus_300' , onehot=True , resize=resize)
 
@@ -63,6 +157,9 @@ h,w,ch=train_imgs.shape[1:]
 n_classes=np.shape(train_labs)[-1]
 print 'the # classes : {}'.format(n_classes)
 x_ , y_ , lr_ , is_training = model.define_inputs(shape=[None, h ,w, ch ] , n_classes=n_classes )
+
+
+
 
 
 logits=model.build_graph(x_=x_ , y_=y_ ,is_training=is_training , aug_flag=args.use_aug, \
