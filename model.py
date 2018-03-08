@@ -159,8 +159,8 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
 
     ##### define fully connected layer #######
     fc_out_features = [1024,1024]
-    before_act_bn_mode = []
-    after_act_bn_mode = []
+    before_act_bn_mode = [False, False ]
+    after_act_bn_mode = [False ,False]
     for i in range(len(fc_out_features)):
         with tf.variable_scope('fc_{}'.format(str(i))) as scope:
             if before_act_bn_mode[i] ==True :
