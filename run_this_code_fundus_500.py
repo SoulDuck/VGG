@@ -108,7 +108,7 @@ for dir , subdirs , files in os.walk('../lesion_detection/blood_cropped_rois'):
         count +=1
 print count
 
-imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:500])
+imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:60])
 roi_test_imgs=np.asarray(imgs)
 roi_test_labs=np.zeros([len(roi_test_imgs),2])
 roi_test_labs[:,ABNORMAL]=1
@@ -129,7 +129,7 @@ for dir , subdirs , files in os.walk('../lesion_detection/bg_cropped_rois'):
         count+=1
 print count
 
-imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:1000])
+imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:60])
 bg_test_imgs=np.asarray(imgs)
 bg_test_labs=np.zeros([len(bg_test_imgs),2])
 bg_test_labs[:,NORMAL]=1

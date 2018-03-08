@@ -74,11 +74,12 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
     n_classes=int(y_.get_shape()[-1])
     image_size = int(x_.get_shape()[-2])
     if model=='vgg_11':
+        print 'Model : {}'.format('vgg 11')
         conv_out_features=[64,128,256 ,256 ,512,512,512,512]
         conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3]
         conv_strides=[1, 1, 1, 1, 1, 1, 1, 1]
-        before_act_bn_mode = [False, False, False, False, False, False, False, False]
-        after_act_bn_mode = [False, False, False, False, False, False, False, False]
+        before_act_bn_mode = [False, False, False, False, False, False, False, False , False ]
+        after_act_bn_mode = [False, False, False, False, False, False, False, False , False]
         if bn==True:
             before_act_bn_mode = [True , True , True , True , True , True , True , True ]
         allow_max_pool_indices=[0,1,3,5,7]
