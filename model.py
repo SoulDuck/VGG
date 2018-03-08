@@ -82,7 +82,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
         after_act_bn_mode = [False, False, False, False, False, False, False, False , False]
         if bn==True:
             before_act_bn_mode = [True , True , True , True , True , True , True , True ]
-        allow_max_pool_indices=[0,1,3,5,7]
+        allow_max_pool_indices=[0,1,2,3,5,7]
 
     if model=='vgg_13':
         conv_out_features = [64, 64 , 128, 128, 256, 256, 512, 512, 512, 512]
