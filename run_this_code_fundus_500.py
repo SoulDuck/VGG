@@ -237,6 +237,7 @@ train_acc=0.
 train_loss=1000.
 
 for step in range(max_iter):
+    print step
     #### learning rate schcedule
     """
     if step < 20000:
