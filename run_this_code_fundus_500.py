@@ -87,8 +87,6 @@ train_normal_imgs , train_normal_labs=_load_images_labels(train_normalDir,NORMAL
 test_abnormal_imgs , test_abnormal_labs=_load_images_labels(test_abnormalDir,ABNORMAL ,500 , False)
 train_abnormal_imgs , train_abnormal_labs=_load_images_labels(train_abnormalDir,ABNORMAL ,10000 , True)
 
-
-
 train_imgs=np.vstack([train_normal_imgs , train_abnormal_imgs])
 train_labs=np.vstack([train_normal_labs , train_abnormal_labs])
 train_normal_imgs=None
