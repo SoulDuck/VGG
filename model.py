@@ -171,7 +171,6 @@ def build_graph(x_ , y_ ,cam_ind, is_training ,aug_flag, actmap_flag, model , ra
             layer=tf.cond(is_training , lambda: tf.nn.dropout(layer , keep_prob=0.5) , lambda: layer)
             if after_act_bn_mode[i]==True:
                 layer=batch_norm(layer, is_training)
-
     print n_classes
     logits_fc=fc_layer_to_clssses(layer , n_classes)
     if actmap_flag:
