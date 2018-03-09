@@ -235,7 +235,8 @@ for step in range(max_iter):
             os.mkdir(best_loss_folder)
             saver.save(sess=sess,
                        save_path=os.path.join(best_loss_folder, 'model'))
-
+        print 'Learning Rate : {} '.format(learning_rate)
+        print 'Train acc : {} Train loss : {}'.format( train_acc , train_loss)
         print 'validation acc : {} loss : {}'.format( val_acc_mean, val_loss_mean )
         model.write_acc_loss( summary_writer, 'validation', loss=val_loss_mean, acc=val_acc_mean, step=step)
         model_path=os.path.join(models_path, str(step))
