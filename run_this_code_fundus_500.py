@@ -238,6 +238,8 @@ train_loss=1000.
 
 for step in range(max_iter):
     print step
+    print ckpt
+    print step % ckpt
     #### learning rate schcedule
     """
     if step < 20000:
@@ -264,7 +266,6 @@ for step in range(max_iter):
         else:
             learning_rate = 0.00001
             ####
-    print step % ckpt
     if step % ckpt==0:
         """ #### testing ### """
         print 'test'
