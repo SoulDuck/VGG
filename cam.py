@@ -63,7 +63,7 @@ def overlay(actmap , ori_img ,save_path):
     plt.imsave(save_path, overlay_img)
     save_dir,name=os.path.split(save_path)
     name=os.path.splitext(name)[0]+'_ori.png'
-    plt.imsave(name, ori_img)
+    plt.imsave(os.path.join(save_dir ,name), ori_img)
     plt.close();
     """
     if test_imgs.shape[-1] == 1:  # grey
