@@ -237,9 +237,6 @@ train_acc=0.
 train_loss=1000.
 
 for step in range(max_iter):
-    print step
-    print ckpt
-    print step % ckpt
     #### learning rate schcedule
     if step < 5000:
         learning_rate = 0.1
@@ -303,8 +300,6 @@ for step in range(max_iter):
         print np.save('test_images.npy', summary_test)
         summary_writer.add_summary(summary_test, step)
         """
-
-
     """ #### training ### """
 
     train_fetches = [train_op, accuracy_op, loss_op]
