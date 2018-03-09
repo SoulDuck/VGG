@@ -82,9 +82,9 @@ train_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0'
 test_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_1'
 
 #train_abnormalDir ='../lesion_detection/margin_crop_rois'
-train_abnormalDir ='../fundus_data/cropped_original_fundus_300x300'
+train_abnormalDir ='../fundus_data/cropped_original_fundus_300x300/retina'
 #test_abnormalDir='../lesion_detection/blood_cropped_rois'
-test_abnormalDir='../fundus_data/cropped_original_fundus_300x300/Test'
+test_abnormalDir='../fundus_data/cropped_original_fundus_300x300/retina/Test'
 
 test_normal_imgs , test_normal_labs=_load_images_labels(test_normalDir,NORMAL ,172 , True)
 train_normal_imgs , train_normal_labs=_load_images_labels(train_normalDir,NORMAL ,4000, True)
