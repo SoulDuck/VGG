@@ -61,6 +61,9 @@ def overlay(actmap , ori_img ,save_path):
     overlay_img = Image.blend(ori_img, cam_img, 0.5)
     plt.imshow(overlay_img)
     plt.imsave(save_path, overlay_img)
+    name=os.path.split(save_path)[1]
+    name=os.path.splitext(name)[0]+'_ori.png'
+    plt.imsave(name, ori_img)
     plt.close();
     """
     if test_imgs.shape[-1] == 1:  # grey
@@ -72,7 +75,6 @@ def overlay(actmap , ori_img ,save_path):
 
 def eval_inspect_cam(sess, cam ,cam_ind, top_conv ,test_imgs , x, y_ ,phase_train, y , save_root_folder):
     num_images=len(test_imgs[:])
-
     ABNORMAL_LABEL =np.asarray([[0,1]])
     NORMAL_LABEL = np.asarray([[1,0]])
     ABNORMAL_CLS=np.argmax(ABNORMAL_LABEL , axis=1)

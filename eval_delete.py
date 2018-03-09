@@ -274,3 +274,4 @@ if __name__ =='__main__':
 
         plt.imshow(actmap, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest',vmin=0, vmax=1)
         cam.overlay(actmap, ori_img ,save_path=os.path.join(save_dir,name))
+
