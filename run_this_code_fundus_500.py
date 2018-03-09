@@ -86,11 +86,11 @@ train_abnormalDir ='../lesion_detection/blood_500'
 #test_abnormalDir='../lesion_detection/blood_cropped_rois'
 test_abnormalDir='../lesion_detection/hemo_30_crop'
 
-test_normal_imgs , test_normal_labs=_load_images_labels(test_normalDir,NORMAL ,30 , False)
-train_normal_imgs , train_normal_labs=_load_images_labels(train_normalDir,NORMAL ,20, True)
+test_normal_imgs , test_normal_labs=_load_images_labels(test_normalDir,NORMAL ,34 , False)
+train_normal_imgs , train_normal_labs=_load_images_labels(train_normalDir,NORMAL ,2000, True)
 
-test_abnormal_imgs , test_abnormal_labs=_load_images_labels(test_abnormalDir,ABNORMAL ,20 , False)
-train_abnormal_imgs , train_abnormal_labs=_load_images_labels(train_abnormalDir,ABNORMAL ,20 , False)
+test_abnormal_imgs , test_abnormal_labs=_load_images_labels(test_abnormalDir,ABNORMAL ,34 , False)
+train_abnormal_imgs , train_abnormal_labs=_load_images_labels(train_abnormalDir,ABNORMAL , None , False)
 
 
 print np.shape(test_normal_imgs)
