@@ -253,7 +253,7 @@ if __name__ =='__main__':
     paths=glob.glob('../lesion_detection/hemo_30_crop/*.png')
     save_dir ='./activation_map_/blood_actmap'
 
-    classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
+    classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=0)
 
     for path in paths[:] :
         name=os.path.split(path)[1]
