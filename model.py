@@ -249,7 +249,7 @@ def train_algorithm_grad(logits, labels, learning_rate , l2_loss):
 def define_inputs(shape, n_classes):
     images = tf.placeholder(tf.float32,shape=shape,name='x_')
     labels = tf.placeholder(tf.float32,shape=[None, n_classes],name='y_')
-    cam_ind = tf.placeholder(tf.float32,shape=[None, n_classes],name='y_')
+    cam_ind = tf.placeholder(tf.int32,shape=[None, n_classes],name='y_')
     learning_rate = tf.placeholder(tf.float32,shape=[],name='learning_rate')
     is_training = tf.placeholder(tf.bool, shape=[] ,name='is_training')
     return images, labels, cam_ind ,learning_rate, is_training
