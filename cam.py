@@ -61,7 +61,7 @@ def overlay(actmap , ori_img ,save_path):
     overlay_img = Image.blend(ori_img, cam_img, 0.5)
     plt.imshow(overlay_img)
     plt.imsave(save_path, overlay_img)
-    name=os.path.split(save_path)[1]
+    save_dir,name=os.path.split(save_path)
     name=os.path.splitext(name)[0]+'_ori.png'
     plt.imsave(name, ori_img)
     plt.close();
