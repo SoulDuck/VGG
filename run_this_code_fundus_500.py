@@ -82,10 +82,10 @@ train_abnormalDir ='../lesion_detection/margin_crop_rois'
 test_abnormalDir='../lesion_detection/blood_cropped_rois'
 
 test_normal_imgs , test_normal_labs=_load_images_labels(test_normalDir,NORMAL ,30 , False)
-train_normal_imgs , train_normal_labs=_load_images_labels(train_normalDir,NORMAL ,30 , True)
+train_normal_imgs , train_normal_labs=_load_images_labels(train_normalDir,NORMAL ,10000 , True)
 
 test_abnormal_imgs , test_abnormal_labs=_load_images_labels(test_abnormalDir,ABNORMAL ,30 , False)
-train_abnormal_imgs , train_abnormal_labs=_load_images_labels(train_abnormalDir,ABNORMAL ,30 , True)
+train_abnormal_imgs , train_abnormal_labs=_load_images_labels(train_abnormalDir,ABNORMAL ,10000 , True)
 
 train_imgs=np.vstack([train_normal_imgs , train_abnormal_imgs])
 train_labs=np.vstack([train_normal_labs , train_abnormal_labs])
@@ -262,7 +262,6 @@ for step in range(max_iter):
     train_fetches = [train_op, accuracy_op, loss_op]
     batch_xs, batch_ys , batch_fname= input.next_batch(batch_size, train_imgs, train_labs )
     batch_xs=batch_xs/255.
-    print batch_ys
     train_feedDict = {x_: batch_xs, y_: batch_ys, cam_ind:ABNORMAL ,lr_: learning_rate, is_training: True}
     _ , train_acc, train_loss = sess.run( fetches=train_fetches, feed_dict=train_feedDict )
     #print 'train acc : {} loss : {}'.format(train_acc, train_loss)
