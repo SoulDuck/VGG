@@ -150,7 +150,7 @@ bg_test_imgs=None
 #normalize
 print np.shape(test_labs)
 if np.max(train_imgs) > 1:
-    train_imgs=train_imgs/255.
+    #train_imgs=train_imgs/255.
     test_imgs=test_imgs/255.
     print 'train_imgs max :',np.max(train_imgs)
     print 'test_imgs max :', np.max(test_imgs)
@@ -309,6 +309,7 @@ for step in range(max_iter):
 
     train_fetches = [train_op, accuracy_op, loss_op]
     batch_xs, batch_ys , batch_fname= input.next_batch(batch_size, train_imgs, train_labs )
+    batch_xs=batch_xs/255.
     train_feedDict = {x_: batch_xs, y_: batch_ys, lr_: learning_rate, is_training: True}
     _ , train_acc, train_loss = sess.run( fetches=train_fetches, feed_dict=train_feedDict )
     #print 'train acc : {} loss : {}'.format(train_acc, train_loss)
