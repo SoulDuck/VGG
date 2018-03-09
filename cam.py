@@ -84,9 +84,9 @@ def eval_inspect_cam(sess, cam ,cam_ind, top_conv ,test_imgs , x, y_ ,phase_trai
         img=test_imgs[s].reshape(1 ,test_imgs[s].shape[0] ,test_imgs[s].shape[1] ,-1 )
         conv_val , output_val =sess.run([top_conv , y] , feed_dict={x:img , phase_train:False})
 
-        cam_ans_abnormal = sess.run(cam, feed_dict={y_: ABNORMAL_LABEL, cam_ind: ABNORMAL_CLS, top_conv: conv_val,
+        cam_ans_abnormal = sess.run(cam, feed_dict={y_: ABNORMAL_LABEL, cam_ind: ABNORMAL_CLS[0], top_conv: conv_val,
                                                     phase_train: False})
-        cam_ans_normal = sess.run(cam, feed_dict={y_: NORMAL_LABEL, cam_ind: NORMAL_CLS, top_conv: conv_val,
+        cam_ans_normal = sess.run(cam, feed_dict={y_: NORMAL_LABEL, cam_ind: NORMAL_CLS[0], top_conv: conv_val,
                                                   phase_train: False})
 
         cam_vis_abnormal=list(map(lambda x: (x-x.min())/(x.max()-x.min()) , cam_ans_abnormal))
