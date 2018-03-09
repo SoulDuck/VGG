@@ -69,7 +69,7 @@ def fc_layer_to_clssses(_input , n_classes):
 
 
 
-def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_crop_resize , bn):
+def build_graph(x_ , y_ ,cam_ind, is_training ,aug_flag, actmap_flag, model , random_crop_resize , bn):
     ##### define conv connected layer #######
     n_classes=int(y_.get_shape()[-1])
     image_size = int(x_.get_shape()[-2])
@@ -155,7 +155,7 @@ def build_graph(x_ , y_ , is_training ,aug_flag, actmap_flag, model , random_cro
     layer = tf.contrib.layers.flatten(end_conv_layer)
     print "num of Classes : ",n_classes
     logits_gap=cnn.gap('gap' , end_conv_layer, n_classes)
-    cam_ = cam.get_class_map('gap', end_conv_layer, 0, image_size)
+    cam_ = cam.get_class_map('gap', end_conv_layer, cam_ind, image_size)
 
     ##### define fully connected layer #######
     fc_out_features = [1024,1024]
@@ -247,22 +247,12 @@ def train_algorithm_grad(logits, labels, learning_rate , l2_loss):
 
 
 def define_inputs(shape, n_classes):
-    images = tf.placeholder(
-        tf.float32,
-        shape=shape,
-        name='x_')
-
-    labels = tf.placeholder(
-        tf.float32,
-        shape=[None, n_classes],
-        name='y_')
-
-    learning_rate = tf.placeholder(
-        tf.float32,
-        shape=[],
-        name='learning_rate')
+    images = tf.placeholder(tf.float32,shape=shape,name='x_')
+    labels = tf.placeholder(tf.float32,shape=[None, n_classes],name='y_')
+    cam_ind = tf.placeholder(tf.float32,shape=[None, n_classes],name='y_')
+    learning_rate = tf.placeholder(tf.float32,shape=[],name='learning_rate')
     is_training = tf.placeholder(tf.bool, shape=[] ,name='is_training')
-    return images, labels, learning_rate, is_training
+    return images, labels, cam_ind ,learning_rate, is_training
 
 def sess_start(logs_path):
     saver=tf.train.Saver(max_to_keep=10000000)

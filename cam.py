@@ -9,11 +9,11 @@ import numpy as np
 from skimage.io import imsave
 import scipy.misc
 import sys
-def get_class_map(name,x , label , im_width):
+def get_class_map(name,x , cam_ind , im_width):
     out_ch = int(x.get_shape()[-1])
     conv_resize=tf.image.resize_bilinear(x,[im_width , im_width])
     with tf.variable_scope(name , reuse = True) as scope:
-        label_w = tf.gather(tf.transpose(tf.get_variable('w')) , label)
+        label_w = tf.gather(tf.transpose(tf.get_variable('w')) , cam_ind)
         label_w = tf.reshape(label_w , [-1, out_ch , 1])
     conv_resize = tf.reshape(conv_resize , [-1 , im_width *im_width , out_ch])
     classmap = tf.matmul(conv_resize , label_w , name= 'classmap')

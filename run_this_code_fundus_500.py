@@ -163,13 +163,13 @@ if np.max(train_imgs) > 1:
 h,w,ch=train_imgs.shape[1:]
 n_classes=np.shape(train_labs)[-1]
 print 'the # classes : {}'.format(n_classes)
-x_ , y_ , lr_ , is_training = model.define_inputs(shape=[None, h ,w, ch ] , n_classes=n_classes )
+x_ , y_ , cam_ind, lr_ , is_training = model.define_inputs(shape=[None, h ,w, ch ] , n_classes=n_classes )
 
 
 
 
 
-logits=model.build_graph(x_=x_ , y_=y_ ,is_training=is_training , aug_flag=args.use_aug, \
+logits=model.build_graph(x_=x_ , y_=y_ , cam_ind= cam_ind , is_training=is_training , aug_flag=args.use_aug, \
                          actmap_flag=args.use_actmap  , model=args.vgg_model,random_crop_resize=args.random_crop_resize , bn = args.use_BN)
 
 if args.optimizer=='sgd':
@@ -315,6 +315,7 @@ for step in range(max_iter):
     train_fetches = [train_op, accuracy_op, loss_op]
     batch_xs, batch_ys , batch_fname= input.next_batch(batch_size, train_imgs, train_labs )
     batch_xs=batch_xs/255.
+
     train_feedDict = {x_: batch_xs, y_: batch_ys, lr_: learning_rate, is_training: True}
     _ , train_acc, train_loss = sess.run( fetches=train_fetches, feed_dict=train_feedDict )
     #print 'train acc : {} loss : {}'.format(train_acc, train_loss)
