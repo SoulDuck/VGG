@@ -52,105 +52,53 @@ print 'random crop size : ',args.random_crop_resize
 print 'batch size : ',args.batch_size
 print 'max iter  : ',args.max_iter
 
-print """ ----------------Load ROI Train Data-------------------"""
-print """ -------------------------------------------------------"""
+
+
+def _load_images_labels(dir , label ,limit , random_flag):
+    start = time.time()
+    paths = []
+
+    for dir, subdirs, files in os.walk(dir):
+        for file in files:
+            path = os.path.join(dir, file)
+            paths.append(path)
+    if  random_flag is True:
+        indices = random.sample(range(len(paths)), limit)
+        paths = np.asarray(paths[indices])
+    imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:limit])
+    imgs=np.asarray(imgs)
+    labs=np.zeros([len(imgs),2])
+    labs[:,label ]=1
+    return imgs , labs
+
 NORMAL=0
 ABNORMAL =1
 #blood 500 Image을 불러온다
 start=time.time()
-paths=[]
-for dir , subdirs , files in os.walk('../lesion_detection/margin_crop_rois'):
-    for file in files:
-        path=os.path.join(dir ,file)
-        paths.append(path)
-imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:10000])
-indices=random.sample(range(len(paths)) , 10000)
-paths=paths[indices]
-roi_train_imgs=np.asarray(imgs)
-roi_train_labs=np.zeros([len(roi_train_imgs),2])
-roi_train_labs[:,ABNORMAL]=1
-print np.shape(roi_train_imgs)
-print np.shape(roi_train_labs)
-print time.time() -start
+train_normalDir ='../lesion_detection/cropped_bg_500_clahe/'
+test_normalDir='../lesion_detection/bg_cropped_rois'
 
-paths=[]
+train_abnormalDir ='../lesion_detection/margin_crop_rois'
+test_abnormalDir='../lesion_detection/blood_cropped_rois'
 
+test_normal_imgs , test_normal_labs=_load_images_labels(test_normalDir,NORMAL ,500 , False)
+train_normal_imgs , train_normal_labs=_load_images_labels(train_normalDir,NORMAL ,10000 , True)
 
-print """ ------------- Load Normal Train Data ------------------"""
-print """ -------------------------------------------------------"""
-#normal Data 1000장을 불러온다
-start=time.time()
-paths=[]
-for dir , subdirs , files in os.walk('../lesion_detection/cropped_bg_500_clahe/'):
-    for file in files:
-        path=os.path.join(dir ,file)
-        paths.append(path)
-indices=random.sample(range(len(paths)) , 10000)
-paths=paths[indices]
-imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:10000])
-bg_train_imgs=np.asarray(imgs)
-bg_train_labs=np.zeros([len(bg_train_imgs),2])
-bg_train_labs[:,NORMAL]=1
-print time.time() -start
-print np.shape(bg_train_imgs)
-print np.shape(bg_train_labs)
-
-train_imgs=np.vstack([roi_train_imgs , bg_train_imgs ])
-train_labs=np.vstack([roi_train_labs , bg_train_labs])
-roi_train_imgs=None
-bg_train_imgs=None
+test_abnormal_imgs , test_abnormal_labs=_load_images_labels(test_abnormalDir,ABNORMAL ,500 , False)
+train_abnormal_imgs , train_abnormal_labs=_load_images_labels(train_abnormalDir,ABNORMAL ,10000 , True)
 
 
 
-print """ ----------------Load ROI Test Data-------------------"""
-print """ -----------------------------------------------------"""
-start=time.time()
-count =0
-paths=[]
-for dir , subdirs , files in os.walk('../lesion_detection/blood_cropped_rois'):
-    for file in files:
-        path=os.path.join(dir ,file)
-        paths.append(path)
-        count +=1
-print count
+train_imgs=np.vstack([train_normal_imgs , train_abnormal_imgs])
+train_labs=np.vstack([train_normal_labs , train_abnormal_labs])
+train_normal_imgs=None
+train_abnormal_imgs=None
 
-imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:500])
-roi_test_imgs=np.asarray(imgs)
-roi_test_labs=np.zeros([len(roi_test_imgs),2])
-roi_test_labs[:,ABNORMAL]=1
-print np.shape(roi_test_imgs)
-print np.shape(roi_test_labs)
-print time.time() -start
+test_imgs=np.vstack([test_normal_imgs , test_abnormal_imgs])
+test_labs=np.vstack([test_normal_labs, test_abnormal_labs])
+test_normal_imgs=None
+test_abnormal_imgs=None
 
-print """ ------------- Load Normal Test Data ------------------"""
-print """ -------------------------------------------------------"""
-#normal Data 1000장을 불러온다
-start=time.time()
-paths=[]
-count=0
-for dir , subdirs , files in os.walk('../lesion_detection/bg_cropped_rois'):
-    for file in files:
-        path=os.path.join(dir ,file)
-        paths.append(path)
-        count+=1
-print count
-
-imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:500])
-bg_test_imgs=np.asarray(imgs)
-bg_test_labs=np.zeros([len(bg_test_imgs),2])
-bg_test_labs[:,NORMAL]=1
-print time.time() -start
-print np.shape(bg_test_imgs)
-print np.shape(bg_test_labs)
-
-
-test_imgs=np.vstack([roi_test_imgs , bg_test_imgs ])
-test_labs=np.vstack([roi_test_labs , bg_test_labs])
-roi_test_imgs=None
-bg_test_imgs=None
-
-#resize=(299,299)
-#train_imgs ,train_labs ,train_fnames, test_imgs ,test_labs , test_fnames=fundus.type2(tfrecords_dir='./fundus_300' , onehot=True , resize=resize)
 
 #normalize
 print np.shape(test_labs)
