@@ -241,6 +241,7 @@ for step in range(max_iter):
         model_path=os.path.join(models_path, str(step))
         os.mkdir(model_path) # e.g) models/fundus_300/100/model.ckpt or model.meta
         #saver.save(sess=sess,save_path=os.path.join(model_path,'model' , folder_name))
+
         """image augmentation debug code"""
         """
         aug_images_train = tf.get_default_graph().get_tensor_by_name('aug_:0')
