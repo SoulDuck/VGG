@@ -5,6 +5,7 @@ import os
 import fundus
 import numpy as np
 import argparse
+import sys
 import tensorflow as tf
 import aug
 from PIL import Image
@@ -237,6 +238,10 @@ train_acc=0.
 train_loss=1000.
 
 for step in range(max_iter):
+    def show_progress(step, max_iter):
+        msg = '\r progress {}/{}'.format(i, max_iter)
+        sys.stdout.write(msg)
+        sys.stdout.flush()
     #### learning rate schcedule
     if step < 5000:
         learning_rate = 0.1
