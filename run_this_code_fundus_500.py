@@ -64,7 +64,7 @@ def _load_images_labels(dir , label ,limit , random_flag):
             paths.append(path)
     if  random_flag is True:
         indices = random.sample(range(len(paths)), limit)
-        paths = np.asarray(paths[indices])
+        paths = np.asarray(paths)[indices]
     imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:limit])
     imgs=np.asarray(imgs)
     labs=np.zeros([len(imgs),2])
