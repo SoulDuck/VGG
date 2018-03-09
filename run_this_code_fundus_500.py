@@ -264,6 +264,7 @@ for step in range(max_iter):
         else:
             learning_rate = 0.00001
             ####
+    print step % ckpt
     if step % ckpt==0:
         """ #### testing ### """
         print 'test'
