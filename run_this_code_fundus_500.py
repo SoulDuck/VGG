@@ -62,7 +62,7 @@ for dir , subdirs , files in os.walk('../lesion_detection/margin_crop_rois'):
     for file in files:
         path=os.path.join(dir ,file)
         paths.append(path)
-imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:10000])
+imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:8000])
 roi_train_imgs=np.asarray(imgs)
 roi_train_labs=np.zeros([len(roi_train_imgs),2])
 roi_train_labs[:,ABNORMAL]=1
@@ -82,7 +82,7 @@ for dir , subdirs , files in os.walk('../lesion_detection/cropped_bg_500_clahe/'
     for file in files:
         path=os.path.join(dir ,file)
         paths.append(path)
-imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:10000])
+imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:8000])
 bg_train_imgs=np.asarray(imgs)
 bg_train_labs=np.zeros([len(bg_train_imgs),2])
 bg_train_labs[:,NORMAL]=1
