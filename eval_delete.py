@@ -258,8 +258,8 @@ if __name__ =='__main__':
     for path in paths[:10] :
         name=os.path.split(path)[1]
         print name
-        img=Image.open(path).resize([1500,2000])
-        ori_img=np.asarray(Image.open(path))
+        #ori_img=np.asarray(Image.open(path))
+        ori_img=Image.open(path).resize([1500,2000])
         img=ori_img.reshape((1,)+np.shape(ori_img))
         actmap = sess.run(classmap, feed_dict={x_: img})
         actmap = np.squeeze(actmap)
