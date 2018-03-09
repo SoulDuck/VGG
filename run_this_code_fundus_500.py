@@ -63,7 +63,6 @@ for dir , subdirs , files in os.walk('../lesion_detection/margin_crop_rois'):
         path=os.path.join(dir ,file)
         paths.append(path)
 imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:8000])
-
 roi_train_imgs=np.asarray(imgs)
 roi_train_labs=np.zeros([len(roi_train_imgs),2])
 roi_train_labs[:,ABNORMAL]=1
