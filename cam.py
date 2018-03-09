@@ -9,6 +9,7 @@ import numpy as np
 from skimage.io import imsave
 import scipy.misc
 import sys
+from PIL import Image
 def get_class_map(name,x , cam_ind , im_width):
     out_ch = int(x.get_shape()[-1])
     conv_resize=tf.image.resize_bilinear(x,[im_width , im_width])
@@ -49,6 +50,24 @@ def inspect_cam(sess, cam , top_conv ,test_imgs, test_labs, global_step , num_im
             cmap_file='{}/cmap_{}.png'.format(save_dir, global_step)
             plt.savefig(cmap_file)
             plt.close();
+
+
+def overlay(actmap , ori_img ,save_path):
+    cmap = plt.cm.jet
+    plt.imsave('tmp.png', cmap(actmap))
+    cam_img=Image.open('tmp.png')
+    #np_cam_img=np.asarray(cam_img).astype('uint8') #img 2 numpy
+    ori_img=Image.fromarray(ori_img.astype('uint8')).convert("RGBA")
+    overlay_img = Image.blend(ori_img, cam_img, 0.5)
+    plt.imshow(overlay_img)
+    plt.imsave(save_path, overlay_img)
+    plt.close();
+    """
+    if test_imgs.shape[-1] == 1:  # grey
+        plt.imshow(1 -img.reshape([test_imgs.shape[1], test_imgs.shape[2]]))
+        plt.show()
+    """
+
 
 
 def eval_inspect_cam(sess, cam ,cam_ind, top_conv ,test_imgs , x, y_ ,phase_train, y , save_root_folder):

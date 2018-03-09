@@ -6,6 +6,7 @@ import os
 import matplotlib
 from PIL import Image
 
+
 if "DISPLAY" not in os.environ:
     # remove Travis CI Error
     matplotlib.use('Agg')
@@ -101,5 +102,6 @@ if __name__ =='__main__':
     test_images=np.reshape(test_images,[-1,299,299,3])
     model_path = '/Users/seongjungkim/PycharmProjects/VGG/models/ensemble/step_5900_acc_0.841071486473/model'
     pred=eval(model_path, test_images,batch_size =1 , save_root_folder= './activation_map_/russian_eye_actmap')
+
     print np.shape(pred)
 
