@@ -241,18 +241,17 @@ for step in range(max_iter):
     print ckpt
     print step % ckpt
     #### learning rate schcedule
-    """
-    if step < 20000:
-        learning_rate = 0.00001
-    elif step < 80000:
-        learning_rate = 0.00001
-    elif step  < 160000:
-        learning_rate = 0.00001
-    elif step < 180000:
-        learning_rate = 0.00001
+    if step < 5000:
+        learning_rate = 0.1
+    elif step < 45000:
+        learning_rate = 0.01
+    elif step < 60000:
+        learning_rate = 0.001
+    elif step < 120000:
+        learning_rate = 0.0001
     else:
-        learning_rate = 0.000001
-    """
+        learning_rate = 0.00001
+        ####
     if step % ckpt==0:
         """ #### testing ### """
         print 'test'
