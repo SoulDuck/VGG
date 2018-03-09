@@ -255,11 +255,11 @@ if __name__ =='__main__':
 
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=0)
 
-    for path in paths[:10] :
+    for path in paths[:] :
         name=os.path.split(path)[1]
         print name
         #ori_img=np.asarray(Image.open(path))
-        ori_img=np.asarray(Image.open(path).resize([2000,1500], Image.ANTIALIAS))
+        ori_img=np.asarray(Image.open(path).resize([2000,2000], Image.ANTIALIAS))
         img=ori_img.reshape((1,)+np.shape(ori_img))
         actmap = sess.run(classmap, feed_dict={x_: img})
         actmap = np.squeeze(actmap)
