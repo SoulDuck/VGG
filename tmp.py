@@ -21,6 +21,16 @@ except:
     pass
 print a
 
+
+paths=glob.glob('/Users/seongjungkim/Desktop/hemo_30_clahe/*.png')
+for path in paths:
+    name=os.path.split(path)[1]
+    img=Image.open(path)
+    img=np.asarray(img)
+    img=img[:,450:2050]
+    plt.imsave(os.path.join('/Users/seongjungkim/Desktop/hemo_30_crop/', name),img)
+    plt.close()
+
 """
 a_cls=np.zeros(3)
 b_cls=np.ones(3)

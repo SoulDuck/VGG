@@ -75,17 +75,22 @@ NORMAL=0
 ABNORMAL =1
 #blood 500 Image을 불러온다
 start=time.time()
-train_normalDir ='../lesion_detection/cropped_bg_500_clahe/'
-test_normalDir='../lesion_detection/bg_cropped_rois'
+#train_normalDir ='../lesion_detection/cropped_bg_500_clahe/'
+train_normalDir ='../lesion_detection/normal_500'
 
-train_abnormalDir ='../lesion_detection/margin_crop_rois'
-test_abnormalDir='../lesion_detection/blood_cropped_rois'
+#test_normalDir='../lesion_detection/bg_cropped_rois'
+test_normalDir='../lesion_detection/normal_500/test'
+
+#train_abnormalDir ='../lesion_detection/margin_crop_rois'
+train_abnormalDir ='../lesion_detection/blood_500'
+#test_abnormalDir='../lesion_detection/blood_cropped_rois'
+test_abnormalDir='../lesion_detection/hemo_30_crop'
 
 test_normal_imgs , test_normal_labs=_load_images_labels(test_normalDir,NORMAL ,30 , False)
-train_normal_imgs , train_normal_labs=_load_images_labels(train_normalDir,NORMAL ,10000 , True)
+train_normal_imgs , train_normal_labs=_load_images_labels(train_normalDir,NORMAL ,2050, True)
 
-test_abnormal_imgs , test_abnormal_labs=_load_images_labels(test_abnormalDir,ABNORMAL ,30 , False)
-train_abnormal_imgs , train_abnormal_labs=_load_images_labels(train_abnormalDir,ABNORMAL ,10000 , True)
+test_abnormal_imgs , test_abnormal_labs=_load_images_labels(test_abnormalDir,ABNORMAL ,None , False)
+train_abnormal_imgs , train_abnormal_labs=_load_images_labels(train_abnormalDir,ABNORMAL ,None , True)
 
 train_imgs=np.vstack([train_normal_imgs , train_abnormal_imgs])
 train_labs=np.vstack([train_normal_labs , train_abnormal_labs])
