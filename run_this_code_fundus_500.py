@@ -8,6 +8,7 @@ import argparse
 import sys
 import tensorflow as tf
 import aug
+import random
 from PIL import Image
 import time
 
@@ -62,7 +63,9 @@ for dir , subdirs , files in os.walk('../lesion_detection/margin_crop_rois'):
     for file in files:
         path=os.path.join(dir ,file)
         paths.append(path)
-imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:6000])
+imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:10000])
+indices=random.sample(range(len(paths)) , 10000)
+paths=paths[indices]
 roi_train_imgs=np.asarray(imgs)
 roi_train_labs=np.zeros([len(roi_train_imgs),2])
 roi_train_labs[:,ABNORMAL]=1
@@ -82,7 +85,9 @@ for dir , subdirs , files in os.walk('../lesion_detection/cropped_bg_500_clahe/'
     for file in files:
         path=os.path.join(dir ,file)
         paths.append(path)
-imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:6000])
+indices=random.sample(range(len(paths)) , 10000)
+paths=paths[indices]
+imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:10000])
 bg_train_imgs=np.asarray(imgs)
 bg_train_labs=np.zeros([len(bg_train_imgs),2])
 bg_train_labs[:,NORMAL]=1
