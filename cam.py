@@ -51,11 +51,13 @@ def inspect_cam(sess, cam , top_conv ,test_imgs, test_labs, global_step , num_im
             plt.close();
 
 
-def eval_inspect_cam(sess, cam , top_conv ,test_imgs , x, y_ ,phase_train, y , save_root_folder):
+def eval_inspect_cam(sess, cam ,cam_ind, top_conv ,test_imgs , x, y_ ,phase_train, y , save_root_folder):
     num_images=len(test_imgs[:])
+
     ABNORMAL_LABEL =np.asarray([[0,1]])
     NORMAL_LABEL = np.asarray([[1,0]])
-
+    ABNORMAL_CLS=np.argmax(ABNORMAL_LABEL , axis=1)
+    NORMAL_CLS = np.argmax(ABNORMAL_LABEL , axis=1)
     try:
         os.mkdir('./out');
     except Exception as e :
@@ -82,12 +84,15 @@ def eval_inspect_cam(sess, cam , top_conv ,test_imgs , x, y_ ,phase_train, y , s
         img=test_imgs[s].reshape(1 ,test_imgs[s].shape[0] ,test_imgs[s].shape[1] ,-1 )
         conv_val , output_val =sess.run([top_conv , y] , feed_dict={x:img , phase_train:False})
 
-        cam_ans_abnormal= sess.run( cam ,  feed_dict={ y_:ABNORMAL_LABEL , top_conv:conv_val ,phase_train:False })
-        cam_ans_normal = sess.run(cam, feed_dict={y_: NORMAL_LABEL, top_conv: conv_val , phase_train:False})
+        cam_ans_abnormal = sess.run(cam, feed_dict={y_: ABNORMAL_LABEL, cam_ind: ABNORMAL_CLS, top_conv: conv_val,
+                                                    phase_train: False})
+        cam_ans_normal = sess.run(cam, feed_dict={y_: NORMAL_LABEL, cam_ind: NORMAL_CLS, top_conv: conv_val,
+                                                  phase_train: False})
+
         cam_vis_abnormal=list(map(lambda x: (x-x.min())/(x.max()-x.min()) , cam_ans_abnormal))
         cam_vis_normal=list(map(lambda x: (x-x.min())/(x.max()-x.min()) , cam_ans_normal))
-        cam_vis_abnormal, cam_vis_normal = map(lambda x: np.squeeze(x), [cam_vis_abnormal, cam_vis_normal])
 
+        cam_vis_abnormal, cam_vis_normal = map(lambda x: np.squeeze(x), [cam_vis_abnormal, cam_vis_normal])
         cam_vis_abnormal = cam_vis_abnormal.reshape([img.shape[1] , img.shape[2]])
         cam_vis_normal = cam_vis_normal.reshape([img.shape[1], img.shape[2]])
 
