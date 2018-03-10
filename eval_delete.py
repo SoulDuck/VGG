@@ -249,7 +249,7 @@ if __name__ =='__main__':
 
     #test_images=np.reshape(test_images,[-1,299,299,3])
     model_path = './models/fundus_500/normal_blood/19/best_acc/step_1300_acc_0.933333396912/model'
-    model_path='./models/vgg_11/step_38300_acc_0.890909016132/model'
+    model_path='./models/vgg_11/step_41900_acc_0.900000035763/model'
 
     #pred=eval(model_path, test_imgs[:],batch_size =1 ,save_root_folder='./activation_map_/blood')
     paths=glob.glob('../lesion_detection/hemo_30_crop/*.png')
