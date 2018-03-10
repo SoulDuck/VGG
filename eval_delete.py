@@ -254,10 +254,10 @@ if __name__ =='__main__':
     #pred=eval(model_path, test_imgs[:],batch_size =1 ,save_root_folder='./activation_map_/blood')
     paths=glob.glob('../lesion_detection/hemo_30_crop/*.png')
     paths=glob.glob('/Users/seongjungkim/Desktop/hemo_30_crop/*.png')
-    paths=glob.glob('../hemo_30_crop/*.png')
+    paths=glob.glob('../Test_ori/*.png')
     save_dir ='./activation_map_/blood_actmap'
 
-    classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=0)
+    classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 
     for path in paths[:] :
         name=os.path.split(path)[1]
