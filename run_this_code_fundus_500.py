@@ -269,7 +269,6 @@ for step in range(max_iter):
         summary_writer.add_summary(summary_test, step)
         """
     """ #### training ### """
-
     train_fetches = [train_op, accuracy_op, loss_op]
     batch_xs, batch_ys , batch_fname= input.next_batch(batch_size, train_imgs, train_labs )
     batch_xs=batch_xs/255.
