@@ -259,6 +259,7 @@ if __name__ =='__main__':
 
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 
+    thres=0.9
     for path in paths[:] :
         name=os.path.split(path)[1]
         print name
@@ -270,7 +271,7 @@ if __name__ =='__main__':
         actmap = np.asarray((map(lambda x: (x - x.min()) / (x.max() - x.min()), actmap)))  # -->why need this?
         h, w = np.shape(actmap)
         actmap = actmap.reshape([-1])
-        indices = np.where([actmap < 0.7])[1]
+        indices = np.where([actmap < thres ])[1]
         actmap[indices] = 0
         actmap = actmap.reshape([h, w])
         tf.reset_default_graph()
