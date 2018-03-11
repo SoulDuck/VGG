@@ -258,12 +258,13 @@ if __name__ =='__main__':
     model_path='./models/vgg_11/step_41900_acc_0.900000035763/model'
 
     #pred=eval(model_path, test_imgs[:],batch_size =1 ,save_root_folder='./activation_map_/blood')
-    paths=glob.glob('../lesion_detection/hemo_30_crop/*.png')
-    paths=glob.glob('/Users/seongjungkim/Desktop/hemo_30_crop/*.png')
-    paths=glob.glob('../retina_original/*.png')
-    paths =glob.glob('../fundus_data/test_set_retina/*.png')
-    paths = glob.glob('/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/*.png')
+    img_dir='../lesion_detection/hemo_30_crop/*.png'
+    img_dir='/Users/seongjungkim/Desktop/hemo_30_crop/*.png'
+    img_dir='../retina_original/*.png'
+    img_dir = '../fundus_data/test_set_retina/*.png'
+    img_dir = '/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/'
 
+    paths = glob.glob(os.path.join(img_dir , '*.png'))
     save_dir ='./activation_map_/blood_actmap'
 
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
@@ -344,6 +345,7 @@ if __name__ =='__main__':
         rects=kmeans.kmeans(xy , 10)
         fig = plt.figure()
         ax=fig.add_subplot(111)
+        ori_img=Image.open()
         ax.imshow(ori_img)
         for rect in rects:
             x1,y1,x2,y2=rect
