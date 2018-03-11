@@ -260,9 +260,9 @@ if __name__ =='__main__':
     #pred=eval(model_path, test_imgs[:],batch_size =1 ,save_root_folder='./activation_map_/blood')
     img_dir='../lesion_detection/hemo_30_crop'
     img_dir='/Users/seongjungkim/Desktop/hemo_30_crop'
+    img_dir='../retina_original'
     img_dir = '/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/'
     img_dir = '../fundus_data/test_set_retina'
-    img_dir='../retina_original'
 
     paths = glob.glob(os.path.join(img_dir , '*.png'))
     save_dir ='./activation_map_/blood_actmap'
@@ -343,6 +343,7 @@ if __name__ =='__main__':
         name=os.path.split(path)[1]
         name=os.path.splitext(name)[0]
         xy=np.load(path)
+        print xy
         tf.reset_default_graph()
         rects=kmeans.kmeans(xy , 10)
         for rect in rects:
@@ -353,7 +354,7 @@ if __name__ =='__main__':
             x1,y1,x2,y2=rect
             rect=patches.Rectangle((x1,y1) , x2-x1, y2-y1 , fill=False , edgecolor='r')
             ax.add_patch(rect)
-            plt.savefig(os.path.join(save_dir,'.png').replace('.png' , '_kmeans'+'.png'))
+            plt.savefig(os.path.join(save_dir,'.png').replace('.png' , '_kmeans'+'.png').replace('xy_',''))
             plt.close()
         #plt.close()
 
