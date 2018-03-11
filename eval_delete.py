@@ -261,8 +261,8 @@ if __name__ =='__main__':
     img_dir='../lesion_detection/hemo_30_crop/*.png'
     img_dir='/Users/seongjungkim/Desktop/hemo_30_crop/*.png'
     img_dir='../retina_original/*.png'
-    img_dir = '../fundus_data/test_set_retina/*.png'
     img_dir = '/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/'
+    img_dir = '../fundus_data/test_set_retina/*.png'
 
     paths = glob.glob(os.path.join(img_dir , '*.png'))
     save_dir ='./activation_map_/blood_actmap'
@@ -345,7 +345,7 @@ if __name__ =='__main__':
         rects=kmeans.kmeans(xy , 10)
         fig = plt.figure()
         ax=fig.add_subplot(111)
-        ori_img=Image.open()
+        ori_img=Image.open(os.path.join(img_dir , name.replace('xy_','')))
         ax.imshow(ori_img)
         for rect in rects:
             x1,y1,x2,y2=rect
