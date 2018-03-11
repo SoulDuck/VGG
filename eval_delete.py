@@ -346,11 +346,12 @@ if __name__ =='__main__':
         print xy
         tf.reset_default_graph()
         rects=kmeans.kmeans(xy , 10)
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ori_img = copy.copy(ori_img)
+        ax.imshow(ori_img)
         for rect in rects:
-            fig = plt.figure()
-            ax = fig.add_subplot(111)
-            ori_img = copy.copy(ori_img)
-            ax.imshow(ori_img)
+
             x1,y1,x2,y2=rect
             rect=patches.Rectangle((x1,y1) , x2-x1, y2-y1 , fill=False , edgecolor='r')
             ax.add_patch(rect)
