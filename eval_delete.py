@@ -262,6 +262,7 @@ if __name__ =='__main__':
     paths=glob.glob('/Users/seongjungkim/Desktop/hemo_30_crop/*.png')
     paths=glob.glob('../retina_original/*.png')
     paths = glob.glob('/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/*.png')
+    paths =glob.glob('../fundus_data/test_set_retina/*.png')
 
     save_dir ='./activation_map_/blood_actmap'
 
