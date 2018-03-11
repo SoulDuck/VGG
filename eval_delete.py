@@ -354,7 +354,7 @@ if __name__ =='__main__':
             x1,y1,x2,y2=rect
             rect=patches.Rectangle((x1,y1) , x2-x1, y2-y1 , fill=False , edgecolor='r')
             ax.add_patch(rect)
-            plt.savefig(os.path.join(save_dir,'.png').replace('.png' , '_kmeans'+'.png').replace('xy_',''))
+            plt.savefig(os.path.join(save_dir,name+'.png').replace('.png' , '_kmeans'+'.png').replace('xy_',''))
             plt.close()
         #plt.close()
 
