@@ -346,6 +346,9 @@ if __name__ =='__main__':
         fig = plt.figure()
         ax = fig.add_subplot(111)
         img=Image.open(os.path.join(save_dir , name).replace('xy_',''))
+        if img.size[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
+            pct = 2000 / float(img.size[0])
+            ori_img=ori_img.resize( [int(img.size[0]*pct) , int(img.size[1]*pct)])
         ax.imshow(img)
         for rect in rects:
 
