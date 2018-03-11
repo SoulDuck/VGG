@@ -345,16 +345,16 @@ if __name__ =='__main__':
         xy=np.load(path)
         tf.reset_default_graph()
         rects=kmeans.kmeans(xy , 10)
-        fig = plt.figure()
-        ax=fig.add_subplot(111)
-        ori_img=Image.open(os.path.join(img_dir , name.replace('xy_','')))
-        ax.imshow(ori_img)
         for rect in rects:
+            fig = plt.figure()
+            ax = fig.add_subplot(111)
+            ori_img = Image.open(os.path.join(img_dir, name.replace('xy_', '')))
+            ax.imshow(ori_img)
             x1,y1,x2,y2=rect
             rect=patches.Rectangle((x1,y1) , x2-x1, y2-y1 , fill=False , edgecolor='r')
             ax.add_patch(rect)
             plt.savefig(os.path.join(save_dir,'.png').replace('.png' , '_kmeans'+'.png'))
-        plt.close()
+            plt.close()
         #plt.close()
 
 
