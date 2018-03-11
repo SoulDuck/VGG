@@ -347,8 +347,8 @@ if __name__ =='__main__':
         rects=kmeans.kmeans(xy , 10)
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        ori_img = copy.copy(ori_img)
-        ax.imshow(ori_img)
+        img = copy.copy(ori_img)
+        ax.imshow(img)
         for rect in rects:
 
             x1,y1,x2,y2=rect
