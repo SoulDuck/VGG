@@ -338,9 +338,9 @@ if __name__ =='__main__':
 
     paths=glob.glob(os.path.join(save_dir , '*.npy'))
     for path in paths[:3]:
-        print path
         name=os.path.split(path)[1]
         name=os.path.splitext(name)[0]
+        print name
         xy=np.load(path)
         tf.reset_default_graph()
         rects=kmeans.kmeans(xy , 10)
