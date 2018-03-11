@@ -8,14 +8,6 @@ import tensorflow as tf
 from tensorflow.contrib.factorization import KMeans
 
 
-XY = tf.placeholder(tf.float32 ,shape=[None,2])
-kmeans=KMeans(XY,n_cluasters=2,use_mini_batch=True)
-all_scores , clusterd_idx ,clustered_centers_init, init_op ,train_op =kmeans.training_graph()
-
-kmeans=tf.identity(kmeans , 'kmeans')
-
-
-
 def kmeans(xy , n_clauster):
 
     vectors = tf.constant(xy)
