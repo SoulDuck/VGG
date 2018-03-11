@@ -337,7 +337,7 @@ if __name__ =='__main__':
 
 
     paths=glob.glob(os.path.join(save_dir , '*.npy'))
-    for path in paths:
+    for path in paths[:3]:
         name=os.path.split(path)[1]
         name=os.path.splitext(name)[0]
         xy=np.load(path)
