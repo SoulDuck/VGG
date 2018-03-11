@@ -117,6 +117,7 @@ def post_preprocessing(sess, classmap, img_path , n_cluster=10,thres=0.5):
         y = ind / w # 몇 줄에 위치 있는지?
         x = ind % w #
         xy.append([x,y])
+
     rects=kmeans(xy , n_cluster)
 
     return rects
