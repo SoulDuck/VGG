@@ -327,7 +327,7 @@ if __name__ =='__main__':
             x1,y1,w,h=rect
             rect=patches.Rectangle((x1,y1) , w, h , fill=False , edgecolor='r')
             ax.add_patch(rect)
-        plt.savefig(os.path.join(save_dir,'drawContour_'+name))
+        plt.savefig(os.path.join(save_dir,name.replace('.png' ,'_drawContour'+'.png')))
         plt.close()
 
         #save actmap , original , DrawImage , kmenas_Image
@@ -353,8 +353,8 @@ if __name__ =='__main__':
             x1,y1,x2,y2=rect
             rect=patches.Rectangle((x1,y1) , x2-x1, y2-y1 , fill=False , edgecolor='r')
             ax.add_patch(rect)
-            plt.savefig(os.path.join(save_dir,'kmeans_'+name+'.png'))
-            plt.close()
+            plt.savefig(os.path.join(save_dir,'.png').replace('.png' , '_kmeans'+'.png'))
+        plt.close()
         #plt.close()
 
 
