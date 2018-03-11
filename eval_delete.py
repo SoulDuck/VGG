@@ -345,7 +345,7 @@ if __name__ =='__main__':
         rects=kmeans.kmeans(xy , 10)
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        img=Image.open(os.path.join(save_dir , name).replace('_xy',''))
+        img=Image.open(os.path.join(save_dir , name).replace('xy_',''))
         ax.imshow(img)
         for rect in rects:
 
