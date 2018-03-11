@@ -191,7 +191,7 @@ def fn(model_path, strides,pool_indices,label):
     classmap = tf.reshape(classmap, [-1, im_height, im_width], name='classmap_reshape')
 
     saver=tf.train.Saver()
-    saver.save(sess,'./models/vgg_11/blood_and_normal')
+    saver.save(sess,'./models/vgg_11/blood_and_normal/model')
 
 
     return classmap ,sess ,x_
