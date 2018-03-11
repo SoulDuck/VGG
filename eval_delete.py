@@ -283,8 +283,6 @@ if __name__ =='__main__':
         actmap = np.squeeze(actmap)
         actmap = np.asarray((map(lambda x: (x - x.min()) / (x.max() - x.min()), actmap)))  # -->why need this?
         h, w = np.shape(actmap)
-        plt.imshow(actmap)
-        plt.savefig('tmp_actmap.png')
 
         # erase value out ot circle
         mask=[]
@@ -317,10 +315,7 @@ if __name__ =='__main__':
             x = ind % w #
             xy.append([x,y])
 
-        draw_contour.get_rect(ori_img,binary_actmap)
-
-        rects=kmeans.kmeans(xy , 10)
-
+        rects=draw_contour.get_rect(ori_img,binary_actmap)
         fig = plt.figure()
         ax=fig.add_subplot(111)
         ax.imshow(ori_img)
@@ -328,9 +323,24 @@ if __name__ =='__main__':
             x1,y1,x2,y2=rect
             rect=patches.Rectangle((x1,y1) , x2-x1, y2-y1 , fill=False , edgecolor='r')
             ax.add_patch(rect)
-        plt.savefig('tmp_means_rect.png')
+        plt.savefig(os.path.join(save_dir,'drawContour_'+name))
 
-        tf.reset_default_graph()
-        plt.imshow(actmap, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest',vmin=0, vmax=1)
+        rects=kmeans.kmeans(xy , 10)
+        fig = plt.figure()
+        ax=fig.add_subplot(111)
+        ax.imshow(ori_img)
+        for rect in rects:
+            x1,y1,x2,y2=rect
+            rect=patches.Rectangle((x1,y1) , x2-x1, y2-y1 , fill=False , edgecolor='r')
+            ax.add_patch(rect)
+        plt.savefig(os.path.join(save_dir,'kmeans_'+name))
+        plt.close()
+
+
+
+        #save actmap , original , DrawImage , kmenas_Image
+        #plt.imshow(actmap, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
+
         cam.overlay(actmap, ori_img ,save_path=os.path.join(save_dir,name))
+        tf.reset_default_graph()
 

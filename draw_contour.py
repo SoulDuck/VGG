@@ -40,6 +40,7 @@ def get_rect(ori_img , actmap):
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.imshow(ori_img)
+    rects=[]
     for contour in contours :
         rect = cv2.boundingRect(contour)
         if rect[2] < 5 or rect[3]  < 5 :
@@ -47,7 +48,9 @@ def get_rect(ori_img , actmap):
         print rect
         rect=patches.Rectangle((rect[0],rect[1]) , rect[2],rect[3] , fill=False , edgecolor='r')
         ax.add_patch(rect)
+        rects.append(rect)
         # rect의 x, y ,w ,h 의 조건에 따라 bounding box 출력
         #if rect[2] > 10 and rect[3] > 10 :
         #    print rect
-    plt.savefig('tmp_drawContour.png')
+    return rects
+

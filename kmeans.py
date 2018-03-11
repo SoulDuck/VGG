@@ -56,8 +56,8 @@ def kmeans(xy , n_clauster):
         rects.append(rect)
 
 
-    sns.lmplot("x", "y", data=df, fit_reg=False, size=6, hue="cluster", legend=False)
-    plt.savefig('./tmp_kmeans.png')
-    plt.show()
+    #sns.lmplot("x", "y", data=df, fit_reg=False, size=6, hue="cluster", legend=False)
+    #plt.savefig('./tmp_kmeans.png')
+    #plt.show()
 
     return rects
