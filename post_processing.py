@@ -74,7 +74,7 @@ def get_rect(ori_img , actmap):
 
 
 
-def post_preprocessing(sess, classmap, img_path , save_dir ,thres=0.5):
+def post_preprocessing(sess, classmap, img_path , n_cluster=10,thres=0.5):
     ori_img=Image.open(img_path).convert('RGB')
     if ori_img.size[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
         pct = 2000 / float(ori_img.size[0])
@@ -117,6 +117,6 @@ def post_preprocessing(sess, classmap, img_path , save_dir ,thres=0.5):
         y = ind / w # 몇 줄에 위치 있는지?
         x = ind % w #
         xy.append([x,y])
-    rects=kmeans(xy , 10)
+    rects=kmeans(xy , n_cluster)
 
     return rects
