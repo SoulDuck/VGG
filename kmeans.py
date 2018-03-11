@@ -78,20 +78,20 @@ def kmeans_with_placeholder(n_clauster):
 
     return vectors , update_centroides , centroides ,assignments
 
-vectors, update_centroides, centroides, assignments=kmeans_with_placeholder(2)
+    vectors, update_centroides, centroides, assignments=kmeans_with_placeholder(2)
 
 
-xy=np.load('/Users/seongjungkim/PycharmProjects/VGG/activation_map_/blood_actmap/xy_8298468_20160813_R.png.npy')
+    xy=np.load('/Users/seongjungkim/PycharmProjects/VGG/activation_map_/blood_actmap/xy_8298468_20160813_R.png.npy')
 
 
-init_op = tf.global_variables_initializer()
-sess = tf.Session()
-sess.run(init_op)
+    init_op = tf.global_variables_initializer()
+    sess = tf.Session()
+    sess.run(init_op)
 
-print xy
-exit()
-for step in xrange(100):
-    _, centroid_values, assignment_values = sess.run([update_centroides, centroides, assignments],
+    print xy
+    exit()
+    for step in xrange(100):
+        _, centroid_values, assignment_values = sess.run([update_centroides, centroides, assignments],
                                                      feed_dict={vectors: xy})
 """    
 data = {"x": [], "y": [], "cluster": []}
