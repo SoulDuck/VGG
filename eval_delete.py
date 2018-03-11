@@ -348,7 +348,7 @@ if __name__ =='__main__':
         for rect in rects:
             fig = plt.figure()
             ax = fig.add_subplot(111)
-            ori_img = Image.open(os.path.join(img_dir, name.replace('xy_', '')))
+            ori_img = copy.copy(ori_img)
             ax.imshow(ori_img)
             x1,y1,x2,y2=rect
             rect=patches.Rectangle((x1,y1) , x2-x1, y2-y1 , fill=False , edgecolor='r')
