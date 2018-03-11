@@ -271,10 +271,8 @@ if __name__ =='__main__':
 
     thres=0.5
     for path in paths[:3]:
-
         name=os.path.split(path)[1]
         print name
-
         #ori_img=np.asarray(Image.open(path))
         ori_img=Image.open(path).convert('RGB')
         if ori_img.size[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
