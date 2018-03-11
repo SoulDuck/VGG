@@ -325,7 +325,7 @@ if __name__ =='__main__':
             rect=patches.Rectangle((x1,y1) , w, h , fill=False , edgecolor='r')
             ax.add_patch(rect)
         plt.savefig(os.path.join(save_dir,'drawContour_'+name))
-
+        """
         rects=kmeans.kmeans(xy , 10)
         fig = plt.figure()
         ax=fig.add_subplot(111)
@@ -336,6 +336,7 @@ if __name__ =='__main__':
             ax.add_patch(rect)
         plt.savefig(os.path.join(save_dir,'kmeans_'+name))
         plt.close()
+        """
 
 
 
