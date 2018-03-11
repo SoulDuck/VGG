@@ -261,16 +261,17 @@ if __name__ =='__main__':
     paths=glob.glob('../lesion_detection/hemo_30_crop/*.png')
     paths=glob.glob('/Users/seongjungkim/Desktop/hemo_30_crop/*.png')
     paths=glob.glob('../retina_original/*.png')
-    paths = glob.glob('/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/*.png')
     paths =glob.glob('../fundus_data/test_set_retina/*.png')
+    paths = glob.glob('/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/*.png')
 
     save_dir ='./activation_map_/blood_actmap'
 
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 
     thres=0.5
-    for path in paths[:1] :
+    for path in paths[:2]:
         name=os.path.split(path)[1]
+        print name
 
         #ori_img=np.asarray(Image.open(path))
         ori_img=Image.open(path).convert('RGB')
@@ -325,7 +326,21 @@ if __name__ =='__main__':
             rect=patches.Rectangle((x1,y1) , w, h , fill=False , edgecolor='r')
             ax.add_patch(rect)
         plt.savefig(os.path.join(save_dir,'drawContour_'+name))
-        """
+
+        #save actmap , original , DrawImage , kmenas_Image
+        #plt.imshow(actmap, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
+
+        cam.overlay(actmap, ori_img ,save_path=os.path.join(save_dir,name))
+        xy=np.asarray(xy)
+        np.save(os.path.join(save_dir , 'xy_'+name) , xy)
+
+
+    paths=glob.glob(os.path.join(save_dir , '*.npy'))
+    for path in paths:
+        name=os.path.split(path)[1]
+        name=os.path.splitext(name)[0]
+        xy=np.load(path)
+        tf.reset_default_graph()
         rects=kmeans.kmeans(xy , 10)
         fig = plt.figure()
         ax=fig.add_subplot(111)
@@ -334,15 +349,9 @@ if __name__ =='__main__':
             x1,y1,x2,y2=rect
             rect=patches.Rectangle((x1,y1) , x2-x1, y2-y1 , fill=False , edgecolor='r')
             ax.add_patch(rect)
-        plt.savefig(os.path.join(save_dir,'kmeans_'+name))
-        plt.close()
-        """
+            plt.savefig(os.path.join(save_dir,'kmeans_'+name+'.png'))
+        #plt.close()
 
 
-
-        #save actmap , original , DrawImage , kmenas_Image
-        #plt.imshow(actmap, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
-
-        cam.overlay(actmap, ori_img ,save_path=os.path.join(save_dir,name))
 
 
