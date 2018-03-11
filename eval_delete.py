@@ -11,11 +11,17 @@ import time
     #matplotlib.use('Agg')
 #    pass;
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 import glob
+import copy
 import input
+
 import fundus
+import kmeans
+import draw_contour
 ## for mnist dataset ##
 from tensorflow.examples.tutorials.mnist import input_data
+
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 """
 train_imgs = mnist.train.images.reshape([-1,28,28,1])
@@ -255,34 +261,76 @@ if __name__ =='__main__':
     paths=glob.glob('../lesion_detection/hemo_30_crop/*.png')
     paths=glob.glob('/Users/seongjungkim/Desktop/hemo_30_crop/*.png')
     paths=glob.glob('../retina_original/*.png')
+    paths = glob.glob('/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/*.png')
+
     save_dir ='./activation_map_/blood_actmap'
 
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 
-    thres=0.0
-    for path in paths[:] :
+    thres=0.5
+    for path in paths[:1] :
         name=os.path.split(path)[1]
-        print name
+
         #ori_img=np.asarray(Image.open(path))
         ori_img=Image.open(path).convert('RGB')
-
-        if ori_img.size[0] > 2000: # if width
+        if ori_img.size[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
             pct = 2000 / float(ori_img.size[0])
             ori_img=ori_img.resize( [int(ori_img.size[0]*pct) , int(ori_img.size[1]*pct)])
-
-        ori_img=np.asarray(ori_img)#.resize([2000,2000], Image.ANTIALIAS))
+        ori_img=np.asarray(ori_img) #resize([2000,2000], Image.ANTIALIAS))
         img=ori_img.reshape((1,)+np.shape(ori_img))
+
         actmap = sess.run(classmap, feed_dict={x_: img})
         actmap = np.squeeze(actmap)
         actmap = np.asarray((map(lambda x: (x - x.min()) / (x.max() - x.min()), actmap)))  # -->why need this?
         h, w = np.shape(actmap)
-        actmap = actmap.reshape([-1])
-        indices = np.where([actmap < thres ])[1]
-        actmap[indices] = 0
-        actmap = actmap.reshape([h, w])
+        plt.imshow(actmap)
+        plt.savefig('tmp_actmap.png')
+
+        # erase value out ot circle
+        mask=[]
+        img = np.asarray(Image.open(path).convert('RGB'))
+
+        img.setflags(write=True)
+        lower_indices=np.where([np.sum(img , axis=2).reshape([-1]) < 5])[1]
+        upper_indices = np.where([np.sum(img, axis=2).reshape([-1]) >= 5])[1]
+        mask = np.sum(img , axis=2)
+        mask=mask.reshape([-1])
+        mask[lower_indices] = 0
+        mask[upper_indices] = 1
+
+        #copy actmap to binary actmap
+        binary_actmap = copy.copy(actmap)
+        binary_actmap = binary_actmap .reshape([-1])
+        binary_actmap = binary_actmap * mask
+        lower_indices = np.where([binary_actmap < thres])[1]
+        upper_indices = np.where([binary_actmap >= thres])[1]
+        binary_actmap[lower_indices] = 0
+        binary_actmap[upper_indices] = 255
+        binary_actmap = binary_actmap.reshape([h, w])
+        # for cluster
+        assert np.shape(ori_img)[:2] == np.shape(actmap)[:2], 'original images {}  actmap images {}'.format(np.shape(ori_img),
+                                                                                                    np.shape(actmap))
+        h,w,ch=np.shape(ori_img)
+        xy=[]
+        for ind in upper_indices[:]:
+            y = ind / w # 몇 줄에 위치 있는지?
+            x = ind % w #
+            xy.append([x,y])
+
+        draw_contour.get_rect(ori_img,binary_actmap)
+
+        rects=kmeans.kmeans(xy , 10)
+
+        fig = plt.figure()
+        ax=fig.add_subplot(111)
+        ax.imshow(ori_img)
+        for rect in rects:
+            x1,y1,x2,y2=rect
+            rect=patches.Rectangle((x1,y1) , x2-x1, y2-y1 , fill=False , edgecolor='r')
+            ax.add_patch(rect)
+        plt.savefig('tmp_means_rect.png')
+
         tf.reset_default_graph()
-
-
         plt.imshow(actmap, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest',vmin=0, vmax=1)
         cam.overlay(actmap, ori_img ,save_path=os.path.join(save_dir,name))
 
