@@ -258,11 +258,11 @@ if __name__ =='__main__':
     model_path='./models/vgg_11/step_41900_acc_0.900000035763/model'
 
     #pred=eval(model_path, test_imgs[:],batch_size =1 ,save_root_folder='./activation_map_/blood')
-    img_dir='../lesion_detection/hemo_30_crop/*.png'
-    img_dir='/Users/seongjungkim/Desktop/hemo_30_crop/*.png'
-    img_dir='../retina_original/*.png'
+    img_dir='../lesion_detection/hemo_30_crop'
+    img_dir='/Users/seongjungkim/Desktop/hemo_30_crop'
+    img_dir='../retina_original'
     img_dir = '/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/'
-    img_dir = '../fundus_data/test_set_retina/*.png'
+    img_dir = '../fundus_data/test_set_retina'
 
     paths = glob.glob(os.path.join(img_dir , '*.png'))
     save_dir ='./activation_map_/blood_actmap'
