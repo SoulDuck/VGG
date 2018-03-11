@@ -290,7 +290,7 @@ if __name__ =='__main__':
 
         # erase value out ot circle
         mask=[]
-        img = np.asarray(Image.open(path).convert('RGB'))
+        img = copy.copy(ori_img)
 
         img.setflags(write=True)
         lower_indices=np.where([np.sum(img , axis=2).reshape([-1]) < 5])[1]
