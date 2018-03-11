@@ -254,7 +254,7 @@ if __name__ =='__main__':
     #pred=eval(model_path, test_imgs[:],batch_size =1 ,save_root_folder='./activation_map_/blood')
     paths=glob.glob('../lesion_detection/hemo_30_crop/*.png')
     paths=glob.glob('/Users/seongjungkim/Desktop/hemo_30_crop/*.png')
-    paths=glob.glob('../retina_original/*.png')
+    paths=glob.glob('../Test_ori/*.png')
     save_dir ='./activation_map_/blood_actmap'
 
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
@@ -264,7 +264,13 @@ if __name__ =='__main__':
         name=os.path.split(path)[1]
         print name
         #ori_img=np.asarray(Image.open(path))
-        ori_img=np.asarray(Image.open(path).convert('RGB'))#.resize([2000,2000], Image.ANTIALIAS))
+        ori_img=Image.open(path).convert('RGB')
+
+        if ori_img.size[0] > 2000: # if width
+            pct = 2000 / float(ori_img.size[0])
+            ori_img=ori_img.resize( [int(ori_img.size[0]*pct) , int(ori_img.size[1]*pct)])
+
+        ori_img=np.asarray(ori_img)#.resize([2000,2000], Image.ANTIALIAS))
         img=ori_img.reshape((1,)+np.shape(ori_img))
         actmap = sess.run(classmap, feed_dict={x_: img})
         actmap = np.squeeze(actmap)
