@@ -343,7 +343,6 @@ if __name__ =='__main__':
         name=os.path.split(path)[1]
         name=os.path.splitext(name)[0]
         xy=np.load(path)
-        print xy
         tf.reset_default_graph()
         rects=kmeans.kmeans(xy , 10)
         fig = plt.figure()
