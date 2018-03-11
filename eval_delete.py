@@ -261,8 +261,8 @@ if __name__ =='__main__':
     img_dir='../lesion_detection/hemo_30_crop'
     img_dir='/Users/seongjungkim/Desktop/hemo_30_crop'
     img_dir = '/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/'
-    img_dir='../retina_original'
     img_dir = '../fundus_data/test_set_retina'
+    img_dir='../retina_original'
 
     paths = glob.glob(os.path.join(img_dir , '*.png'))
     save_dir ='./activation_map_/blood_actmap'
@@ -270,7 +270,7 @@ if __name__ =='__main__':
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 
     thres=0.5
-    for path in paths[:]:
+    for path in paths[:3]:
         name=os.path.split(path)[1]
         print name
         #ori_img=np.asarray(Image.open(path))
@@ -337,7 +337,7 @@ if __name__ =='__main__':
 
 
     paths=glob.glob(os.path.join(save_dir , '*.npy'))
-    for path in paths[:]:
+    for path in paths[:3]:
         name=os.path.split(path)[1]
         name=os.path.splitext(name)[0]
         xy=np.load(path)
