@@ -320,8 +320,8 @@ if __name__ =='__main__':
         ax=fig.add_subplot(111)
         ax.imshow(ori_img)
         for rect in rects:
-            x1,y1,x2,y2=rect
-            rect=patches.Rectangle((x1,y1) , x2-x1, y2-y1 , fill=False , edgecolor='r')
+            x1,y1,w,h=rect
+            rect=patches.Rectangle((x1,y1) , w, h , fill=False , edgecolor='r')
             ax.add_patch(rect)
         plt.savefig(os.path.join(save_dir,'drawContour_'+name))
 
