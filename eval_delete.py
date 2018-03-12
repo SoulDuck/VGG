@@ -260,9 +260,9 @@ if __name__ =='__main__':
     #pred=eval(model_path, test_imgs[:],batch_size =1 ,save_root_folder='./activation_map_/blood')
     img_dir='../lesion_detection/hemo_30_crop'
     img_dir='/Users/seongjungkim/Desktop/hemo_30_crop'
-    img_dir = '/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/'
     img_dir='../retina_original' # 2000,3000
     img_dir = '../fundus_data/test_set_retina' # 750 750
+    img_dir = '/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/'
 
     paths = glob.glob(os.path.join(img_dir , '*.png'))
     save_dir ='./activation_map_/blood_actmap'
@@ -270,7 +270,7 @@ if __name__ =='__main__':
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 
     thres=0.5
-    limit=None
+    limit=3
     for path in paths[:limit]:
         name=os.path.split(path)[1]
         #ori_img=np.asarray(Image.open(path))
@@ -336,8 +336,8 @@ if __name__ =='__main__':
         #Masked Image
         masked_img = copy.copy(ori_img)
         for i in range(3):
-            masked_img[:,:,i]=ori_img[:,:,0]*binary_actmap
-        plt.imsave(os.path.join(save_dir,name.replace('.png' ,'_masked'+'.png')))
+            masked_img[:,:,i]=ori_img[:,:,i]*binary_actmap
+        plt.imsave(os.path.join(save_dir,name.replace('.png' ,'_masked'+'.png')) , masked_img)
         plt.close()
 
         """
