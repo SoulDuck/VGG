@@ -260,9 +260,9 @@ if __name__ =='__main__':
     #pred=eval(model_path, test_imgs[:],batch_size =1 ,save_root_folder='./activation_map_/blood')
     img_dir='../lesion_detection/hemo_30_crop'
     img_dir='/Users/seongjungkim/Desktop/hemo_30_crop'
-    img_dir='../retina_original'
+    img_dir='../retina_original' # 2000,3000
     img_dir = '/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/'
-    img_dir = './retina_750'
+    img_dir = './test_set_retina'
 
     paths = glob.glob(os.path.join(img_dir , '*.png'))
     save_dir ='./activation_map_/blood_actmap'
@@ -273,7 +273,6 @@ if __name__ =='__main__':
     limit=2
     for path in paths[:limit]:
         name=os.path.split(path)[1]
-        print name
         #ori_img=np.asarray(Image.open(path))
         ori_img=Image.open(path).convert('RGB')
         if ori_img.size[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
