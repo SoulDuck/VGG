@@ -262,7 +262,7 @@ if __name__ =='__main__':
     img_dir='/Users/seongjungkim/Desktop/hemo_30_crop'
     img_dir='../retina_original' # 2000,3000
     img_dir = '/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/'
-    img_dir = './test_set_retina'
+    img_dir = '../fundus_data/test_set_retina'
 
     paths = glob.glob(os.path.join(img_dir , '*.png'))
     save_dir ='./activation_map_/blood_actmap'
