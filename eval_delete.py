@@ -281,7 +281,7 @@ if __name__ =='__main__':
         ori_img=np.asarray(ori_img) #resize([2000,2000], Image.ANTIALIAS))
         img=ori_img.reshape((1,)+np.shape(ori_img))
 
-        actmap = sess.run(classmap, feed_dict={x_: img/255.})
+        actmap = sess.run(classmap, feed_dict={x_: img})
         actmap = np.squeeze(actmap)
         actmap = np.asarray((map(lambda x: (x - x.min()) / (x.max() - x.min()), actmap)))  # -->why need this?
         h, w = np.shape(actmap)
@@ -305,8 +305,10 @@ if __name__ =='__main__':
         lower_indices = np.where([binary_actmap < thres])[1]
         upper_indices = np.where([binary_actmap >= thres])[1]
         binary_actmap[lower_indices] = 0
-        binary_actmap[upper_indices] = 255
+        binary_actmap[upper_indices] = 1
         binary_actmap = binary_actmap.reshape([h, w])
+
+
 
         # for cluster
         assert np.shape(ori_img)[:2] == np.shape(actmap)[:2], 'original images {}  actmap images {}'.format(np.shape(ori_img),
@@ -317,9 +319,6 @@ if __name__ =='__main__':
             y = ind / w # 몇 줄에 위치 있는지?
             x = ind % w #
             xy.append([x,y])
-
-
-
 
         #draw rect
         rects , contours_list =draw_contour.get_rect(ori_img,binary_actmap)
@@ -333,6 +332,15 @@ if __name__ =='__main__':
         plt.savefig(os.path.join(save_dir,name.replace('.png' ,'_drawRect'+'.png')))
         plt.close()
 
+
+        #Masked Image
+        masked_img = copy.copy(ori_img)
+        for i in range(3):
+            masked_img[:,:,i]=ori_img[:,:,0]*binary_actmap
+        plt.imsave(os.path.join(save_dir,name.replace('.png' ,'_masked'+'.png')))
+        plt.close()
+
+        """
         #draw contours
         plt.imshow(ori_img)
         for i,contours in enumerate(contours_list):
@@ -344,6 +352,7 @@ if __name__ =='__main__':
             #ax.add_patch(rect)
         plt.savefig(os.path.join(save_dir,name.replace('.png' ,'_drawContour'+'.png')))
         plt.close()
+        """
         #save actmap , original , DrawImage , kmenas_Image
         #plt.imshow(actmap, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
 
