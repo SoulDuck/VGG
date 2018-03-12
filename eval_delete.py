@@ -270,7 +270,7 @@ if __name__ =='__main__':
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 
     thres=0.5
-    limit=2
+    limit=None
     for path in paths[:limit]:
         name=os.path.split(path)[1]
         #ori_img=np.asarray(Image.open(path))
