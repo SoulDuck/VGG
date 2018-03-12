@@ -282,7 +282,7 @@ if __name__ =='__main__':
         ori_img=np.asarray(ori_img) #resize([2000,2000], Image.ANTIALIAS))
         img=ori_img.reshape((1,)+np.shape(ori_img))
 
-        actmap = sess.run(classmap, feed_dict={x_: img})
+        actmap = sess.run(classmap, feed_dict={x_: img/255.})
         actmap = np.squeeze(actmap)
         actmap = np.asarray((map(lambda x: (x - x.min()) / (x.max() - x.min()), actmap)))  # -->why need this?
         h, w = np.shape(actmap)
@@ -308,11 +308,6 @@ if __name__ =='__main__':
         binary_actmap[lower_indices] = 0
         binary_actmap[upper_indices] = 255
         binary_actmap = binary_actmap.reshape([h, w])
-
-        plt.imshow(binary_actmap)
-        plt.savefig('./tmp_0.5.png')
-        exit()
-
 
         # for cluster
         assert np.shape(ori_img)[:2] == np.shape(actmap)[:2], 'original images {}  actmap images {}'.format(np.shape(ori_img),
