@@ -270,7 +270,7 @@ if __name__ =='__main__':
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 
     thres=0.5
-    limit=None
+    limit=3
     for path in paths[:limit]:
         name=os.path.split(path)[1]
         print name
