@@ -74,7 +74,7 @@ def get_rect(ori_img , actmap):
 
 
 
-def post_preprocessing(sess, classmap, img_path , n_cluster=10,thres=0.5):
+def post_preprocessing(sess, classmap, img_path , thres=0.5 , resize=(512,512)):
     ori_img=Image.open(img_path).convert('RGB')
     if ori_img.size[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
         pct = 2000 / float(ori_img.size[0])
@@ -106,9 +106,14 @@ def post_preprocessing(sess, classmap, img_path , n_cluster=10,thres=0.5):
     lower_indices = np.where([binary_actmap < thres])[1]
     upper_indices = np.where([binary_actmap >= thres])[1]
     binary_actmap[lower_indices] = 0
-    binary_actmap[upper_indices] = 255
+    binary_actmap[upper_indices] = 1
     binary_actmap = binary_actmap.reshape([h, w])
-    # for cluster
+    binary_actmap=Image.fromarray(binary_actmap)
+    binary_actmap=np.asarray(binary_actmap.resize(resize, Image.ANTIALIAS))
+
+
+    """
+    # for cluster Using K means , uncomment this line
     assert np.shape(ori_img)[:2] == np.shape(actmap)[:2], 'original images {}  actmap images {}'.format(np.shape(ori_img),
                                                                                                 np.shape(actmap))
     h,w,ch=np.shape(ori_img)
@@ -119,5 +124,5 @@ def post_preprocessing(sess, classmap, img_path , n_cluster=10,thres=0.5):
         xy.append([x,y])
 
     rects=kmeans(xy , n_cluster)
-
-    return rects
+    """
+    return binary_actmap

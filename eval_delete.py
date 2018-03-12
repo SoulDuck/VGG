@@ -261,8 +261,8 @@ if __name__ =='__main__':
     img_dir='../lesion_detection/hemo_30_crop'
     img_dir='/Users/seongjungkim/Desktop/hemo_30_crop'
     img_dir='../retina_original'
-    img_dir = '/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/'
     img_dir = './retina_750'
+    img_dir = '/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/'
 
     paths = glob.glob(os.path.join(img_dir , '*.png'))
     save_dir ='./activation_map_/blood_actmap'
@@ -270,7 +270,7 @@ if __name__ =='__main__':
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 
     thres=0.5
-    limit=None
+    limit=2
     for path in paths[:limit]:
         name=os.path.split(path)[1]
         print name
@@ -308,6 +308,12 @@ if __name__ =='__main__':
         binary_actmap[lower_indices] = 0
         binary_actmap[upper_indices] = 255
         binary_actmap = binary_actmap.reshape([h, w])
+
+        plt.imshow(binary_actmap)
+        plt.savefig('./tmp_0.5.png')
+        exit()
+
+
         # for cluster
         assert np.shape(ori_img)[:2] == np.shape(actmap)[:2], 'original images {}  actmap images {}'.format(np.shape(ori_img),
                                                                                                     np.shape(actmap))
@@ -318,16 +324,38 @@ if __name__ =='__main__':
             x = ind % w #
             xy.append([x,y])
 
-        rects=draw_contour.get_rect(ori_img,binary_actmap)
+
+
+
+        #draw rect
+        rects , contours_list =draw_contour.get_rect(ori_img,binary_actmap)
+        print rects
         fig = plt.figure()
         ax=fig.add_subplot(111)
         ax.imshow(ori_img)
-        for rect in rects:
+        for i,rect in enumerate(rects):
             x1,y1,w,h=rect
             rect=patches.Rectangle((x1,y1) , w, h , fill=False , edgecolor='r')
             ax.add_patch(rect)
+        plt.savefig(os.path.join(save_dir,name.replace('.png' ,'_drawRect'+'.png')))
+        plt.close()
+
+        #draw contours
+        plt.imshow(ori_img)
+        for i,contours in enumerate(contours_list):
+            if len(contours) < 10:
+                continue;
+            for contour in contours:
+
+                plt.scatter(x=contour[0][0] , y=contour[0][1] , edgecolors='r')
+            #rect=patches.Rectangle((x1,y1) , w, h , fill=False , edgecolor='r')
+            #ax.add_patch(rect)
         plt.savefig(os.path.join(save_dir,name.replace('.png' ,'_drawContour'+'.png')))
         plt.close()
+
+
+        #
+
 
         #save actmap , original , DrawImage , kmenas_Image
         #plt.imshow(actmap, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
