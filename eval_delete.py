@@ -283,7 +283,7 @@ if __name__ =='__main__':
         ori_img=np.asarray(ori_img) #resize([2000,2000], Image.ANTIALIAS))
         img=ori_img.reshape((1,)+np.shape(ori_img))
 
-        actmap = sess.run(classmap, feed_dict={x_: img})
+        actmap = sess.run(classmap, feed_dict={x_: img/255.})
         actmap = np.squeeze(actmap)
         actmap = np.asarray((map(lambda x: (x - x.min()) / (x.max() - x.min()), actmap)))  # -->why need this?
         h, w = np.shape(actmap)
