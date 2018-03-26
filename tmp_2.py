@@ -5,7 +5,7 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-img_dir='/home/mediwhale/PycharmProjects/vgg/delete_me'
+img_dir='/Volumes/Seagate Backup Plus Drive/data/fundus/retina_actmap/retina_original_actmap/test/'
 paths=glob.glob(os.path.join(img_dir , '*.png'))
 names = []
 
@@ -44,6 +44,22 @@ for name in names:
 
     plt.imsave(arr= image/255. ,fname = os.path.join(img_dir , name.replace('.png' , '_masked_actmap.png')))
 
+    print np.max(ori_img)
+    print np.max(image)
+    print np.shape(ori_img)
+    print np.shape(image)
+    ori_img=Image.fromarray(ori_img).convert('RGBA')
+    act_img=Image.fromarray(image.astype('uint8')).convert('RGBA')
+
+
+    plt.imsave(arr=ori_img, fname=os.path.join(img_dir, 'actmap_thres_test', '{}.png'.format('ori')))
+    plt.imsave(arr=act_img, fname=os.path.join(img_dir, 'actmap_thres_test', '{}.png'.format('act')))
+    for i in range(1,6):
+        overlay_img = Image.blend(ori_img, act_img, i*0.1)
+        plt.imsave(arr = overlay_img ,fname = os.path.join(img_dir  , 'actmap_thres_test' , '{}.png'.format(i)))
+        plt.imshow(overlay_img)
+        plt.show()
+    exit()
     #masked_imgs=masked_imgs.reshape([h,w,ch])
 
 

@@ -79,7 +79,7 @@ start=time.time()
 train_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0'
 
 #test_normalDir='../lesion_detection/bg_cropped_rois'
-test_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_1'
+test_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0/Test'
 
 #train_abnormalDir ='../lesion_detection/margin_crop_rois'
 train_abnormalDir ='../fundus_data/cropped_original_fundus_300x300/retina'
