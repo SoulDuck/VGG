@@ -298,8 +298,6 @@ if __name__ =='__main__':
         actmap=Image.open('delete_me.png').convert('RGB')
         os.remove('delete_me.png')
         actmap=np.asarray(actmap)
-
-        print np.shape(actmap)
         #plt.imshow(actmap, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
         actmap=copy.copy(actmap)
         actmap[:,:,2] = np.zeros(np.shape(actmap)[:2])
