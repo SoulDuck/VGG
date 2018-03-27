@@ -19,6 +19,7 @@ test_abnormalDir='../fundus_data/cropped_original_fundus_300x300/retina/Test/*.p
 
 
 train_nor=glob.glob(train_normalDir)
+print len(train_nor)
 test_nor=glob.glob(test_normalDir)
 train_abnor=glob.glob(train_abnormalDir)
 test_abnor=glob.glob(test_abnormalDir)
