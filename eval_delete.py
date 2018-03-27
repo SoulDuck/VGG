@@ -288,7 +288,7 @@ if __name__ =='__main__':
         img_h, img_w = ori_img.shape[:2]
 
         print 'Image Information name :{}  img shape :{}'.format( name  , np.shape(ori_img))
-        actmap = sess.run(classmap, feed_dict={x_: img})
+        actmap = sess.run(classmap, feed_dict={x_: img/255.})
         actmap = np.squeeze(actmap)
         actmap = np.asarray((map(lambda x: (x - x.min()) / (x.max() - x.min()), actmap)))  # -->why need this?
         overlay = cam.overlay(actmap, ori_img, save_path='tmp_overlay.png', factor=0.1)
