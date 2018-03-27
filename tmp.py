@@ -44,5 +44,3 @@ for name in names:
 
 assert len(actmap_testImg_paths) == len(ori_testImg_paths)
 print len(actmap_testImg_paths)
-
-#

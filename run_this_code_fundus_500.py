@@ -12,6 +12,13 @@ import random
 from PIL import Image
 import time
 
+
+"""
+여기서는 Normal VS Retina 을 학습시킨다.
+여기서는 Normal Vs Glaucoma 을 학습시킨다. Glaucoma 는 정상과 비정상을 잘 구별하기 위해 데이터를 좀 선별해야 한다 
+여기서는 Normal Vs Cataract 을 학습시킨다. Cataract 도 구별을 좀 해야 한다.
+
+"""
 parser =argparse.ArgumentParser()
 #parser.add_argument('--saves' , dest='should_save_model' , action = 'store_true')
 #parser.add_argument('--no-saves' , dest='should_save_model', action ='store_false')
