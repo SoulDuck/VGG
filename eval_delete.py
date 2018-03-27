@@ -270,8 +270,8 @@ if __name__ =='__main__':
     img_dir = './Test_Data/original_fundus_retina' # 2000 3000 test retina
     paths = glob.glob(os.path.join(img_dir , '*.png'))
     save_dir = './activation_maps/retina_300'
-    save_dir ='./activation_maps/retina_750'
     save_dir = './activation_maps/retina_ori'
+    save_dir ='./activation_maps/retina_750'
 
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 
