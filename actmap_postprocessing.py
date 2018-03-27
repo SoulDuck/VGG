@@ -20,6 +20,7 @@ print '# names : {}'.format(len(names))
 
 actmap_paths=[]
 ori_paths=[]
+save_dirname = 'postprocessed_images'
 for name in names:
     print name
     #get actmap image
@@ -42,7 +43,7 @@ for name in names:
         masked_img=np.reshape(masked_img , [h,w])
         image[:,:,i] = masked_img
 
-    plt.imsave(arr= image/255. ,fname = os.path.join(img_dir , name.replace('.png' , '_masked_actmap.png')))
+    #plt.imsave(arr= image/255. ,fname = os.path.join(img_dir , name.replace('.png' , '_masked_actmap.png')))
 
     print np.max(ori_img)
     print np.max(image)
@@ -51,15 +52,31 @@ for name in names:
     ori_img=Image.fromarray(ori_img).convert('RGBA')
     act_img=Image.fromarray(image.astype('uint8')).convert('RGBA')
 
+    act_img=np.asarray(act_img)
+    act_img = act_img.copy()
 
-    plt.imsave(arr=ori_img, fname=os.path.join(img_dir, 'actmap_thres_test', '{}.png'.format('ori')))
-    plt.imsave(arr=act_img, fname=os.path.join(img_dir, 'actmap_thres_test', '{}.png'.format('act')))
+    act_img[:, :, 2] = np.zeros(np.shape(image)[:2])
+    plt.imshow(act_img)
+    plt.show()
+    print np.max(act_img)
+    print np.shape(act_img)
+    exit()
+
+
+    plt.imsave(arr=ori_img, fname=os.path.join(img_dir, save_dirname, '{}_{}.png'.format(name,'ori')))
+    plt.imsave(arr=act_img, fname=os.path.join(img_dir, save_dirname, '{}_{}.png'.format(name,'act')))
+    overlay_img = Image.blend(ori_img, act_img, i*0.1)
+    plt.imsave(arr = overlay_img ,fname = os.path.join(img_dir  , save_dirname , '{}_{}.png'.format(name , 'blend')))
+
+    """
+    
     for i in range(1,6):
         overlay_img = Image.blend(ori_img, act_img, i*0.1)
         plt.imsave(arr = overlay_img ,fname = os.path.join(img_dir  , 'actmap_thres_test' , '{}.png'.format(i)))
         plt.imshow(overlay_img)
         plt.show()
     exit()
+    """
     #masked_imgs=masked_imgs.reshape([h,w,ch])
 
 

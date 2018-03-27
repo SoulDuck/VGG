@@ -197,7 +197,7 @@ def fn(model_path, strides,pool_indices,label):
     classmap = tf.reshape(classmap, [-1, im_height, im_width], name='classmap_reshape')
 
     saver=tf.train.Saver()
-    saver.save(sess,'./models/vgg_11/blood_and_normal/model')
+    saver.save(sess,'./models/vgg_11/retina_and_normal/model')
 
 
     return classmap ,sess ,x_
@@ -265,10 +265,10 @@ if __name__ =='__main__':
     img_dir='../retina_original' # 2000,3000
     img_dir ='./retina_750' # 750 750
     img_dir = './hemo_30'  # hemo labeled by Dr.Lim
-
+    img_dir = '/Users/seongjungkim/PycharmProjects/fundus_data/Test'
 
     paths = glob.glob(os.path.join(img_dir , '*.png'))
-    save_dir ='./activation_map_/blood_actmap'
+    save_dir ='./activation_maps/retina_300'
 
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 
@@ -276,7 +276,6 @@ if __name__ =='__main__':
     limit=None
     for path in paths[:limit]:
         name=os.path.split(path)[1]
-        print name
         #ori_img=np.asarray(Image.open(path))
         ori_img=Image.open(path).convert('RGB')
         if ori_img.size[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
@@ -284,112 +283,67 @@ if __name__ =='__main__':
             ori_img=ori_img.resize( [int(ori_img.size[0]*pct) , int(ori_img.size[1]*pct)])
         ori_img=np.asarray(ori_img) #resize([2000,2000], Image.ANTIALIAS))
         img=ori_img.reshape((1,)+np.shape(ori_img))
+        img_h, img_w = ori_img.shape[:2]
 
-        actmap = sess.run(classmap, feed_dict={x_: img/255.})
+        print 'Image Information name :{}  img shape :{}'.format( name  , np.shape(ori_img))
+        actmap = sess.run(classmap, feed_dict={x_: img})
         actmap = np.squeeze(actmap)
         actmap = np.asarray((map(lambda x: (x - x.min()) / (x.max() - x.min()), actmap)))  # -->why need this?
-        h, w = np.shape(actmap)
+        overlay = cam.overlay(actmap, ori_img, save_path='tmp_overlay.png', factor=0.1)
 
-        # erase value out ot circle
-        mask=[]
-        img = copy.copy(ori_img)
+        actmap = plt.cm.jet(actmap)
+        plt.imsave(fname='delete_me.png' , arr = actmap)
+        actmap=Image.open('delete_me.png').convert('RGB')
+        os.remove('delete_me.png')
+        actmap=np.asarray(actmap)
 
-        img.setflags(write=True)
-        lower_indices=np.where([np.sum(img , axis=2).reshape([-1]) < 5])[1]
-        upper_indices = np.where([np.sum(img, axis=2).reshape([-1]) >= 5])[1]
-        mask = np.sum(img , axis=2)
-        mask=mask.reshape([-1])
-        mask[lower_indices] = 0
-        mask[upper_indices] = 1
-
-        #copy actmap to binary actmap
-        binary_actmap = copy.copy(actmap)
-        binary_actmap = binary_actmap .reshape([-1])
-        binary_actmap = binary_actmap * mask
-        lower_indices = np.where([binary_actmap < thres])[1]
-        upper_indices = np.where([binary_actmap >= thres])[1]
-        binary_actmap[lower_indices] = 0
-        binary_actmap[upper_indices] = 1
-        binary_actmap = binary_actmap.reshape([h, w])
-
-
-
-        # for cluster
-        assert np.shape(ori_img)[:2] == np.shape(actmap)[:2], 'original images {}  actmap images {}'.format(np.shape(ori_img),
-                                                                                                    np.shape(actmap))
-        h,w,ch=np.shape(ori_img)
-        xy=[]
-        for ind in upper_indices[:]:
-            y = ind / w # 몇 줄에 위치 있는지?
-            x = ind % w #
-            xy.append([x,y])
-
-        #draw rect
-        rects , contours_list =draw_contour.get_rect(ori_img,binary_actmap)
-        fig = plt.figure()
-        ax=fig.add_subplot(111)
-        ax.imshow(ori_img)
-        for i,rect in enumerate(rects):
-            x1,y1,w,h=rect
-            rect=patches.Rectangle((x1,y1) , w, h , fill=False , edgecolor='r')
-            ax.add_patch(rect)
-        plt.savefig(os.path.join(save_dir,name.replace('.png' ,'_drawRect'+'.png')))
-        plt.close()
-
-
-        #Masked Image
-        masked_img = copy.copy(ori_img)
-        for i in range(3):
-            masked_img[:,:,i]=ori_img[:,:,i]*binary_actmap
-        plt.imsave(os.path.join(save_dir,name.replace('.png' ,'_masked'+'.png')) , masked_img)
-        plt.close()
-
-        """
-        #draw contours
-        plt.imshow(ori_img)
-        for i,contours in enumerate(contours_list):
-            if len(contours) < 10:
-                continue;
-            for contour in contours:
-                plt.scatter(x=contour[0][0] , y=contour[0][1] , edgecolors='r')
-            #rect=patches.Rectangle((x1,y1) , w, h , fill=False , edgecolor='r')
-            #ax.add_patch(rect)
-        plt.savefig(os.path.join(save_dir,name.replace('.png' ,'_drawContour'+'.png')))
-        plt.close()
-        """
-        #save actmap , original , DrawImage , kmenas_Image
+        print np.shape(actmap)
         #plt.imshow(actmap, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
+        actmap=copy.copy(actmap)
+        actmap[:,:,2] = np.zeros(np.shape(actmap)[:2])
+        plt.imsave(arr=actmap , fname =os.path.join(save_dir,'{}_actmap.png'.format(name)))
+        plt.show()
+        plt.imsave(arr=ori_img, fname =os.path.join(save_dir,'{}_ori.png'.format(name)))
+        plt.show()
 
-        cam.overlay(actmap, ori_img ,save_path=os.path.join(save_dir,name))
-        xy=np.asarray(xy)
-        np.save(os.path.join(save_dir , 'xy_'+name) , xy)
+        # Mask
+        flatted_actmap_r=actmap[:, :, 0].reshape(-1) #
+        actmap_r_indices=np.where([flatted_actmap_r > 50])[1] #
 
-
-    paths=glob.glob(os.path.join(save_dir , '*.npy'))
-    for path in paths[:limit]:
-        name=os.path.split(path)[1]
-        name=os.path.splitext(name)[0]
-        xy=np.load(path)
-        print xy
-        tf.reset_default_graph()
-        rects=kmeans.kmeans(xy , 10)
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
+        flatted_actmap_g = actmap[:, :, 1].reshape(-1)
+        actmap_g_indices = np.where([flatted_actmap_g > 50])[1]
 
 
-        img=Image.open(os.path.join(save_dir , name).replace('xy_','').replace(".png","_ori.png"))
-        if img.size[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
-            pct = 2000 / float(img.size[0])
-            img=img.resize( [int(img.size[0]*pct) , int(img.size[1]*pct)])
-        ax.imshow(img)
-        for rect in rects:
-            x1,y1,x2,y2=rect
-            rect=patches.Rectangle((x1,y1) , x2-x1, y2-y1 , fill=False , edgecolor='r')
-            ax.add_patch(rect)
-        plt.savefig(os.path.join(save_dir,name).replace('.png' , '_kmeans'+'.png').replace('xy_',''))
-        plt.close()
-        #plt.close()
+        # indices_rg 의 목표는 actmap과 혼합된 이미지를 보존하는 것이다
+        indices_rg = np.hstack([actmap_r_indices ,actmap_g_indices])
+        indices_rg = np.asarray(list(set(indices_rg)))
 
+        # Get original image pixels from indices_rg
+        flatted_ori_img=ori_img.reshape([-1,3])
+        flatted_ori_img=flatted_ori_img.copy()
+        flatted_ori_img[indices_rg]=np.array([0,0,0]) ##중요
+        # Save Masked original image
+        masked_ori_img=flatted_ori_img.reshape([img_h,img_w,3])
 
+        # Get rev_indices_rg
+        rev_indices_rg=set(range(img_h*img_w))
+        rev_indices_rg=rev_indices_rg.difference(indices_rg)
+        assert img_h*img_w==len(rev_indices_rg) + len(indices_rg)
 
+        # for getting rid of margin , extract indices
+        grey_ori_img=np.sum(ori_img , axis=2)
+        flatted_grey_ori_img=grey_ori_img.reshape(-1)
+        maring_indices=set(np.where([flatted_grey_ori_img< 10])[1])
+        rev_indices_rg = list( maring_indices | rev_indices_rg )
 
+        # Get Part of actmap from rev_indices_rg
+        flatted_overlay = overlay.reshape([-1, 3])
+        flatted_overlay= flatted_overlay.copy()
+        flatted_overlay[rev_indices_rg] = np.array([0, 0, 0])  ##중요
+
+        # Save Masked Actmap image
+        masked_actmap=flatted_overlay.reshape([img_h,img_w,3])
+        blended_image = masked_actmap + masked_ori_img
+        plt.imsave(arr=blended_image, fname =os.path.join(save_dir,'{}_blend.png'.format(name)))
+
+        exit()

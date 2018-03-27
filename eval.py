@@ -64,7 +64,6 @@ def eval(model_path ,test_images , batch_size  , save_root_folder):
     cam_ = tf.get_default_graph().get_tensor_by_name('classmap:0')
     cam.eval_inspect_cam(sess, cam_, top_conv, test_images[:], x_, y_, is_training_,
                                                     logits,save_root_folder)
-
     """
     try:
         print np.shape(vis_abnormal)

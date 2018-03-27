@@ -52,19 +52,23 @@ def inspect_cam(sess, cam , top_conv ,test_imgs, test_labs, global_step , num_im
             plt.close();
 
 
-def overlay(actmap , ori_img ,save_path):
+def overlay(actmap , ori_img ,save_path , factor):
+    assert factor <= 1 and factor >= 0
     cmap = plt.cm.jet
-    plt.imsave('tmp.png', cmap(actmap))
+    plt.imsave(fname='tmp.png', arr=cmap(actmap))
     cam_img=Image.open('tmp.png')
     #np_cam_img=np.asarray(cam_img).astype('uint8') #img 2 numpy
     ori_img=Image.fromarray(ori_img.astype('uint8')).convert("RGBA")
-    overlay_img = Image.blend(ori_img, cam_img, 0.5)
+    overlay_img = Image.blend(ori_img, cam_img, factor).convert('RGB')
     plt.imshow(overlay_img)
     plt.imsave(save_path, overlay_img)
     save_dir,name=os.path.split(save_path)
     name=os.path.splitext(name)[0]+'_ori.png'
     plt.imsave(os.path.join(save_dir ,name), ori_img)
     plt.close();
+    os.remove('tmp.png')
+
+    return np.asarray(overlay_img)
     """
     if test_imgs.shape[-1] == 1:  # grey
         plt.imshow(1 -img.reshape([test_imgs.shape[1], test_imgs.shape[2]]))
