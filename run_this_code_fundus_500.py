@@ -97,7 +97,7 @@ test_abnormalDir='../fundus_data/cropped_original_fundus_300x300/glaucoma/test'
 
 
 
-test_normal_imgs , test_normal_labs=_load_images_labels(test_normalDir,NORMAL ,172 , True)
+test_normal_imgs , test_normal_labs=_load_images_labels(test_normalDir,NORMAL ,809 , True)
 train_normal_imgs , train_normal_labs=_load_images_labels(train_normalDir,NORMAL ,4000, True)
 
 test_abnormal_imgs , test_abnormal_labs=_load_images_labels(test_abnormalDir,ABNORMAL ,None , False)
