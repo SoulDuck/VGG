@@ -5,5 +5,5 @@ save_dir = '/home/mediwhale/PycharmProjects/fundus_data/cropped_original_fundus/
 indices=random.sample(range(len(paths)) , 908)
 
 for i in indices:
-    name=os.name.split(paths[i])[1]
+    name=os.path.split(paths[i])[1]
     shutil.move(src=paths[i] , dst= os.path.join(save_dir , name))
