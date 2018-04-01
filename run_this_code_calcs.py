@@ -105,7 +105,8 @@ train_normal_labs=np.zeros([len(train_normal_imgs) , 2 ])
 train_abnormal_labs=np.zeros([len(train_abnormal_imgs) , 2 ])
 test_normal_labs=np.zeros([len(test_normal_imgs) , 2 ])
 test_abnormal_labs=np.zeros([len(test_abnormal_imgs) , 2 ])
-
+train_normal_imgs , test_normal_imgs , train_abnormal_imgs , test_abnormal_imgs=\
+    map(lambda imgs: imgs.reshape([-1,300,300,1]) , [train_normal_imgs , test_normal_imgs , train_abnormal_imgs , test_abnormal_imgs])
 train_normal_labs[:,0]=1
 test_normal_labs[:,0]=1
 train_abnormal_labs[:,1]=1
