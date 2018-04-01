@@ -95,19 +95,27 @@ test_abnormalDir='../fundus_data/cropped_original_fundus_300x300/retina/Test'
 train_abnormalDir ='../fundus_data/cropped_original_fundus_300x300/glaucoma'
 test_abnormalDir='../fundus_data/cropped_original_fundus_300x300/glaucoma/test'
 
+root_dir='/home/mediwhale/oct_harddisk/'
+train_normal_imgs=np.load(os.path.join(root_dir ,'train_normal_img_300.npy'))
+train_abnormal_imgs=np.load(os.path.join(root_dir ,'train_abnormal_img_300.npy'))
+test_normal_imgs=np.load(os.path.join(root_dir ,'test_normal_img_300.npy'))
+test_abnormal_imgs=np.load(os.path.join(root_dir ,'test_abnormal_img_300.npy'))
 
+train_normal_labs=np.zeros([len(train_normal_imgs) , 2 ])
+train_abnormal_labs=np.zeros([len(train_abnormal_imgs) , 2 ])
+test_normal_labs=np.zeros([len(test_normal_imgs) , 2 ])
+test_abnormal_labs=np.zeros([len(test_abnormal_imgs) , 2 ])
 
-test_normal_imgs , test_normal_labs=_load_images_labels(test_normalDir,NORMAL ,809 , True)
-train_normal_imgs , train_normal_labs=_load_images_labels(train_normalDir,NORMAL ,4000, True)
-
-test_abnormal_imgs , test_abnormal_labs=_load_images_labels(test_abnormalDir,ABNORMAL ,None , False)
-train_abnormal_imgs , train_abnormal_labs=_load_images_labels(train_abnormalDir,ABNORMAL , None , False)
-
+train_normal_labs[:,0]=1
+test_normal_labs[:,0]=1
+train_abnormal_labs[:,1]=1
+test_abnormal_labs[:,1]=1
 
 print np.shape(test_normal_imgs)
 print np.shape(train_normal_imgs)
 print np.shape(test_abnormal_imgs)
 print np.shape(train_abnormal_imgs)
+
 train_imgs=np.vstack([train_normal_imgs , train_abnormal_imgs])
 train_labs=np.vstack([train_normal_labs , train_abnormal_labs])
 train_normal_imgs=None
