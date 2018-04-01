@@ -141,7 +141,7 @@ print h,w,ch
 n_classes=np.shape(train_labs)[-1]
 print 'the # classes : {}'.format(n_classes)
 x_ , y_ , cam_ind, lr_ , is_training = model.define_inputs(shape=[None, h ,w, ch ] , n_classes=n_classes )
-
+print x
 
 
 
