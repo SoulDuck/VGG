@@ -308,6 +308,7 @@ if __name__ =='__main__':
         #ori_img=np.asarray(Image.open(path))
         name=names[i]
         print np.shape(ori_img)
+        print ori_img.size
         if ori_img.size[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
             pct = 2000 / float(ori_img.size[0])
             ori_img=ori_img.resize( [int(ori_img.size[0]*pct) , int(ori_img.size[1]*pct)])
