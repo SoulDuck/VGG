@@ -203,7 +203,7 @@ def  fn(model_path, strides,pool_indices,label):
     sess=tf.Session()
     saver = tf.train.import_meta_graph(meta_graph_or_file=model_path + '.meta')
     saver.restore(sess, model_path)
-    x_ = tf.placeholder(tf.float32, shape=(1, None, None, 1), name='input')
+    x_ = tf.placeholder(tf.float32, shape=(1, None, None, 3), name='input')
 
 
     graph=tf.get_default_graph()
