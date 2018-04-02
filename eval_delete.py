@@ -341,7 +341,9 @@ if __name__ =='__main__':
         actmap=np.asarray(actmap)
         #plt.imshow(actmap, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
         actmap=copy.copy(actmap)
-        actmap[:,:,2] = np.zeros(np.shape(actmap)[:2])
+
+        actmap[:, :, 0] = np.zeros(np.shape(actmap)[:2]) # Red 을 지운다
+        actmap[:, :, 1] = np.zeros(np.shape(actmap)[:2]) # Green 을 지운다
         plt.imsave(arr=actmap , fname =os.path.join(save_dir,'{}_actmap.png'.format(name)))
         plt.show()
         plt.imsave(arr=ori_img, fname =os.path.join(save_dir,'{}_ori.png'.format(name)))
@@ -350,7 +352,6 @@ if __name__ =='__main__':
         # Mask
         flatted_actmap_b=actmap[:, :, 2].reshape(-1) #
         actmap_b_indices=np.where([flatted_actmap_b > 50])[1] # 왜 50 이상만 뽑는거지? rgb
-        print actmap_b_indices
         #flatted_actmap_g = actmap[:, :, 1].reshape(-1)
         #actmap_g_indices = np.where([flatted_actmap_g > 50])[1]
 
@@ -361,8 +362,6 @@ if __name__ =='__main__':
         # Get original image pixels from indices_b
         flatted_ori_img=ori_img.reshape([-1,3])
         flatted_ori_img=flatted_ori_img.copy()
-        print np.shape(flatted_ori_img)
-        print indices_b
         flatted_ori_img[indices_b]=np.array([0,0,0]) #
 
         # Save Masked original image
