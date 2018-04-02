@@ -350,6 +350,7 @@ if __name__ =='__main__':
         # Mask
         flatted_actmap_b=actmap[:, :, 2].reshape(-1) #
         actmap_b_indices=np.where([flatted_actmap_b > 50])[1] # 왜 50 이상만 뽑는거지? rgb
+        print actmap_b_indices
         #flatted_actmap_g = actmap[:, :, 1].reshape(-1)
         #actmap_g_indices = np.where([flatted_actmap_g > 50])[1]
 
