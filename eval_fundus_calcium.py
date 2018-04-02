@@ -306,7 +306,6 @@ if __name__ =='__main__':
      '574cafd5e62de139b2739a4431a0e5']
     for i,ori_img in enumerate(test_imgs):
         #ori_img=np.asarray(Image.open(path))
-        ori_img=Image.open(path).convert('RGB')
         name=names[i]
         if ori_img.size[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
             pct = 2000 / float(ori_img.size[0])
