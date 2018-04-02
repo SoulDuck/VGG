@@ -247,26 +247,21 @@ for step in range(max_iter):
             val_acc_mean.append(val_acc)
             val_loss_mean.append(val_loss)
             pred_all.append(pred)
-        val_acc_mean=np.mean(np.asarray(val_acc_mean ))
-        val_acc_mean=np.mean(np.asarray(val_acc_mean ))
+        val_acc_mean=np.mean(np.asarray(val_acc_mean))
+        val_acc_mean=np.mean(np.asarray(val_acc_mean))
         val_loss_mean=np.mean(np.asarray(val_loss_mean))
-
         if val_acc_mean > max_acc: #best acc
             max_acc=val_acc_mean
             print 'max acc : {}'.format(max_acc)
-
             best_acc_folder=os.path.join( best_acc_root, 'step_{}_acc_{}'.format(step , max_acc))
             os.mkdir(best_acc_folder)
-            saver.save(sess=sess,
-                       save_path=os.path.join(best_acc_folder  , 'model'))
-
+            saver.save(sess=sess,save_path=os.path.join(best_acc_folder  , 'model'))
         if val_loss_mean < min_loss: # best loss
             min_loss = val_loss_mean
             print 'min loss : {}'.format(min_loss)
             best_loss_folder = os.path.join(best_loss_root, 'step_{}_loss_{}'.format(step, min_loss ))
             os.mkdir(best_loss_folder)
-            saver.save(sess=sess,
-                       save_path=os.path.join(best_loss_folder, 'model'))
+            saver.save(sess=sess,save_path=os.path.join(best_loss_folder, 'model'))
         print 'Learning Rate : {} '.format(learning_rate)
         print 'Train acc : {} Train loss : {}'.format( train_acc , train_loss)
         print 'validation acc : {} loss : {}'.format( val_acc_mean, val_loss_mean )
@@ -274,7 +269,6 @@ for step in range(max_iter):
         model_path=os.path.join(models_path, str(step))
         os.mkdir(model_path) # e.g) models/fundus_300/100/model.ckpt or model.meta
         #saver.save(sess=sess,save_path=os.path.join(model_path,'model' , folder_name))
-
         """image augmentation debug code"""
         """
         aug_images_train = tf.get_default_graph().get_tensor_by_name('aug_:0')

@@ -62,8 +62,7 @@ def eval(model_path ,test_images , batch_size  , save_root_folder):
     top_conv = tf.get_default_graph().get_tensor_by_name('top_conv:0')
     logits = tf.get_default_graph().get_tensor_by_name('logits:0')
     cam_ = tf.get_default_graph().get_tensor_by_name('classmap:0')
-    cam.eval_inspect_cam(sess, cam_, top_conv, test_images[:], x_, y_, is_training_,
-                                                    logits,save_root_folder)
+    cam.eval_inspect_cam(sess, cam_, top_conv, test_images[:], x_, y_, is_training_,logits,save_root_folder)
     """
     try:
         print np.shape(vis_abnormal)
@@ -92,15 +91,11 @@ def eval(model_path ,test_images , batch_size  , save_root_folder):
     print 'pred sample ',predList[:1]
     return np.asarray(predList)
 if __name__ =='__main__':
-
     #test_images = Image.open('/Users/seongjungkim/PycharmProjects/VGG/fundus_300/1_L.jpg')#.convert(RGB)
     #test_images=test_images.resize((299, 299), Image.ANTIALIAS)
-
     test_images=np.load('/Users/seongjungkim/PycharmProjects/VGG/fundus_300/russian_eyes.npy')
     print np.shape(test_images)
     test_images=np.reshape(test_images,[-1,299,299,3])
     model_path = '/Users/seongjungkim/PycharmProjects/VGG/models/ensemble/step_5900_acc_0.841071486473/model'
     pred=eval(model_path, test_images,batch_size =1 , save_root_folder= './activation_map_/russian_eye_actmap')
-
     print np.shape(pred)
-
