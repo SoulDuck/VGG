@@ -312,6 +312,10 @@ if __name__ =='__main__':
         if np.shape(ori_img)[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
             pct = 2000 / float(np.shape(ori_img)[0])
             ori_img=ori_img.resize( [int(np.shape(ori_img)[0]*pct) , int(np.shape(ori_img)[1]*pct)])
+        plt.imsave(fname='delete_me.png',arr=ori_img)
+        ori_img=Image.open('delete_me.png').convert('RGB')
+        os.remove('delete_me.png')
+
         ori_img=np.asarray(ori_img) #resize([2000,2000], Image.ANTIALIAS))
         img=ori_img.reshape((1,)+np.shape(ori_img)+(1,))
         img_h, img_w = ori_img.shape[:2]
@@ -338,38 +342,38 @@ if __name__ =='__main__':
         plt.show()
 
         # Mask
-        flatted_actmap_b=actmap[:, :, 2].reshape(-1) #
-        actmap_b_indices=np.where([flatted_actmap_b > 50])[1] # 왜 50 이상만 뽑는거지? rgb
+        flatted_actmap_r=actmap[:, :, 2].reshape(-1) #
+        actmap_r_indices=np.where([flatted_actmap_r > 50])[1] # 왜 50 이상만 뽑는거지? rgb
         #flatted_actmap_g = actmap[:, :, 1].reshape(-1)
         #actmap_g_indices = np.where([flatted_actmap_g > 50])[1]
 
         # indices_rg 의 목표는 actmap과 혼합된 이미지를 보존하는 것이다 # rg = Red Green 을 뜻한다.
-        indices_b = np.hstack([actmap_b_indices]) # 만약 초록색을 추가하기 원한다면 actmap_g_indices 이걸 추가하면 된다.
-        indices_b = np.asarray(list(set(indices_b)))
+        indices_r = np.hstack([actmap_r_indices]) # 만약 초록색을 추가하기 원한다면 actmap_g_indices 이걸 추가하면 된다.
+        indices_r = np.asarray(list(set(indices_r)))
 
         # Get original image pixels from indices_b
         flatted_ori_img=ori_img.reshape([-1])
         flatted_ori_img=flatted_ori_img.copy()
-        flatted_ori_img[indices_b]=0 #
+        flatted_ori_img[indices_r]=0 #
 
         # Save Masked original image
         masked_ori_img = flatted_ori_img.reshape([img_h, img_w])
 
         # Get rev_indices_rg
-        rev_indices_b=set(range(img_h*img_w))
-        rev_indices_b=rev_indices_b.difference(indices_b)
-        assert img_h*img_w==len(rev_indices_b) + len(indices_b)
+        rev_indices_r=set(range(img_h*img_w))
+        rev_indices_r=rev_indices_r.difference(indices_r)
+        assert img_h*img_w==len(rev_indices_r) + len(indices_r)
 
         # For getting rid of margin , extract indices
         grey_ori_img=ori_img
         flatted_grey_ori_img=grey_ori_img.reshape(-1)
-        maring_indices=set(np.where([flatted_grey_ori_img< 10])[1])
-        rev_indices_b = list( maring_indices | rev_indices_b )
+        maring_indices=set(np.where([flatted_grey_ori_img < 10])[1])
+        rev_indices_r = list( maring_indices | rev_indices_r )
 
         # Get Part of actmap from rev_indices_rg
         flatted_overlay = overlay.reshape([-1, 3])
         flatted_overlay= flatted_overlay.copy()
-        flatted_overlay[rev_indices_b] = np.array([0, 0, 0])  ##중요
+        flatted_overlay[rev_indices_r] = np.array([0, 0, 0])  ##중요
 
         # Save Masked Actmap image
         masked_actmap=flatted_overlay.reshape([img_h,img_w,3])
