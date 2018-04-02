@@ -317,7 +317,7 @@ if __name__ =='__main__':
         os.remove('delete_me.png')
 
         ori_img=np.asarray(ori_img) #resize([2000,2000], Image.ANTIALIAS))
-        img=ori_img.reshape((1,)+np.shape(ori_img)+(1,))
+        img=ori_img.reshape((1,)+np.shape(ori_img)+)
         img_h, img_w = ori_img.shape[:2]
 
         print 'Image Information name :{}  img shape :{}'.format( name  , np.shape(ori_img))
