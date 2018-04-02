@@ -337,7 +337,7 @@ if __name__ =='__main__':
         actmap=cmap(actmap)
         plt.imsave(fname='delete_me.png',arr=actmap)
         actmap=Image.open('delete_me.png').convert('RGB')
-        #os.remove('delete_me.png')
+        os.remove('delete_me.png')
         actmap=np.asarray(actmap)
         #plt.imshow(actmap, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
         actmap=copy.copy(actmap)
@@ -360,6 +360,7 @@ if __name__ =='__main__':
         # Get original image pixels from indices_b
         flatted_ori_img=ori_img.reshape([-1,3])
         flatted_ori_img=flatted_ori_img.copy()
+        print np.shape(flatted_ori_img)
         flatted_ori_img[indices_b]=np.array([0,0,0]) #
 
         # Save Masked original image
