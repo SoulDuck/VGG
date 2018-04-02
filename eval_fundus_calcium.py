@@ -203,7 +203,7 @@ def fn(model_path, strides,pool_indices,label):
     sess=tf.Session()
     saver = tf.train.import_meta_graph(meta_graph_or_file=model_path + '.meta')
     saver.restore(sess, model_path)
-    x_ = tf.placeholder(tf.float32, shape=(1, None, None, 3), name='input')
+    x_ = tf.placeholder(tf.float32, shape=(1, None, None, 1), name='input')
 
 
     graph=tf.get_default_graph()
@@ -292,35 +292,27 @@ if __name__ =='__main__':
     bg_test_imgs = None
 
     #test_images=np.reshape(test_images,[-1,299,299,3])
-    model_path = './models/fundus_500/normal_blood/19/best_acc/step_1300_acc_0.933333396912/model'
-    model_path='./models/vgg_11/step_20600_acc_0.963333308697/model'
-    model_path = './models/vgg_11/step_41900_acc_0.900000035763/model'
+    model_path = './models/vgg_11/step_41900_acc_0.900000035763/model' #calcium score
 
     #pred=eval(model_path, test_imgs[:],batch_size =1 ,save_root_folder='./activation_map_/blood')
-    img_dir='../lesion_detection/hemo_30_crop'
-    img_dir='/Users/seongjungkim/Desktop/hemo_30_crop'
-    img_dir = '/Volumes/Seagate Backup Plus Drive/data/fundus/retina_750/'
-    img_dir = '../fundus_data/test_set_retina' # 250 250
-    img_dir='../retina_original' # 2000,3000
-    img_dir ='./retina_750' # 750 750
-    img_dir = './hemo_30'  # hemo labeled by Dr.Lim
-    img_dir = './Test_Data/cropped_margin_750_retina'  # 750 750 test retina disease
-    img_dir = './Test_Data/cropped_margin_300_retina'  # 750 750 test retina disease
     img_dir = './Test_Data/original_fundus_retina' # 2000 3000 test retina disease
-    paths = glob.glob(os.path.join(img_dir , '*.png'))
 
-    save_dir ='./activation_maps/retina_750'
-    save_dir = './activation_maps/retina_300'
+
+    test_imgs=np.load('./Test_Data/calc_fundus/calc_fundus')
     save_dir = './activation_maps/retina_ori'
 
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 
     thres=0.5
     limit=None
-    for path in paths[:limit]:
-        name=os.path.split(path)[1]
+    names=['fa1165ef5e41c9340947e050a66672', '491d3d79b91cdac31dfbf271826a28', '0fc4f760372e971dd864a6e720def9',
+     '1deb76ff75c8e47f9a1232c76b2f1e', 'd7627c54d4ab06584ff40f0f1bb975', '935ccc4b031ab8bc9f1522267e9aa7',
+     '61faea6f5be98a7b161f56420e35d1', 'c946a89832c42eb3e99fa81ffd5409', '643a9bb64730adf1e21855456551e5',
+     '574cafd5e62de139b2739a4431a0e5']
+    for i,ori_img in enumerate(test_imgs):
         #ori_img=np.asarray(Image.open(path))
         ori_img=Image.open(path).convert('RGB')
+        name=names[i]
         if ori_img.size[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
             pct = 2000 / float(ori_img.size[0])
             ori_img=ori_img.resize( [int(ori_img.size[0]*pct) , int(ori_img.size[1]*pct)])
