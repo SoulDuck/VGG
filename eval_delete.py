@@ -335,7 +335,7 @@ if __name__ =='__main__':
         overlay = cam.overlay(actmap, ori_img, save_path='tmp_overlay.png', factor=0.1)
         cmap=reverse_colourmap(plt.cm.jet)
         actmap=cmap(actmap)
-        plt.imsave('delete_me.png',actmap)
+        plt.imsave(fname='delete_me.png',arr=actmap)
         print np.shape(actmap)
         actmap = plt.cm.jet(actmap)
         plt.imsave(fname='delete_me.png' , arr = actmap)
