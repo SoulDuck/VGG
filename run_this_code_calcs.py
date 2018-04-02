@@ -90,23 +90,19 @@ test_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0/Test'
 
 #train_abnormalDir ='../lesion_detection/margin_crop_rois'
 #test_abnormalDir='../lesion_detection/blood_cropped_rois'
-train_abnormalDir ='../fundus_data/cropped_original_fundus_300x300/retina'
-test_abnormalDir='../fundus_data/cropped_original_fundus_300x300/retina/Test'
-train_abnormalDir ='../fundus_data/cropped_original_fundus_300x300/glaucoma'
-test_abnormalDir='../fundus_data/cropped_original_fundus_300x300/glaucoma/test'
 
-root_dir='/home/mediwhale/oct_harddisk/'
-train_normal_imgs=np.load(os.path.join(root_dir ,'train_normal_img_500.npy'))
-train_abnormal_imgs=np.load(os.path.join(root_dir ,'train_abnormal_img_500.npy'))
-test_normal_imgs=np.load(os.path.join(root_dir ,'test_normal_img_500.npy'))
-test_abnormal_imgs=np.load(os.path.join(root_dir ,'test_abnormal_img_500.npy'))
+root_dir='/home/mediwhale-5/PythonProjects/vgg/Test_Data/calc_fundus'
+train_normal_imgs=np.load(os.path.join(root_dir ,'train_normal_img_300.npy'))
+train_abnormal_imgs=np.load(os.path.join(root_dir ,'train_abnormal_img_300.npy'))
+test_normal_imgs=np.load(os.path.join(root_dir ,'test_normal_img_300.npy'))
+test_abnormal_imgs=np.load(os.path.join(root_dir ,'test_abnormal_img_300.npy'))
 
 train_normal_labs=np.zeros([len(train_normal_imgs) , 2 ])
 train_abnormal_labs=np.zeros([len(train_abnormal_imgs) , 2 ])
 test_normal_labs=np.zeros([len(test_normal_imgs) , 2 ])
 test_abnormal_labs=np.zeros([len(test_abnormal_imgs) , 2 ])
 train_normal_imgs , test_normal_imgs , train_abnormal_imgs , test_abnormal_imgs=\
-    map(lambda imgs: imgs.reshape([-1,500,500,1]) , [train_normal_imgs , test_normal_imgs , train_abnormal_imgs , test_abnormal_imgs])
+    map(lambda imgs: imgs.reshape([-1,300,300,1]) , [train_normal_imgs , test_normal_imgs , train_abnormal_imgs , test_abnormal_imgs])
 train_normal_labs[:,0]=1
 test_normal_labs[:,0]=1
 train_abnormal_labs[:,1]=1
