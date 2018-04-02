@@ -292,7 +292,7 @@ if __name__ =='__main__':
     bg_test_imgs = None
 
     #test_images=np.reshape(test_images,[-1,299,299,3])
-    model_path = './models/vgg_11/vgg_11_Calc_N_VS_ABN_no_BN_AUG/0/best_acc/step_4000_acc_0.641666710377/model' #calcium score
+    model_path = './models/vgg_11_Calc_N_VS_ABN_no_BN_AUG/0/best_acc/step_4000_acc_0.641666710377/model' #calcium score
     test_imgs=np.load('./Test_Data/calc_fundus/train_abnormal_img_300.npy')
     save_dir = './activation_maps/calc_fundus_300_ori'
 
