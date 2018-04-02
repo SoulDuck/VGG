@@ -293,7 +293,7 @@ if __name__ =='__main__':
 
     #test_images=np.reshape(test_images,[-1,299,299,3])
     model_path = './models/vgg_11_Calc_N_VS_ABN_no_BN_AUG/0/best_acc/step_4000_acc_0.641666710377/model' #calcium score
-    test_imgs=np.load('./Test_Data/calc_fundus/train_abnormal_img_300.npy')
+    test_imgs=np.load('./Test_Data/calc_fundus/test_abnormal_img_300.npy')
     save_dir = './activation_maps/calc_fundus_300_ori'
 
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
