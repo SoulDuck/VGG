@@ -372,5 +372,5 @@ if __name__ =='__main__':
 
         # Save Masked Actmap image
         masked_actmap=flatted_overlay.reshape([img_h,img_w,3])
-        blended_image = masked_actmap + masked_ori_img
+        blended_image = masked_actmap[:,:,2] + masked_ori_img
         plt.imsave(arr=blended_image, fname =os.path.join(save_dir,'{}_blend.png'.format(name)))
