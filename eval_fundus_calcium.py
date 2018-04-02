@@ -304,6 +304,7 @@ if __name__ =='__main__':
      '1deb76ff75c8e47f9a1232c76b2f1e', 'd7627c54d4ab06584ff40f0f1bb975', '935ccc4b031ab8bc9f1522267e9aa7',
      '61faea6f5be98a7b161f56420e35d1', 'c946a89832c42eb3e99fa81ffd5409', '643a9bb64730adf1e21855456551e5',
      '574cafd5e62de139b2739a4431a0e5']
+    print np.shape(test_imgs)
     for i,ori_img in enumerate(test_imgs):
         #ori_img=np.asarray(Image.open(path))
         name=names[i]
