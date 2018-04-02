@@ -334,15 +334,15 @@ if __name__ =='__main__':
         #plt.imshow(actmap, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
         actmap=copy.copy(actmap)
 
-        actmap[:, :, 0] = np.zeros(np.shape(actmap)[:2]) # Red 을 지운다
-        actmap[:, :, 1] = np.zeros(np.shape(actmap)[:2]) # Green 을 지운다
+        actmap[:, :, 1] = np.zeros(np.shape(actmap)[:2]) # Red 을 지운다
+        actmap[:, :, 2] = np.zeros(np.shape(actmap)[:2]) # Green 을 지운다
         plt.imsave(arr=actmap , fname =os.path.join(save_dir,'{}_actmap.png'.format(name)))
         plt.show()
         plt.imsave(arr=ori_img, fname =os.path.join(save_dir,'{}_ori.png'.format(name)))
         plt.show()
 
         # Mask
-        flatted_actmap_r=actmap[:, :, 2].reshape(-1) #
+        flatted_actmap_r=actmap[:, :, 0].reshape(-1) #
         actmap_r_indices=np.where([flatted_actmap_r > 50])[1] # 왜 50 이상만 뽑는거지? rgb
         #flatted_actmap_g = actmap[:, :, 1].reshape(-1)
         #actmap_g_indices = np.where([flatted_actmap_g > 50])[1]
@@ -377,5 +377,5 @@ if __name__ =='__main__':
 
         # Save Masked Actmap image
         masked_actmap=flatted_overlay.reshape([img_h,img_w,3])
-        blended_image = masked_actmap[:,:,2] + masked_ori_img
+        blended_image = masked_actmap + masked_ori_img
         plt.imsave(arr=blended_image, fname =os.path.join(save_dir,'{}_blend.png'.format(name)))
