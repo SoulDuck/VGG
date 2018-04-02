@@ -307,13 +307,12 @@ if __name__ =='__main__':
     for i,ori_img in enumerate(test_imgs):
         #ori_img=np.asarray(Image.open(path))
         name=names[i]
-        print np.shape(ori_img)
-        print ori_img.size
-        if ori_img.size[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
-            pct = 2000 / float(ori_img.size[0])
-            ori_img=ori_img.resize( [int(ori_img.size[0]*pct) , int(ori_img.size[1]*pct)])
+
+        if np.shape(ori_img)[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
+            pct = 2000 / float(np.shape(ori_img)[0])
+            ori_img=ori_img.resize( [int(np.shape(ori_img)[0]*pct) , int(np.shape(ori_img)[1]*pct)])
         ori_img=np.asarray(ori_img) #resize([2000,2000], Image.ANTIALIAS))
-        img=ori_img.reshape((1,)+np.shape(ori_img))
+        img=ori_img.reshape((1,)+np.shape(ori_img)+(1,))
         img_h, img_w = ori_img.shape[:2]
 
         print 'Image Information name :{}  img shape :{}'.format( name  , np.shape(ori_img))
