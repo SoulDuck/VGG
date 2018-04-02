@@ -96,10 +96,10 @@ train_abnormalDir ='../fundus_data/cropped_original_fundus_300x300/glaucoma'
 test_abnormalDir='../fundus_data/cropped_original_fundus_300x300/glaucoma/test'
 
 root_dir='/home/mediwhale/oct_harddisk/'
-train_normal_imgs=np.load(os.path.join(root_dir ,'train_normal_img_300.npy'))
-train_abnormal_imgs=np.load(os.path.join(root_dir ,'train_abnormal_img_300.npy'))
-test_normal_imgs=np.load(os.path.join(root_dir ,'test_normal_img_300.npy'))
-test_abnormal_imgs=np.load(os.path.join(root_dir ,'test_abnormal_img_300.npy'))
+train_normal_imgs=np.load(os.path.join(root_dir ,'train_normal_img_500.npy'))
+train_abnormal_imgs=np.load(os.path.join(root_dir ,'train_abnormal_img_500.npy'))
+test_normal_imgs=np.load(os.path.join(root_dir ,'test_normal_img_500.npy'))
+test_abnormal_imgs=np.load(os.path.join(root_dir ,'test_abnormal_img_500.npy'))
 
 train_normal_labs=np.zeros([len(train_normal_imgs) , 2 ])
 train_abnormal_labs=np.zeros([len(train_abnormal_imgs) , 2 ])
