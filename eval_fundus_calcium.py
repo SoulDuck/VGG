@@ -347,12 +347,12 @@ if __name__ =='__main__':
         indices_b = np.asarray(list(set(indices_b)))
 
         # Get original image pixels from indices_b
-        flatted_ori_img=ori_img.reshape([-1,3])
+        flatted_ori_img=ori_img.reshape([-1])
         flatted_ori_img=flatted_ori_img.copy()
-        flatted_ori_img[indices_b]=np.array([0,0,0]) #
+        flatted_ori_img[indices_b]=0 #
 
         # Save Masked original image
-        masked_ori_img = flatted_ori_img.reshape([img_h, img_w, 3])
+        masked_ori_img = flatted_ori_img.reshape([img_h, img_w])
 
         # Get rev_indices_rg
         rev_indices_b=set(range(img_h*img_w))
@@ -360,7 +360,7 @@ if __name__ =='__main__':
         assert img_h*img_w==len(rev_indices_b) + len(indices_b)
 
         # For getting rid of margin , extract indices
-        grey_ori_img=np.sum(ori_img , axis=2)
+        grey_ori_img=ori_img
         flatted_grey_ori_img=grey_ori_img.reshape(-1)
         maring_indices=set(np.where([flatted_grey_ori_img< 10])[1])
         rev_indices_b = list( maring_indices | rev_indices_b )
