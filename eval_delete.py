@@ -361,6 +361,7 @@ if __name__ =='__main__':
         flatted_ori_img=ori_img.reshape([-1,3])
         flatted_ori_img=flatted_ori_img.copy()
         print np.shape(flatted_ori_img)
+        print indices_b
         flatted_ori_img[indices_b]=np.array([0,0,0]) #
 
         # Save Masked original image
