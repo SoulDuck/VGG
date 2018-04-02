@@ -337,7 +337,7 @@ if __name__ =='__main__':
         actmap=cmap(actmap)
         plt.imsave(fname='delete_me.png',arr=actmap)
         actmap=Image.open('delete_me.png').convert('RGB')
-        os.remove('delete_me.png')
+        #os.remove('delete_me.png')
         actmap=np.asarray(actmap)
         #plt.imshow(actmap, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
         actmap=copy.copy(actmap)
