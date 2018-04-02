@@ -334,7 +334,8 @@ if __name__ =='__main__':
         actmap = np.asarray((map(lambda x: (x - x.min()) / (x.max() - x.min()), actmap)))  # -->why need this?
         overlay = cam.overlay(actmap, ori_img, save_path='tmp_overlay.png', factor=0.1)
         cmap=reverse_colourmap(plt.cm.jet) # reverse actmap Red -> Green - > Blue --> Blue --> Green --> Red
-        actmap=cmap(actmap).convert('RGB')
+        actmap=cmap(actmap)
+        actmap = np.asarray(Image.fromarray(actmap).convert('RGB'))
         plt.imsave(fname='delete_me.png',arr=actmap)
         print np.shape(actmap)
         actmap = plt.cm.jet(actmap)
