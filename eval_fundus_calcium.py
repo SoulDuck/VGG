@@ -194,7 +194,7 @@ def eval(model_path ,test_images , batch_size  , save_root_folder):
     return np.asarray(predList)
 
 
-def fn(model_path, strides,pool_indices,label):
+def  fn(model_path, strides,pool_indices,label):
     def _restore_WB(name):
         w = graph.get_tensor_by_name(name + '/kernel:0')
         b = graph.get_tensor_by_name(name + '/bias:0')
@@ -307,6 +307,7 @@ if __name__ =='__main__':
     for i,ori_img in enumerate(test_imgs):
         #ori_img=np.asarray(Image.open(path))
         name=names[i]
+        print np.shape(ori_img)
         if ori_img.size[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
             pct = 2000 / float(ori_img.size[0])
             ori_img=ori_img.resize( [int(ori_img.size[0]*pct) , int(ori_img.size[1]*pct)])
