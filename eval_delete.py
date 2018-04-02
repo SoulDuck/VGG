@@ -12,6 +12,7 @@ import time
 #    pass;
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import matplotlib as mpl
 import glob
 import copy
 import input
@@ -20,6 +21,43 @@ import fundus
 import kmeans
 import draw_contour
 ## for mnist dataset ##
+
+
+def reverse_colourmap(cmap, name = 'my_cmap_r'):
+    """
+    In:
+    cmap, name
+    Out:
+    my_cmap_r
+
+    Explanation:
+    t[0] goes from 0 to 1
+    row i:   x  y0  y1 -> t[0] t[1] t[2]
+                   /
+                  /
+    row i+1: x  y0  y1 -> t[n] t[1] t[2]
+
+    so the inverse should do the same:
+    row i+1: x  y1  y0 -> 1-t[0] t[2] t[1]
+                   /
+                  /
+    row i:   x  y1  y0 -> 1-t[n] t[2] t[1]
+    """
+    reverse = []
+    k = []
+
+    for key in cmap._segmentdata:
+        k.append(key)
+        channel = cmap._segmentdata[key]
+        data = []
+
+        for t in channel:
+            data.append((1-t[0],t[2],t[1]))
+        reverse.append(sorted(data))
+
+    LinearL = dict(zip(k,reverse))
+    my_cmap_r = mpl.colors.LinearSegmentedColormap(name, LinearL)
+    return my_cmap_r
 from tensorflow.examples.tutorials.mnist import input_data
 
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
@@ -295,7 +333,8 @@ if __name__ =='__main__':
         actmap = np.squeeze(actmap)
         actmap = np.asarray((map(lambda x: (x - x.min()) / (x.max() - x.min()), actmap)))  # -->why need this?
         overlay = cam.overlay(actmap, ori_img, save_path='tmp_overlay.png', factor=0.1)
-
+        cmap=reverse_colourmap(plt.cm.jet)
+        actmap=cmap(actmap)
         actmap = plt.cm.jet(actmap)
         plt.imsave(fname='delete_me.png' , arr = actmap)
         actmap=Image.open('delete_me.png').convert('RGB')
@@ -312,19 +351,18 @@ if __name__ =='__main__':
         # Mask
         flatted_actmap_r=actmap[:, :, 0].reshape(-1) #
         actmap_r_indices=np.where([flatted_actmap_r > 50])[1] #
-
-        flatted_actmap_g = actmap[:, :, 1].reshape(-1)
-        actmap_g_indices = np.where([flatted_actmap_g > 50])[1]
-
+        #flatted_actmap_g = actmap[:, :, 1].reshape(-1)
+        #actmap_g_indices = np.where([flatted_actmap_g > 50])[1]
 
         # indices_rg 의 목표는 actmap과 혼합된 이미지를 보존하는 것이다
-        indices_rg = np.hstack([actmap_r_indices ,actmap_g_indices])
+        indices_rg = np.hstack([actmap_r_indices]) #만약 초록색을 추가하기 원한다면 actmap_g_indices 이걸 추가하면 된다.
         indices_rg = np.asarray(list(set(indices_rg)))
 
         # Get original image pixels from indices_rg
         flatted_ori_img=ori_img.reshape([-1,3])
         flatted_ori_img=flatted_ori_img.copy()
         flatted_ori_img[indices_rg]=np.array([0,0,0]) ##중요
+
         # Save Masked original image
         masked_ori_img=flatted_ori_img.reshape([img_h,img_w,3])
 

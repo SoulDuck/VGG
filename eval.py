@@ -40,10 +40,6 @@ def get_acc(preds , trues):
     acc=np.sum([preds_cls == trues_cls])/float(len(preds_cls))
     return acc
 
-
-
-
-
 def eval(model_path ,test_images , batch_size  , save_root_folder):
     print 'eval'
     b,h,w,c=np.shape(test_images)
