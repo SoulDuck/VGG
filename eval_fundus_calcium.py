@@ -292,14 +292,9 @@ if __name__ =='__main__':
     bg_test_imgs = None
 
     #test_images=np.reshape(test_images,[-1,299,299,3])
-    model_path = './models/vgg_11/step_41900_acc_0.900000035763/model' #calcium score
-
-    #pred=eval(model_path, test_imgs[:],batch_size =1 ,save_root_folder='./activation_map_/blood')
-    img_dir = './Test_Data/original_fundus_retina' # 2000 3000 test retina disease
-
-
+    model_path = './models/vgg_11/vgg_11_Calc_N_VS_ABN_no_BN_AUG/0/best_acc/step_4000_acc_0.641666710377' #calcium score
     test_imgs=np.load('./Test_Data/calc_fundus/calc_fundus')
-    save_dir = './activation_maps/retina_ori'
+    save_dir = './activation_maps/calc_fundus_300_ori'
 
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 
