@@ -93,9 +93,9 @@ test_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0/Test'
 
 root_dir='/home/mediwhale-5/PythonProjects/vgg/Test_Data/fundus300_0_10_300_inf'
 train_normal_imgs=np.load(os.path.join(root_dir ,'train_normal_img_300_0_10.npy'))
-train_abnormal_imgs=np.load(os.path.join(root_dir ,'train_abnormal_img_300_100_inf.npy'))
+train_abnormal_imgs=np.load(os.path.join(root_dir ,'train_abnormal_img_300_300_inf.npy'))
 test_normal_imgs=np.load(os.path.join(root_dir ,'test_normal_img_300_0_10.npy'))
-test_abnormal_imgs=np.load(os.path.join(root_dir ,'test_abnormal_img_300_100_inf.npy'))
+test_abnormal_imgs=np.load(os.path.join(root_dir ,'test_abnormal_img_300_300_inf.npy'))
 
 train_normal_labs=np.zeros([len(train_normal_imgs) , 2 ])
 train_abnormal_labs=np.zeros([len(train_abnormal_imgs) , 2 ])
