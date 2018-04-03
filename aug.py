@@ -11,8 +11,8 @@ def aug_lv0(image_ , is_training , image_size):
 
         # Brightness / saturatio / constrast provides samll gains 2%~5% on cifar
 
-        image = tf.image.random_brightness(image, max_delta=63. / 255.)
-        image = tf.image.random_saturation(image, lower=0.5, upper=1.8)
+        #image = tf.image.random_brightness(image, max_delta=63. / 255.)
+        #image = tf.image.random_saturation(image, lower=0.5, upper=1.8)
         image = tf.image.per_image_standardization(image)
         return image
 
