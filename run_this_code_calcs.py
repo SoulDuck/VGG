@@ -91,7 +91,7 @@ test_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0/Test'
 #train_abnormalDir ='../lesion_detection/margin_crop_rois'
 #test_abnormalDir='../lesion_detection/blood_cropped_rois'
 
-root_dir='/home/mediwhale-5/PythonProjects/vgg/Test_Data/calc_fundus/calc_0_10_100_inf'
+root_dir='/home/mediwhale-5/PythonProjects/vgg/Test_Data/calc_0_10_100_inf'
 train_normal_imgs=np.load(os.path.join(root_dir ,'train_normal_img_300_0_10.npy'))
 train_abnormal_imgs=np.load(os.path.join(root_dir ,'train_abnormal_img_300_100_inf.npy'))
 test_normal_imgs=np.load(os.path.join(root_dir ,'test_normal_img_300_0_10.npy'))
