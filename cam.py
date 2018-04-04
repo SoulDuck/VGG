@@ -91,7 +91,7 @@ def eval_inspect_cam(sess, cam ,cam_ind, top_conv ,test_imgs , x, y_ ,phase_trai
     if not os.path.isdir(save_root_folder):
         os.mkdir(save_root_folder)
     for s in range(num_images):
-        msg='-r {}/{}'.format(s , num_images)
+        msg='\r {}/{}'.format(s , num_images)
         sys.stdout.write(msg)
         sys.stdout.flush()
         save_dir='./{}/img_{}'.format(save_root_folder,s)

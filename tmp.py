@@ -1,6 +1,4 @@
 import numpy as np
-
-a=np.zeros([5,2])
-a[:,1]=1
-for i in a:
-    print i
+preds=np.load('cal_preds.npy')
+for pred in preds:
+    print pred

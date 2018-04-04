@@ -1,5 +1,9 @@
 import tensorflow as tf
-
+import random
+from PIL import Image
+import matplotlib.pyplot as plt
+import numpy as np
+import cv2
 def aug_lv0(image_ , is_training , image_size):
 
 
@@ -27,3 +31,37 @@ def aug_lv0(image_ , is_training , image_size):
 
 
     return image
+
+
+
+def random_rotate_with_PIL(image):
+    ### usage: map(random_rotate , images) ###
+    ind=random.randint(0,180)
+    minus = random.randint(0,1)
+    minus=bool(minus)
+    if minus==True:
+        ind=ind*-1
+    img = image.rotate(ind)
+    if __debug__ == True:
+        print ind
+    return img
+
+#==== histogram equalization
+def histo_equalized(img):
+    assert (len(np.shape(img))==2)  ,' image shape : {} '.format(np.shape(img)) #4D arrays
+    return cv2.equalizeHist(np.array(img, dtype = np.uint8))
+
+
+
+
+
+if __name__ == '__main__':
+    img=Image.open('tmp/abnormal_actmap.png').convert('L')
+    fig = plt.figure()
+    ax=fig.add_subplot(132)
+    HE_img = histo_equalized(img)
+    ax.imshow(HE_img)
+    ax = fig.add_subplot(133)
+    rotated_img=random_rotate_with_PIL(img)
+    ax.imshow(rotated_img)
+    plt.show()

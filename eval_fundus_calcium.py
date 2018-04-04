@@ -65,17 +65,6 @@ def reverse_colourmap(cmap, name = 'my_cmap_r'):
     LinearL = dict(zip(k,reverse))
     my_cmap_r = mpl.colors.LinearSegmentedColormap(name, LinearL)
     return my_cmap_r
-from tensorflow.examples.tutorials.mnist import input_data
-
-mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
-"""
-train_imgs = mnist.train.images.reshape([-1,28,28,1])
-train_labs = mnist.train.labels
-test_imgs = mnist.test.images.reshape([-1,28,28,1])
-test_labs = mnist.test.labels
-"""
-#for Fundus_300
-
 
 def max_pool(name,x , k=3 , s=2 , padding='SAME'):
     with tf.variable_scope(name) as scope:
@@ -170,19 +159,7 @@ def eval(model_path ,test_images , batch_size  , save_root_folder):
     cam.eval_inspect_cam(sess, cam_, cam_ind ,top_conv, test_images[:], x_, y_, is_training_,
                                                     logits,save_root_folder)
 
-    """
-    try:
-        print np.shape(vis_abnormal)
-        vis_normal=vis_normal.reshape([h,w])
-        vis_abnormal = vis_abnormal.reshape([h,w])
-        plt.imshow(vis_normal)
-        plt.show()
-        plt.imshow(vis_abnormal)
-        plt.show()
-    except Exception as e :
-        print e
-        pass
-    """
+
     share=len(test_images)/batch_size
     print share
     remainder=len(test_images)%batch_size
@@ -250,78 +227,40 @@ def fn(model_path, strides,pool_indices,label):
 
 
 if __name__ =='__main__':
-    NORMAL = 0
-    ABNORMAL = 1
-    print """ ----------------Load ROI Test Data-------------------"""
-    print """ -----------------------------------------------------"""
-    start = time.time()
-    count = 0
-    paths = []
-    for dir, subdirs, files in os.walk('../lesion_detection/blood_cropped_rois'):
-        for file in files:
-            path = os.path.join(dir, file)
-            paths.append(path)
-            count += 1
-    print count
-
-    imgs = map(lambda path: np.asarray(Image.open(path)), paths[:2])
-    roi_test_imgs = np.asarray(imgs)
-    roi_test_labs = np.zeros([len(roi_test_imgs), 2])
-    roi_test_labs[:, ABNORMAL] = 1
-    print np.shape(roi_test_imgs)
-    print np.shape(roi_test_labs)
-    print time.time() - start
-
-    print """ ------------- Load Normal Test Data ------------------"""
-    print """ -------------------------------------------------------"""
-    # normal Data 1000장을 불러온다
-    start = time.time()
-    paths = []
-    count = 0
-    for dir, subdirs, files in os.walk('../lesion_detection/bg_cropped_rois'):
-        for file in files:
-            path = os.path.join(dir, file)
-            paths.append(path)
-            count += 1
-    print count
-
-    imgs = map(lambda path: np.asarray(Image.open(path)), paths[:2])
-    bg_test_imgs = np.asarray(imgs)
-    bg_test_labs = np.zeros([len(bg_test_imgs), 2])
-    bg_test_labs[:, NORMAL] = 1
-    print time.time() - start
-    print np.shape(bg_test_imgs)
-    print np.shape(bg_test_labs)
-
-    test_imgs = np.vstack([roi_test_imgs, bg_test_imgs])
-    test_labs = np.vstack([roi_test_labs, bg_test_labs])
-    roi_test_imgs = None
-    bg_test_imgs = None
 
     #test_images=np.reshape(test_images,[-1,299,299,3])
-    model_path = './models/vgg_11_Calc_N_VS_ABN_no_BN_AUG/0/best_acc/step_4000_acc_0.641666710377/model' #calcium score
-    test_imgs=np.load('./Test_Data/calc_fundus/test_abnormal_img_300.npy')
+    model_path = './models/vgg_11/step_9600_acc_0.700000047684/model' #calcium score
+    test_nor_imgs = np.load('./Test_Data/fundus300_0_10_300_inf/test_normal_img_300_0_10.npy')
+    test_abnor_imgs=np.load('./Test_Data/fundus300_0_10_300_inf/test_abnormal_img_300_300_inf.npy')
+    test_imgs=np.vstack([test_nor_imgs , test_abnor_imgs])
+
+    test_imgs=np.reshape(test_imgs , list(np.shape(test_imgs)) + [1,])
+    print np.shape(test_nor_imgs)
+    print np.shape(test_abnor_imgs)
+    print np.shape(test_imgs)
+    exit()
+    preds=eval(model_path , test_imgs[:] , batch_size=3 , save_root_folder='./activation_maps/calc_fundus_300_ori')
+    np.save('cal_preds.npy' , preds)
+
     save_dir = './activation_maps/calc_fundus_300_ori'
 
-    paths = glob.glob(os.path.join(img_dir , '*.png'))
+
+
 
 
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 
     thres=0.5
     limit=None
-    for path in paths[:limit]:
-        name=os.path.split(path)[1]
+    for  img in test_imgs[:limit]:
+
         #ori_img=np.asarray(Image.open(path))
-        ori_img=Image.open(path).convert('RGB')
         if ori_img.size[0] > 2000: # 이미지가 3000 , 2000 이면 아예 그래픽 카드에 안들어간다 . 그래서 이미지의 크기를 보전하면서 이미지를 줄인다
             pct = 2000 / float(ori_img.size[0])
             ori_img=ori_img.resize( [int(ori_img.size[0]*pct) , int(ori_img.size[1]*pct)])
         ori_img=np.asarray(ori_img) #resize([2000,2000], Image.ANTIALIAS))
         img=ori_img.reshape((1,)+np.shape(ori_img))
         img_h, img_w = ori_img.shape[:2]
-
-        print 'Image Information name :{}  img shape :{}'.format( name  , np.shape(ori_img))
         actmap = sess.run(classmap, feed_dict={x_: img/255.})
         actmap = np.squeeze(actmap)
         actmap = np.asarray((map(lambda x: (x - x.min()) / (x.max() - x.min()), actmap)))  # -->why need this?
