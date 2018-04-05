@@ -45,6 +45,8 @@ parser.add_argument('--vgg_model' ,'-m' , choices=['vgg_11','vgg_13','vgg_16', '
 parser.add_argument('--BN' , dest='use_BN'  , action='store_true' ,   help = 'bn True or not')
 parser.add_argument('--no_BN',dest='use_BN' , action = 'store_false', help = 'bn True or not')
 
+parser.add_augment('--date_dir')
+
 parser.add_argument('--folder_name' ,help='ex model/fundus_300/folder_name/0 .. logs/fundus_300/folder_name/0 , type2/folder_name/0')
 args=parser.parse_args()
 
@@ -91,10 +93,8 @@ test_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0/Test'
 #train_abnormalDir ='../lesion_detection/margin_crop_rois'
 #test_abnormalDir='../lesion_detection/blood_cropped_rois'
 
-root_dir='/home/mediwhale-5/PythonProjects/vgg/Test_Data/fundus300_0_10_300_inf'
-
-
-
+root_dir =args.data_dir
+print 'Data dir : {}'.format(args.data_dir)
 #image file 이 npy 형태로 저장 되어 있다면 아래를 uncomment 하세요
 train_normal_imgs=np.load(os.path.join(root_dir ,'train_nor_imgs.npy'))
 train_abnormal_imgs=np.load(os.path.join(root_dir ,'train_abnor_imgs.npy'))
