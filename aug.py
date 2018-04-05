@@ -19,6 +19,7 @@ def clahe_equalized(img):
 def random_rotate_90(images):
     k=np.random.randint(0,4)
     images=np.rot90(images , k , axes =(2,3) )
+    print 'k',k , np.shape(images)
     return images
 
 
