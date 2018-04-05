@@ -45,7 +45,7 @@ parser.add_argument('--vgg_model' ,'-m' , choices=['vgg_11','vgg_13','vgg_16', '
 parser.add_argument('--BN' , dest='use_BN'  , action='store_true' ,   help = 'bn True or not')
 parser.add_argument('--no_BN',dest='use_BN' , action = 'store_false', help = 'bn True or not')
 
-parser.add_argument('--date_dir' , type=str  )
+parser.add_argument('--date_dir' , help='the folder where the data is saved ')
 
 parser.add_argument('--folder_name' ,help='ex model/fundus_300/folder_name/0 .. logs/fundus_300/folder_name/0 , type2/folder_name/0')
 args=parser.parse_args()
