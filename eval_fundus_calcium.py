@@ -6,8 +6,10 @@
     save_dir = './activation_maps/calc_fundus_300_ori'
 """
 #-*- coding: utf-8 -*-
+import csv
 import tensorflow as tf
 import cam
+import pickle
 import numpy as np
 import os
 import matplotlib
@@ -238,16 +240,44 @@ if __name__ =='__main__':
     print np.shape(test_nor_imgs)
     print np.shape(test_abnor_imgs)
     print np.shape(test_imgs)
+
+    # exam_id 별 결과를 얻는다
+    for type in ['normal' , 'abnormal']:
+
+        f = open('./test_' + type + '_examId_with_imgs.pkl', 'rb')
+        examIds_imgs = pickle.load(f)
+        f.close()
+
+        f = open('./calc_result/' + type + '_result.csv', 'w')
+        writer=csv.writer(f)
+        # Normal
+        count =0
+        for key in examIds_imgs .keys()[:]:
+            print key
+            imgs=np.asarray(examIds_imgs [key])
+            imgs=imgs.reshape(list(np.shape(imgs)) + [1])
+            rmn , exam_id =key.split('_')
+            print 'rmn : {} | exam id : {} | # imgs : {}'.format(rmn , exam_id , np.shape(imgs))
+            save_dir=os.path.join('./calc_result/'+type, rmn, exam_id)
+            if not os.path.isdir(save_dir):
+                os.makedirs(save_dir)
+            preds=eval(model_path , imgs , batch_size=3 , save_root_folder=save_dir)
+            count += len(preds)
+            np.save(os.path.join(save_dir,'cal_preds.npy') , preds)
+
+            for p in preds:
+                writer.writerow([rmn , exam_id , p[0] ,p[1] ])
+        print '{} : {}'.format( type ,  count)
+        f.close()
+
+
+
+
     exit()
-    preds=eval(model_path , test_imgs[:] , batch_size=3 , save_root_folder='./activation_maps/calc_fundus_300_ori')
-    np.save('cal_preds.npy' , preds)
-
-    save_dir = './activation_maps/calc_fundus_300_ori'
 
 
 
-
-
+    save_dir = './calc_result/activation_maps/calc_fundus_300_ori'
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 
     thres=0.5

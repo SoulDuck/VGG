@@ -4,10 +4,53 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
+def clahe_equalized(img):
+    assert (len(img.shape)==3)  #4D arrays
+    img=img.copy()
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+    if img.shape[-1] ==3: # if color shape
+        for i in range(3):
+            img[:, :, i]=clahe.apply(np.array(img[:,:,i], dtype=np.uint8))
+    elif img.shape[-1] ==1: # if Greys,
+        img = clahe.apply(np.array(img, dtype = np.uint8))
+    return img
+
+
+def random_rotate_90(images):
+    k=np.random.randint(0,4)
+    images=np.rot90(images , k , axes =(2,3) )
+    images = Image.fromarray(images)
+    return images
+
+
+
+def random_rotate_with_PIL(image):
+
+    ### usage: map(random_rotate , images) ###
+    image=Image.fromarray(image)
+    ind=random.randint(0,180)
+    minus = random.randint(0,1)
+    minus=bool(minus)
+    if minus==True:
+        ind=ind*-1
+    img = image.rotate(ind)
+    if __debug__ == True:
+        print ind
+    return np.asarray(img)
+
+#==== histogram equalization
+def histo_equalized(img):
+    assert (len(np.shape(img))==2)  ,' image shape : {} '.format(np.shape(img)) #4D arrays
+    return cv2.equalizeHist(np.array(img, dtype = np.uint8))
+
+
+
+
 def aug_lv0(image_ , is_training , image_size):
 
 
     def aug_with_train(image, image_size):
+
         image = tf.image.resize_image_with_crop_or_pad(image, image_size+4, image_size+4)
         image = tf.random_crop(image, [image_size, image_size, 1])
         image = tf.image.random_flip_left_right(image)
@@ -31,26 +74,6 @@ def aug_lv0(image_ , is_training , image_size):
 
 
     return image
-
-
-
-def random_rotate_with_PIL(image):
-    ### usage: map(random_rotate , images) ###
-    ind=random.randint(0,180)
-    minus = random.randint(0,1)
-    minus=bool(minus)
-    if minus==True:
-        ind=ind*-1
-    img = image.rotate(ind)
-    if __debug__ == True:
-        print ind
-    return img
-
-#==== histogram equalization
-def histo_equalized(img):
-    assert (len(np.shape(img))==2)  ,' image shape : {} '.format(np.shape(img)) #4D arrays
-    return cv2.equalizeHist(np.array(img, dtype = np.uint8))
-
 
 
 
