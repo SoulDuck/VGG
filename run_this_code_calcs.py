@@ -96,6 +96,8 @@ test_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0/Test'
 root_dir =args.data_dir
 print 'Data dir : {}'.format(args.data_dir)
 #image file 이 npy 형태로 저장 되어 있다면 아래를 uncomment 하세요
+
+
 train_normal_imgs=np.load(os.path.join(root_dir ,'train_nor_imgs.npy'))
 train_abnormal_imgs=np.load(os.path.join(root_dir ,'train_abnor_imgs.npy'))
 test_normal_imgs=np.load(os.path.join(root_dir ,'test_nor_imgs.npy'))
