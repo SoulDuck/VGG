@@ -5,13 +5,6 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import cv2
 
-a=[1,2,3,4]
-
-
-b,c,d,f=a
-print b,c,d,f
-exit()
-
 def random_rotate(img):
     debug_flag = False
 
@@ -60,6 +53,8 @@ img = np.expand_dims(img_color , 0)
 imgs = np.vstack([img , img])
 imgs=imgs/255.
 imgs =np.rot90(imgs , k=3 , axes=(1,2))
+print np.shape(imgs)
+
 plt.imshow(imgs[0])
 plt.show()
 plt.imshow(imgs[1])
