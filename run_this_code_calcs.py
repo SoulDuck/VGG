@@ -92,17 +92,24 @@ test_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0/Test'
 #test_abnormalDir='../lesion_detection/blood_cropped_rois'
 
 root_dir='/home/mediwhale-5/PythonProjects/vgg/Test_Data/fundus300_0_10_300_inf'
-train_normal_imgs=np.load(os.path.join(root_dir ,'train_normal_img_300_0_10.npy'))
-train_abnormal_imgs=np.load(os.path.join(root_dir ,'train_abnormal_img_300_300_inf.npy'))
-test_normal_imgs=np.load(os.path.join(root_dir ,'test_normal_img_300_0_10.npy'))
-test_abnormal_imgs=np.load(os.path.join(root_dir ,'test_abnormal_img_300_300_inf.npy'))
+
+
+
+#image file 이 npy 형태로 저장 되어 있다면 아래를 uncomment 하세요
+train_normal_imgs=np.load(os.path.join(root_dir ,'train_nor_imgs.npy'))
+train_abnormal_imgs=np.load(os.path.join(root_dir ,'train_abnor_imgs.npy'))
+test_normal_imgs=np.load(os.path.join(root_dir ,'test_nor_imgs.npy'))
+test_abnormal_imgs=np.load(os.path.join(root_dir ,'test_abnor_imgs.npy'))
+
 
 train_normal_labs=np.zeros([len(train_normal_imgs) , 2 ])
 train_abnormal_labs=np.zeros([len(train_abnormal_imgs) , 2 ])
 test_normal_labs=np.zeros([len(test_normal_imgs) , 2 ])
 test_abnormal_labs=np.zeros([len(test_abnormal_imgs) , 2 ])
+
 train_normal_imgs , test_normal_imgs , train_abnormal_imgs , test_abnormal_imgs=\
     map(lambda imgs: imgs.reshape([-1,300,300,1]) , [train_normal_imgs , test_normal_imgs , train_abnormal_imgs , test_abnormal_imgs])
+
 train_normal_labs[:,0]=1
 test_normal_labs[:,0]=1
 train_abnormal_labs[:,1]=1
@@ -112,6 +119,9 @@ print np.shape(test_normal_imgs)
 print np.shape(train_normal_imgs)
 print np.shape(test_abnormal_imgs)
 print np.shape(train_abnormal_imgs)
+
+
+# normal , abnormal image , label 을 합친다..
 
 train_imgs=np.vstack([train_normal_imgs , train_abnormal_imgs])
 train_labs=np.vstack([train_normal_labs , train_abnormal_labs])
@@ -284,7 +294,7 @@ for step in range(max_iter):
     train_fetches = [train_op, accuracy_op, loss_op]
     batch_xs, batch_ys , batch_fname= input.next_batch(batch_size, train_imgs, train_labs )
     if args.use_aug:
-        batch_xs=aug.random_rotate_90(batch_xs)
+        batch_xs=aug.random_rotate_90(batch_xs) # random 으로 90 180 , 270 , 360 도를 회전합니다.
     batch_xs=batch_xs/255.
     train_feedDict = {x_: batch_xs, y_: batch_ys, cam_ind:ABNORMAL ,lr_: learning_rate, is_training: True}
     _ , train_acc, train_loss = sess.run( fetches=train_fetches, feed_dict=train_feedDict )
