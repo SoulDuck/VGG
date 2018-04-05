@@ -94,7 +94,7 @@ test_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0/Test'
 #train_abnormalDir ='../lesion_detection/margin_crop_rois'
 #test_abnormalDir='../lesion_detection/blood_cropped_rois'
 
-
+imgs_list=[]
 root_dir =args.data_dir
 print 'Data dir : {}'.format(root_dir)
 pkl_list=['train_normal_examId_imgs','train_abnormal_examId_imgs','test_normal_examId_imgs','test_abnormal_examId_imgs']
@@ -106,7 +106,9 @@ for pkl_name in pkl_list:
     for examid in examIds_imgs:
         ret_imgs.extend(examIds_imgs[examid])
     print os.path.split(pkl_path)[1], ' : ' , np.shape(ret_imgs)
+    imgs_list.append(np.asarray(ret_imgs))
 
+train_normal_imgs,train_abnormal_imgs,test_normal_imgs,test_abnormal_imgs=imgs_list
 
 """
 #image file 이 npy 형태로 저장 되어 있다면 아래를 uncomment 하세요

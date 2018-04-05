@@ -5,6 +5,13 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import cv2
 
+a=[1,2,3,4]
+
+
+b,c,d,f=a
+print b,c,d,f
+exit()
+
 def random_rotate(img):
     debug_flag = False
 
