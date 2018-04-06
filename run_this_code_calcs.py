@@ -120,10 +120,12 @@ train_normal_imgs,train_abnormal_imgs,test_normal_imgs,test_abnormal_imgs=imgs_l
 if args.use_clahe:
     print 'clahe 적용중입니다.'
     import matplotlib.pyplot as plt
-    train_abnormal_imgs=map(aug.clahe_equalized, train_abnormal_imgs)
+    train_abnormal_imgs= map(aug.clahe_equalized, train_abnormal_imgs)
     train_normal_imgs = map(aug.clahe_equalized, train_normal_imgs)
     test_abnormal_imgs = map(aug.clahe_equalized, test_abnormal_imgs)
     test_normal_imgs = map(aug.clahe_equalized, test_normal_imgs)
+    train_abnormal_imgs, train_normal_imgs, test_abnormal_imgs, test_normal_imgs=\
+        map(np.asarray , [train_abnormal_imgs , train_normal_imgs , test_abnormal_imgs , test_normal_imgs])
 
 """
 #image file 이 npy 형태로 저장 되어 있다면 아래를 uncomment 하세요
