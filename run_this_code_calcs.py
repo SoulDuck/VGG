@@ -303,6 +303,10 @@ for step in range(max_iter):
         print 'Learning Rate : {} '.format(learning_rate)
         print 'Train acc : {} Train loss : {}'.format( train_acc , train_loss)
         print 'validation acc : {} loss : {}'.format( val_acc_mean, val_loss_mean )
+        # add learning rate summary
+        summary=tf.Summary(value=[tf.Summary.Value(tag='learning_rate' , simple_value = float(learning_rate))])
+        summary_writer.add_summary(summary, step)
+
         model.write_acc_loss( summary_writer, 'validation', loss=val_loss_mean, acc=val_acc_mean, step=step)
         model_path=os.path.join(models_path, str(step))
         os.mkdir(model_path) # e.g) models/fundus_300/100/model.ckpt or model.meta

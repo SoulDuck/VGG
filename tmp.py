@@ -4,6 +4,7 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import cv2
+import aug
 
 def random_rotate(img):
     debug_flag = False
@@ -46,39 +47,22 @@ def fn(np_img):
     ret_imgs = tf.py_func(clahe_equalized , [np_img] , [tf.uint8])
     return tf.convert_to_tensor(ret_imgs) , np_img
 
-
-img_grey=Image.open('./sample_image_grey.png').convert('RGB')
-img_color=Image.open('./sample_image_color.png').convert('RGB')
-img = np.expand_dims(img_color , 0)
-imgs = np.vstack([img , img])
-imgs=imgs/255.
-imgs =np.rot90(imgs , k=3 , axes=(1,2))
+imgs=[]
+for i in range(5):
+    img_grey=np.asarray(Image.open('./sample_image_grey.png').convert('RGB'))
+    imgs.append(img_grey)
+imgs=np.asarray(imgs)
 print np.shape(imgs)
+batch_xs=aug.random_rotate_90(imgs)
 
-plt.imshow(imgs[0])
+plt.imshow(batch_xs[0])
 plt.show()
-plt.imshow(imgs[1])
+plt.imshow(batch_xs[1])
 plt.show()
-
-
-plt.imshow(img)
+plt.imshow(batch_xs[2])
 plt.show()
-img_tensor = tf.Variable(img)
-clahe_fundus , ori_fundus = fn(img_tensor)
-
-sess=tf.Session()
-init = tf.global_variables_initializer()
-sess.run(init)
-
-clahe  , ori =sess.run([clahe_fundus, ori_fundus])
-print np.shape(clahe[0])
-print np.shape(clahe)
-fig = plt.figure()
-plt.imshow(clahe[0])
+plt.imshow(batch_xs[3])
 plt.show()
-
-
-img =np.rot90(img , 1 , axis=1)
 
 
 
