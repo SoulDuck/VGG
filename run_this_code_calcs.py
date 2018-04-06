@@ -29,6 +29,9 @@ parser.add_argument('--use_nesterov' , type=bool , help='only for momentum , use
 parser.add_argument('--aug' , dest='use_aug', action='store_true' , help='augmentation')
 parser.add_argument('--no_aug' , dest='use_aug', action='store_false' , help='augmentation')
 
+parser.add_argument('--clahe' , dest='use_clahe', action='store_true' , help='augmentation')
+parser.add_argument('--no_clahe' , dest='use_clahe', action='store_false' , help='augmentation')
+
 parser.add_argument('--actmap', dest='use_actmap' ,action='store_true')
 parser.add_argument('--no_actmap', dest='use_actmap', action='store_false')
 
@@ -45,12 +48,13 @@ parser.add_argument('--vgg_model' ,'-m' , choices=['vgg_11','vgg_13','vgg_16', '
 parser.add_argument('--BN' , dest='use_BN'  , action='store_true' ,   help = 'bn True or not')
 parser.add_argument('--no_BN',dest='use_BN' , action = 'store_false', help = 'bn True or not')
 
-parser.add_argument('--data_dir' , help='the folder where the data is saved ')
+parser.add_argument('--data_dir' , help='the folder where the data is saved ' )
 
 parser.add_argument('--folder_name' ,help='ex model/fundus_300/folder_name/0 .. logs/fundus_300/folder_name/0 , type2/folder_name/0')
 args=parser.parse_args()
 
 print 'aug : ' , args.use_aug
+
 print 'actmap : ' , args.use_actmap
 print 'use_l2_loss: ' , args.use_l2_loss
 print 'BN : ' , args.use_BN
@@ -81,19 +85,22 @@ def _load_images_labels(dir , label ,limit , random_flag):
     labs[:,label ]=1
     return imgs , labs
 
+
+
 NORMAL=0
 ABNORMAL =1
 #blood 500 Image을 불러온다
 start=time.time()
 #train_normalDir ='../lesion_detection/cropped_bg_500_clahe/'
 train_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0'
-
 #test_normalDir='../lesion_detection/bg_cropped_rois'
 test_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0/Test'
-
 #train_abnormalDir ='../lesion_detection/margin_crop_rois'
 #test_abnormalDir='../lesion_detection/blood_cropped_rois'
 
+
+
+# pickle 형태로 저장되어 있는 데이터를 불러옵니다.
 imgs_list=[]
 root_dir =args.data_dir
 print 'Data dir : {}'.format(root_dir)
@@ -107,8 +114,16 @@ for pkl_name in pkl_list:
         ret_imgs.extend(examIds_imgs[examid])
     print os.path.split(pkl_path)[1], ' : ' , np.shape(ret_imgs)
     imgs_list.append(np.asarray(ret_imgs))
-
 train_normal_imgs,train_abnormal_imgs,test_normal_imgs,test_abnormal_imgs=imgs_list
+
+
+if args.use_clahe:
+    print 'clahe 적용중입니다.'
+    import matplotlib.pyplot as plt
+    train_abnormal_imgs=map(aug.clahe_equalized, train_abnormal_imgs)
+    train_normal_imgs = map(aug.clahe_equalized, train_normal_imgs)
+    test_abnormal_imgs = map(aug.clahe_equalized, test_abnormal_imgs)
+    test_normal_imgs = map(aug.clahe_equalized, test_normal_imgs)
 
 """
 #image file 이 npy 형태로 저장 되어 있다면 아래를 uncomment 하세요
@@ -117,25 +132,24 @@ train_abnormal_imgs=np.load(os.path.join(root_dir ,'train_abnor_imgs.npy'))
 test_normal_imgs=np.load(os.path.join(root_dir ,'test_nor_imgs.npy'))
 test_abnormal_imgs=np.load(os.path.join(root_dir ,'test_abnor_imgs.npy'))
 """
-
 train_normal_labs=np.zeros([len(train_normal_imgs) , 2 ])
 train_abnormal_labs=np.zeros([len(train_abnormal_imgs) , 2 ])
 test_normal_labs=np.zeros([len(test_normal_imgs) , 2 ])
 test_abnormal_labs=np.zeros([len(test_abnormal_imgs) , 2 ])
-
 train_normal_imgs , test_normal_imgs , train_abnormal_imgs , test_abnormal_imgs=\
     map(lambda imgs: imgs.reshape([-1,300,300,1]) , [train_normal_imgs , test_normal_imgs , train_abnormal_imgs , test_abnormal_imgs])
+
 
 train_normal_labs[:,0]=1
 test_normal_labs[:,0]=1
 train_abnormal_labs[:,1]=1
 test_abnormal_labs[:,1]=1
 
+
 print np.shape(test_normal_imgs)
 print np.shape(train_normal_imgs)
 print np.shape(test_abnormal_imgs)
 print np.shape(train_abnormal_imgs)
-
 
 # normal , abnormal image , label 을 합친다..
 
@@ -309,8 +323,8 @@ for step in range(max_iter):
     """ #### training ### """
     train_fetches = [train_op, accuracy_op, loss_op]
     batch_xs, batch_ys , batch_fname= input.next_batch(batch_size, train_imgs, train_labs )
-    #if args.use_aug:
-    #    batch_xs=aug.random_rotate_90(batch_xs) # random 으로 90 180 , 270 , 360 도를 회전합니다.
+    if args.use_aug:
+        batch_xs=aug.random_rotate_90(batch_xs) # random 으로 90 180 , 270 , 360 도를 회전합니다.
     batch_xs=batch_xs/255.
     train_feedDict = {x_: batch_xs, y_: batch_ys, cam_ind:ABNORMAL ,lr_: learning_rate, is_training: True}
     _ , train_acc, train_loss = sess.run( fetches=train_fetches, feed_dict=train_feedDict )

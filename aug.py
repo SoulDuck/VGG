@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 def clahe_equalized(img):
+    if len(img.shape) == 2:
+        img=np.reshape(img, list(np.shape(img)) +[1])
     assert (len(img.shape)==3)  #4D arrays
     img=img.copy()
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
