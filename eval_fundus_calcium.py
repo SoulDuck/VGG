@@ -251,7 +251,7 @@ if __name__ =='__main__':
         f.close()
 
         # 결과를 기록합니다
-        f = open(os.path.join(save_dir, 'calc_result/' + type + '_result.csv'), 'w')
+        f = open(os.path.join(args.save_dir, type + '_result.csv'), 'w')
         writer=csv.writer(f)
 
         # Normal
