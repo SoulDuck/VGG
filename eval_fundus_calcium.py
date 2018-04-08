@@ -10,6 +10,7 @@ import argparse
 parser=argparse.ArgumentParser()
 parser.add_argument('--data_dir' , type=str , help = 'folder where data is saved')
 parser.add_argument('--model_dir' , type=str , help = 'folder where model is saved' )
+args = parser.parse_args()
 import csv
 import tensorflow as tf
 import cam
@@ -240,9 +241,9 @@ if __name__ =='__main__':
     #test_images=np.reshape(test_images,[-1,299,299,3])
 
 
-    model_path = './models/vgg_11/step_13300_acc_0.66666674614/model' #calcium score
+    model_path = args.model_dir
     # exam_id 별 결과를 얻는다
-    datadir='./Test_Data/ImgSize_300/nor_0_10_abnor_100_inf/1'
+    datadir=args.data_dir
     for type in ['normal' , 'abnormal']:
         f = open(os.path.join( datadir, 'test_' + type + '_examId_imgs.pkl'), 'rb')
         examIds_imgs = pickle.load(f)
