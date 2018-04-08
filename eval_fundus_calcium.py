@@ -10,6 +10,7 @@ import argparse
 parser=argparse.ArgumentParser()
 parser.add_argument('--data_dir' , type=str , help = 'folder where data is saved')
 parser.add_argument('--model_dir' , type=str , help = 'folder where model is saved' )
+parser.add_argument('--save_dir' , type=str , help = 'folder where model is saved' )
 args = parser.parse_args()
 import csv
 import tensorflow as tf
@@ -261,9 +262,9 @@ if __name__ =='__main__':
             imgs=imgs.reshape(list(np.shape(imgs)) + [1])
             rmn , exam_id =key.split('_')
             print 'rmn : {} | exam id : {} | # imgs : {}'.format(rmn , exam_id , np.shape(imgs))
-            save_dir=os.path.join(datadir, 'calc_result/'+type, rmn, exam_id)
-            if not os.path.isdir(save_dir):
-                os.makedirs(save_dir)
+            save_dir=os.path.join(args.save_dir, 'calc_result/'+type, rmn, exam_id)
+            if not os.path.isdir(args.save_dir):
+                os.makedirs(args.save_dir)
             preds=eval(model_path , imgs , batch_size=60 , save_root_folder=save_dir)
             count += len(preds)
             np.save(os.path.join(save_dir,'cal_preds.npy') , preds) # 이걸 왜 저장하지
