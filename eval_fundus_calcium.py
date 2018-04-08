@@ -255,7 +255,7 @@ if __name__ =='__main__':
             imgs=imgs.reshape(list(np.shape(imgs)) + [1])
             rmn , exam_id =key.split('_')
             print 'rmn : {} | exam id : {} | # imgs : {}'.format(rmn , exam_id , np.shape(imgs))
-            save_dir=os.path.join('./calc_result/'+type, rmn, exam_id)
+            save_dir=os.path.join(datadir, 'calc_result/'+type, rmn, exam_id)
             if not os.path.isdir(save_dir):
                 os.makedirs(save_dir)
             preds=eval(model_path , imgs , batch_size=60 , save_root_folder=save_dir)
