@@ -242,7 +242,7 @@ if __name__ =='__main__':
     #test_images=np.reshape(test_images,[-1,299,299,3])
 
 
-    model_path = args.model_dir
+    model_path = os.path.join(args.model_dir  , 'model')
     # exam_id 별 결과를 얻는다
     datadir=args.data_dir
     for type in ['normal' , 'abnormal']:
