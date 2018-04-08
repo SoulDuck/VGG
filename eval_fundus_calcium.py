@@ -4,7 +4,12 @@
     test_imgs=np.load('./Test_Data/calc_fundus/test_abnormal_img_300.npy')
     save_dir = './activation_maps/calc_fundus_300_ori'
 """
-#-*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-'
+import argparse
+
+parser=argparse.ArgumentParser()
+parser.add_argument('--data_dir' , type=str , help = 'folder where data is saved')
+parser.add_argument('--model_dir' , type=str , help = 'folder where model is saved' )
 import csv
 import tensorflow as tf
 import cam
