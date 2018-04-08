@@ -263,8 +263,8 @@ if __name__ =='__main__':
             rmn , exam_id =key.split('_')
             print 'rmn : {} | exam id : {} | # imgs : {}'.format(rmn , exam_id , np.shape(imgs))
             save_dir=os.path.join(args.save_dir, 'calc_result/'+type, rmn, exam_id)
-            if not os.path.isdir(args.save_dir):
-                os.makedirs(args.save_dir)
+            if not os.path.isdir(save_dir):
+                os.makedirs(save_dir)
             preds=eval(model_path , imgs , batch_size=60 , save_root_folder=save_dir)
             count += len(preds)
             np.save(os.path.join(save_dir,'cal_preds.npy') , preds) # 이걸 왜 저장하지
