@@ -296,6 +296,7 @@ for step in range(max_iter):
             best_loss_folder = os.path.join(best_loss_root, 'step_{}_loss_{}'.format(step, min_loss ))
             os.mkdir(best_loss_folder)
             saver.save(sess=sess,save_path=os.path.join(best_loss_folder, 'model'))
+        print 'Step : {} '.format(step)
         print 'Learning Rate : {} '.format(learning_rate)
         print 'Train acc : {} Train loss : {}'.format( train_acc , train_loss)
         print 'validation acc : {} loss : {}'.format( val_acc_mean, val_loss_mean )
