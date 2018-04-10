@@ -89,14 +89,10 @@ def _load_images_labels(dir , label ,limit , random_flag):
 
 NORMAL=0
 ABNORMAL =1
-#blood 500 Image을 불러온다
+
 start=time.time()
-#train_normalDir ='../lesion_detection/cropped_bg_500_clahe/'
 train_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0'
-#test_normalDir='../lesion_detection/bg_cropped_rois'
 test_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0/Test'
-#train_abnormalDir ='../lesion_detection/margin_crop_rois'
-#test_abnormalDir='../lesion_detection/blood_cropped_rois'
 
 
 

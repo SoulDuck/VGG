@@ -88,7 +88,7 @@ def build_graph(x_ , y_ ,cam_ind, is_training ,aug_flag, actmap_flag, model , ra
         conv_out_features = [64, 64 , 128, 128, 256, 256, 512, 512, 512, 512]
         conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
         conv_strides= [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        before_act_bn_mode = []
+        before_act_bn_mode = [False, False, False, False, False, False, False, False,False,False]
         after_act_bn_mode = [False, False, False, False, False, False, False, False,False,False]
         if bn == True:
             before_act_bn_mode = [True, True, True, True, True, True, True, True , True , True ]
@@ -98,8 +98,8 @@ def build_graph(x_ , y_ ,cam_ind, is_training ,aug_flag, actmap_flag, model , ra
         conv_out_features = [64, 64, 128, 128, 256, 256, 256 ,512, 512, 512 , 512, 512 ,512 ]
         conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
         conv_strides=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        before_act_bn_mode = []
-        after_act_bn_mode = []
+        before_act_bn_mode = [False, False, False, False, False, False, False, False,False,False,False,False,False]
+        after_act_bn_mode = [False, False, False, False, False, False, False, False,False,False,False,False,False]
         if bn == True:
             before_act_bn_mode = [True, True, True, True, True, True, True, True, True, True,True, True, True]
 
@@ -109,8 +109,8 @@ def build_graph(x_ , y_ ,cam_ind, is_training ,aug_flag, actmap_flag, model , ra
         conv_out_features = [64, 64, 128, 128, 256, 256, 256, 256, 512, 512, 512, 512 ,512, 512, 512 ,512]
         conv_kernel_sizes = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
         conv_strides = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        before_act_bn_mode = []
-        after_act_bn_mode = []
+        before_act_bn_mode = [False, False, False, False, False, False, False, False,False,False,False,False,False,False,False]
+        after_act_bn_mode = [False, False, False, False, False, False, False, False,False,False,False,False,False,False,False]
         if bn == True:
             before_act_bn_mode = [True, True, True, True, True, True, True, True, True, True,True, True, True ,True, True, True]
         allow_max_pool_indices = [1, 3, 7, 9, 11 , 15]
