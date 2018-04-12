@@ -1,69 +1,89 @@
-import numpy as np
-import random
 from PIL import Image
+import numpy as np
 import matplotlib.pyplot as plt
-import tensorflow as tf
-import cv2
-import aug
+import matplotlib as mpl
+mean = 0.0
+maxval = 0.0
+didextract = True
+img=Image.open('tmp_oct.png')
 
-def random_rotate(img):
-    debug_flag = False
+height,width=np.shape(img)
+img=np.asarray(img)
+mean=np.mean(img)
+max_val=np.max(img)
+rescaled_img=np.round(255.0 * (img - mean) / (max_val - mean))  # linear scaling
 
-    ### usage: map(random_rotate , images) ###
-    ind = random.randint(0, 180)
-    minus = random.randint(0, 1)
-    minus = bool(minus)
-    if minus == True:
-        ind = ind * -1
-    img = img.rotate(ind)
-    img = np.asarray(img)
-
-    # image type is must be PIL
-    if __debug__ == debug_flag:
-        print ind
-        plt.imshow(img)
-        plt.show()
-    img = img
-    return img
-
-
-def clahe_equalized(img):
-    img = img.copy()
-    if len(np.shape(img)) == 2:  # grey  image (h,w)
-        img=np.asarray(img).reshape(list(np.shape) + [1] )
-
-
-    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-    if img.shape[-1] ==3: # if color shape
-        for i in range(3):
-            img[:, :, i]=clahe.apply(np.array(img[:,:,i], dtype=np.uint8))
-    elif img.shape[-1] ==1: # if Greys,
-        img = clahe.apply(np.array(img[:,:,0], dtype = np.uint8))
-    return img
-
-
-## py_func test 1
-def fn(np_img):
-    ret_imgs = tf.py_func(clahe_equalized , [np_img] , [tf.uint8])
-    return tf.convert_to_tensor(ret_imgs) , np_img
-
-imgs=[]
-for i in range(5):
-    img_grey=np.asarray(Image.open('./sample_image_grey.png').convert('RGB'))
-    imgs.append(img_grey)
-imgs=np.asarray(imgs)
-print np.shape(imgs)
-batch_xs=aug.random_rotate_90(imgs)
-
-plt.imshow(batch_xs[0])
-plt.show()
-plt.imshow(batch_xs[1])
-plt.show()
-plt.imshow(batch_xs[2])
-plt.show()
-plt.imshow(batch_xs[3])
+plt.imshow(img , cmap='Greys')
 plt.show()
 
+def reverse_colourmap(cmap, name = 'my_cmap_r'):
+    """
+    In:
+    cmap, name
+    Out:
+    my_cmap_r
+
+    Explanation:
+    t[0] goes from 0 to 1
+    row i:   x  y0  y1 -> t[0] t[1] t[2]
+                   /
+                  /
+    row i+1: x  y0  y1 -> t[n] t[1] t[2]
+
+    so the inverse should do the same:
+    row i+1: x  y1  y0 -> 1-t[0] t[2] t[1]
+                   /
+                  /
+    row i:   x  y1  y0 -> 1-t[n] t[2] t[1]
+    """
+    reverse = []
+    k = []
+
+    for key in cmap._segmentdata:
+        k.append(key)
+        channel = cmap._segmentdata[key]
+        data = []
+
+        for t in channel:
+            data.append((1-t[0],t[2],t[1]))
+        reverse.append(sorted(data))
+
+    LinearL = dict(zip(k,reverse))
+    my_cmap_r = mpl.colors.LinearSegmentedColormap(name, LinearL)
+    return my_cmap_r
+
+plt.imshow(Image.open('grey_fundus.png'))
+plt.show()
+
+img=np.asarray(Image.open('grey_fundus.png').convert('L'))
+cmap_r=reverse_colourmap(mpl.cm.gray)
+
+plt.imshow(cmap_r(img))
+plt.show()
+"""
+print h,w
+exit()
 
 
+for i in range(0, width):
+    for j in range(0, height):
+        v = im.getpixel((i, j))
+        if v != 0 and v != 65535:
+            mean += v
+            n += 1
+        if v > maxval:
+            maxval = v
 
+    ignorefile.pop(infile, None)
+
+mean /= n
+lowercut = mean
+
+mapval = {}
+
+for i in range(0, maxval + 1):
+    if i < lowercut:
+        mapval[i] = 0
+        continue
+    mapval[i] = round(255.0 * (i - mean) / (max_val - mean))  # linear scaling
+"""

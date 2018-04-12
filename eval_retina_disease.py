@@ -293,9 +293,9 @@ if __name__ =='__main__':
 
     #test_images=np.reshape(test_images,[-1,299,299,3])
     model_path = './models/fundus_500/normal_blood/19/best_acc/step_1300_acc_0.933333396912/model'
-    model_path='./models/vgg_11/step_20600_acc_0.963333308697/model'
     model_path = './models/vgg_11/step_41900_acc_0.900000035763/model'
     model_path = './models/vgg_11/step_41900_acc_0.900000035763/model' #calcium score
+    model_path='./models/vgg_11/step_20600_acc_0.963333308697/model'
 
     #pred=eval(model_path, test_imgs[:],batch_size =1 ,save_root_folder='./activation_map_/blood')
     img_dir='../lesion_detection/hemo_30_crop'
@@ -306,14 +306,14 @@ if __name__ =='__main__':
     img_dir ='./retina_750' # 750 750
     img_dir = './hemo_30'  # hemo labeled by Dr.Lim
     img_dir = './Test_Data/cropped_margin_750_retina'  # 750 750 test retina disease
-    img_dir = './Test_Data/cropped_margin_300_retina'  # 750 750 test retina disease
     img_dir = './Test_Data/original_fundus_retina' # 2000 3000 test retina disease
+    img_dir = './Test_Data/cropped_margin_300_retina'  # 750 750 test retina disease
 
     paths = glob.glob(os.path.join(img_dir , '*.png'))
 
     save_dir ='./activation_maps/retina_750'
-    save_dir = './activation_maps/retina_300'
     save_dir = './activation_maps/retina_ori'
+    save_dir = './activation_maps/retina_300'
 
     classmap ,sess, x_ = fn( model_path, strides=[1, 1, 1, 1, 1, 1, 1, 1], pool_indices=[0, 1, 2, 3, 5, 7], label=1)
 

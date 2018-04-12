@@ -97,7 +97,7 @@ test_abnormalDir='../fundus_data/cropped_original_fundus_300x300/glaucoma/test'
 
 
 
-test_normal_imgs , test_normal_labs=_load_images_labels(test_normalDir,NORMAL ,809 , True)
+test_normal_imgs , test_normal_labs=_load_images_labels(test_normalDir,NORMAL ,172 , True)
 train_normal_imgs , train_normal_labs=_load_images_labels(train_normalDir,NORMAL ,4000, True)
 
 test_abnormal_imgs , test_abnormal_labs=_load_images_labels(test_abnormalDir,ABNORMAL ,None , False)
@@ -108,6 +108,7 @@ print np.shape(test_normal_imgs)
 print np.shape(train_normal_imgs)
 print np.shape(test_abnormal_imgs)
 print np.shape(train_abnormal_imgs)
+
 train_imgs=np.vstack([train_normal_imgs , train_abnormal_imgs])
 train_labs=np.vstack([train_normal_labs , train_abnormal_labs])
 train_normal_imgs=None
@@ -153,7 +154,7 @@ if args.optimizer == 'adam':
 
 log_count =0;
 while True:
-    logs_root_path='./logs/fundus_300_N_VS_G/{}'.format(args.folder_name )
+    logs_root_path='./logs/fundus_300_N_VS_R/{}'.format(args.folder_name )
     try:
         os.makedirs(logs_root_path)
     except Exception as e :
@@ -174,7 +175,7 @@ sess, saver , summary_writer =model.sess_start(logs_path)
 
 model_count =0;
 while True:
-    models_root_path='./models/fundus_300_N_VS_G/{}'.format(args.folder_name)
+    models_root_path='./models/fundus_300_N_VS_R/{}'.format(args.folder_name)
     try:
         os.makedirs(models_root_path)
     except Exception as e:
