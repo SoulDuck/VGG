@@ -90,10 +90,10 @@ test_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0/Test'
 
 #train_abnormalDir ='../lesion_detection/margin_crop_rois'
 #test_abnormalDir='../lesion_detection/blood_cropped_rois'
-train_abnormalDir ='../fundus_data/cropped_original_fundus_300x300/retina'
-test_abnormalDir='../fundus_data/cropped_original_fundus_300x300/retina/Test'
 train_abnormalDir ='../fundus_data/cropped_original_fundus_300x300/glaucoma'
 test_abnormalDir='../fundus_data/cropped_original_fundus_300x300/glaucoma/test'
+train_abnormalDir ='../fundus_data/cropped_original_fundus_300x300/retina'
+test_abnormalDir='../fundus_data/cropped_original_fundus_300x300/retina/Test'
 
 
 
