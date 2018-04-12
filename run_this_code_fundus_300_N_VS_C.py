@@ -84,7 +84,7 @@ start=time.time()
 train_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0'
 test_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0/Test'
 train_abnormalDir ='../fundus_data/cropped_original_fundus_300x300/cataract'
-test_abnormalDir='../fundus_data/cropped_original_fundus_300x300/cataract/test'
+test_abnormalDir='../fundus_data/cropped_original_fundus_300x300/cataract/Test'
 
 
 
