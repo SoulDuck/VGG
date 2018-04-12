@@ -54,7 +54,7 @@ def plotROC(predStrength , labels):
             print 'cursor[0]-DelX :',cursor[0],'cursor[1]-DelY :',cursor[1]
     ax.plot([0,1],[0,1],'b--')
     plt.xlabel('False Positive Rate');plt.ylabel('True Positive Rate')
-    plt.title('ROC curve for Fundus Classification System')
+    plt.title('ROC curve for Fundus Classification Using Calcium Score')
     ax.axis([0,1,0,1])
     if __debug__==debug_flag:
         print '# of True :' ,n_pos
@@ -63,8 +63,23 @@ def plotROC(predStrength , labels):
     #plt.show()
     print 'The Area Under Curve is :' , ySum*x_step
 
+
 if '__main__' == __name__ :
-    preds=np.load('best_preds.npy')
-    labels = np.load('labels.npy')
+    preds=[]
+    trues=[]
+    f=open('merge_result.csv' , 'r')
+    lines=f.readlines()[1:]
+    for line in lines:
+        line.split(',')[1:4]
+        nor_pred , abnor_pred , cls =map(float ,line.split(',')[1:4] )
+        nor_pred , abnor_pred , cls
+        label=np.zeros([2])
+        label[int(cls)]=1
+        preds.append([nor_pred , abnor_pred])
+        trues.append(label)
     print preds
-    plotROC(preds, labels)
+    print trues
+    #exit()
+    #preds=np.load('best_preds.npy')
+    #labels = np.load('labels.npy')
+    plotROC(preds, trues)

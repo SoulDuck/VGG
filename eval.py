@@ -87,8 +87,6 @@ def eval(model_path ,test_images , batch_size  , save_root_folder):
     print 'pred sample ',predList[:1]
     return np.asarray(predList)
 if __name__ =='__main__':
-    #test_images = Image.open('/Users/seongjungkim/PycharmProjects/VGG/fundus_300/1_L.jpg')#.convert(RGB)
-    #test_images=test_images.resize((299, 299), Image.ANTIALIAS)
     test_images=np.load('/Users/seongjungkim/PycharmProjects/VGG/fundus_300/russian_eyes.npy')
     print np.shape(test_images)
     test_images=np.reshape(test_images,[-1,299,299,3])
