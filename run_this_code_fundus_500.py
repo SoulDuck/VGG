@@ -2,6 +2,7 @@
 import model
 import input
 import os
+import glob
 import fundus
 import numpy as np
 import argparse
@@ -65,11 +66,8 @@ def _load_images_labels(dir , label ,limit , random_flag):
     start = time.time()
     paths = []
 
-    for dir, subdirs, files in os.walk(dir):
-        for file in files:
-            path = os.path.join(dir, file)
-            paths.append(path)
-    if  random_flag is True:
+    paths=glob.glob(os.path.join(dir , '*.png'))
+    if random_flag is True:
         indices = random.sample(range(len(paths)), limit)
         paths = np.asarray(paths)[indices]
     imgs=map(lambda path : np.asarray(Image.open(path)) , paths[:limit])
