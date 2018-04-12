@@ -245,19 +245,16 @@ for step in range(max_iter):
         if val_acc_mean > max_acc: #best acc
             max_acc=val_acc_mean
             print 'max acc : {}'.format(max_acc)
-
             best_acc_folder=os.path.join( best_acc_root, 'step_{}_acc_{}'.format(step , max_acc))
             os.mkdir(best_acc_folder)
-            saver.save(sess=sess,
-                       save_path=os.path.join(best_acc_folder  , 'model'))
+            saver.save(sess=sess,save_path=os.path.join(best_acc_folder  , 'model'))
 
         if val_loss_mean < min_loss: # best loss
             min_loss = val_loss_mean
             print 'min loss : {}'.format(min_loss)
             best_loss_folder = os.path.join(best_loss_root, 'step_{}_loss_{}'.format(step, min_loss ))
             os.mkdir(best_loss_folder)
-            saver.save(sess=sess,
-                       save_path=os.path.join(best_loss_folder, 'model'))
+            #saver.save(sess=sess,save_path=os.path.join(best_loss_folder, 'model'))
         print 'Step : {}'.format(step)
         print 'Learning Rate : {} '.format(learning_rate)
         print 'Train acc : {} Train loss : {}'.format(train_acc, train_loss)
