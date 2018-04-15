@@ -30,7 +30,7 @@ parser.add_argument('--use_nesterov' , type=bool , help='only for momentum , use
 parser.add_argument('--aug' , dest='use_aug', action='store_true' , help='augmentation')
 parser.add_argument('--no_aug' , dest='use_aug', action='store_false' , help='augmentation')
 
-parser.add_argument('--roate' , dest='use_rotate', action='store_true' , help='augmentation')
+parser.add_argument('--rotate' , dest='use_rotate', action='store_true' , help='augmentation')
 parser.add_argument('--no_rotate' , dest='use_rotate', action='store_false' , help='augmentation')
 
 
