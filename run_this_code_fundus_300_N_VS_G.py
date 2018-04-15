@@ -30,6 +30,11 @@ parser.add_argument('--use_nesterov' , type=bool , help='only for momentum , use
 parser.add_argument('--aug' , dest='use_aug', action='store_true' , help='augmentation')
 parser.add_argument('--no_aug' , dest='use_aug', action='store_false' , help='augmentation')
 
+
+parser.add_argument('--rotate' , dest='use_rotate', action='store_true' , help='augmentation')
+parser.add_argument('--no_rotate' , dest='use_rotate', action='store_false' , help='augmentation')
+
+
 parser.add_argument('--actmap', dest='use_actmap' ,action='store_true')
 parser.add_argument('--no_actmap', dest='use_actmap', action='store_false')
 
@@ -260,6 +265,10 @@ for step in range(max_iter):
     train_fetches = [train_op, accuracy_op, loss_op]
     batch_xs, batch_ys , batch_fname= input.next_batch(batch_size, train_imgs, train_labs )
     batch_xs=batch_xs/255.
+    if args.use_rotate:
+        batch_xs = aug.random_rotate_90(batch_xs)
+
+
     train_feedDict = {x_: batch_xs, y_: batch_ys, cam_ind:ABNORMAL ,lr_: learning_rate, is_training: True}
     _ , train_acc, train_loss = sess.run( fetches=train_fetches, feed_dict=train_feedDict )
     #print 'train acc : {} loss : {}'.format(train_acc, train_loss)
