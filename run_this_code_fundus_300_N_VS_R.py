@@ -54,6 +54,7 @@ parser.add_argument('--folder_name' ,help='ex model/fundus_300/folder_name/0 .. 
 args=parser.parse_args()
 
 print 'aug : ' , args.use_aug
+print 'aug rotate :' , args.use_rotate
 print 'actmap : ' , args.use_actmap
 print 'use_l2_loss: ' , args.use_l2_loss
 print 'BN : ' , args.use_BN
