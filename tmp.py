@@ -2,6 +2,7 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+import aug
 mean = 0.0
 maxval = 0.0
 didextract = True
@@ -12,10 +13,6 @@ img=np.asarray(img)
 mean=np.mean(img)
 max_val=np.max(img)
 rescaled_img=np.round(255.0 * (img - mean) / (max_val - mean))  # linear scaling
-
-plt.imshow(img , cmap='Greys')
-plt.show()
-
 def reverse_colourmap(cmap, name = 'my_cmap_r'):
     """
     In:
@@ -52,6 +49,7 @@ def reverse_colourmap(cmap, name = 'my_cmap_r'):
     my_cmap_r = mpl.colors.LinearSegmentedColormap(name, LinearL)
     return my_cmap_r
 
+"""
 plt.imshow(Image.open('grey_fundus.png'))
 plt.show()
 
@@ -61,29 +59,9 @@ cmap_r=reverse_colourmap(mpl.cm.gray)
 plt.imshow(cmap_r(img))
 plt.show()
 """
-print h,w
-exit()
 
+color_img=Image.open('sample_image_color.png').convert('RGB')
+color_img=aug.clahe_equalized(np.asarray(color_img))
+plt.imshow(color_img)
+plt.show()
 
-for i in range(0, width):
-    for j in range(0, height):
-        v = im.getpixel((i, j))
-        if v != 0 and v != 65535:
-            mean += v
-            n += 1
-        if v > maxval:
-            maxval = v
-
-    ignorefile.pop(infile, None)
-
-mean /= n
-lowercut = mean
-
-mapval = {}
-
-for i in range(0, maxval + 1):
-    if i < lowercut:
-        mapval[i] = 0
-        continue
-    mapval[i] = round(255.0 * (i - mean) / (max_val - mean))  # linear scaling
-"""

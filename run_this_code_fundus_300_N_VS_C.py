@@ -38,7 +38,7 @@ parser.add_argument('--no_actmap', dest='use_actmap', action='store_false')
 
 parser.add_argument('--random_crop_resize' , '-r',  type = int  , help='if you use random crop resize , you can choice randdom crop ')
 
-parser.add_argument('--batch_size' ,'-b' , type=int , help='batch size')
+parser.add_argument('--batch_size' ,'-b' , type=int , help='batch siz   e')
 parser.add_argument('--max_iter', '-i' , type=int , help='iteration')
 
 parser.add_argument('--l2_loss', dest='use_l2_loss', action='store_true' ,help='l2 loss true or False')
