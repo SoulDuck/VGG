@@ -34,6 +34,8 @@ parser.add_argument('--no_aug' , dest='use_aug', action='store_false' , help='au
 parser.add_argument('--rotate' , dest='use_rotate', action='store_true' , help='augmentation')
 parser.add_argument('--no_rotate' , dest='use_rotate', action='store_false' , help='augmentation')
 
+parser.add_argument('--clahe' , dest='use_clahe', action='store_true' , help='augmentation')
+parser.add_argument('--no_clahe' , dest='use_clahe', action='store_false' , help='augmentation')
 
 parser.add_argument('--actmap', dest='use_actmap' ,action='store_true')
 parser.add_argument('--no_actmap', dest='use_actmap', action='store_false')
@@ -114,6 +116,15 @@ test_imgs=np.vstack([test_normal_imgs , test_abnormal_imgs])
 test_labs=np.vstack([test_normal_labs, test_abnormal_labs])
 test_normal_imgs=None
 test_abnormal_imgs=None
+
+
+
+if args.use_clahe:
+    print 'clahe 적용중입니다...'
+    import matplotlib.pyplot as plt
+    train_imgs= map(aug.clahe_equalized, train_imgs)
+    test_imgs = map(aug.clahe_equalized, test_imgs)
+    train_imgs , test_imgs = map(np.asarray , [train_imgs , test_imgs])
 
 
 #normalize

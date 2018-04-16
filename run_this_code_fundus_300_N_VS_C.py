@@ -33,6 +33,9 @@ parser.add_argument('--no_aug' , dest='use_aug', action='store_false' , help='au
 parser.add_argument('--rotate' , dest='use_rotate', action='store_true' , help='augmentation')
 parser.add_argument('--no_rotate' , dest='use_rotate', action='store_false' , help='augmentation')
 
+parser.add_argument('--clahe' , dest='use_clahe', action='store_true' , help='augmentation')
+parser.add_argument('--no_clahe' , dest='use_clahe', action='store_false' , help='augmentation')
+
 parser.add_argument('--actmap', dest='use_actmap' ,action='store_true')
 parser.add_argument('--no_actmap', dest='use_actmap', action='store_false')
 
@@ -114,6 +117,14 @@ test_normal_imgs=None
 test_abnormal_imgs=None
 
 
+if args.use_clahe:
+    print 'clahe 적용중입니다...'
+    import matplotlib.pyplot as plt
+    train_imgs= map(aug.clahe_equalized, train_imgs)
+    test_imgs = map(aug.clahe_equalized, test_imgs)
+    train_imgs , test_imgs = map(np.asarray , [train_imgs , test_imgs])
+
+
 #normalize
 print np.shape(test_labs)
 if np.max(train_imgs) > 1:
@@ -121,6 +132,9 @@ if np.max(train_imgs) > 1:
     test_imgs=test_imgs/255.
     print 'train_imgs max :',np.max(train_imgs)
     print 'test_imgs max :', np.max(test_imgs)
+
+
+
 
 h,w,ch=train_imgs.shape[1:]
 n_classes=np.shape(train_labs)[-1]
