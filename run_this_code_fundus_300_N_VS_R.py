@@ -57,6 +57,7 @@ args=parser.parse_args()
 
 print 'aug : ' , args.use_aug
 print 'aug rotate :' , args.use_rotate
+print 'clahe : ' , args.use_clahe
 print 'actmap : ' , args.use_actmap
 print 'use_l2_loss: ' , args.use_l2_loss
 print 'BN : ' , args.use_BN
@@ -66,7 +67,6 @@ print 'use nesterov : ',args.use_nesterov
 print 'random crop size : ',args.random_crop_resize
 print 'batch size : ',args.batch_size
 print 'max iter  : ',args.max_iter
-
 
 
 def _load_images_labels(dir , label ,limit , random_flag):
