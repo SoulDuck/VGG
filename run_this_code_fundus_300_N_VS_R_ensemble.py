@@ -160,9 +160,11 @@ def ensemble_with_all_combination_multiproc(model_paths, test_images, test_label
         p = open('predcitions.pkl', 'rb')
         pred_dic = pickle.load(p)
 
+
+    print np.shaep(pred_dic)
     # Run all combinations
     def _fn(cbn_models):  # cbn_models  ==> combinatation models
-        print cbn_models
+
         for idx, model in enumerate(cbn_models):
             pred = pred_dic[model]
             if idx == 0:
