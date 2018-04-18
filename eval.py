@@ -3,30 +3,6 @@ import tensorflow as tf
 import cam
 import numpy as np
 import os
-import matplotlib
-from PIL import Image
-
-
-if "DISPLAY" not in os.environ:
-    # remove Travis CI Error
-    matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-
-import input
-import fundus
-## for mnist dataset ##
-from tensorflow.examples.tutorials.mnist import input_data
-mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
-"""
-train_imgs = mnist.train.images.reshape([-1,28,28,1])
-train_labs = mnist.train.labels
-test_imgs = mnist.test.images.reshape([-1,28,28,1])
-test_labs = mnist.test.labels
-"""
-#for Fundus_300
-train_images, train_labels, train_filenames, test_images, test_labels, test_filenames=fundus.type1('./fundus_300' , resize=(299,299))
-
-
 def get_acc(preds , trues):
     #onehot vector check
     assert np.ndim(preds) == np.ndim(trues) , 'predictions and True Values has same shape and has to be OneHot Vector'
