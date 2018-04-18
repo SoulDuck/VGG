@@ -160,7 +160,7 @@ def ensemble_with_all_combination_multiproc(model_paths, test_images, test_label
         p = open('predcitions.pkl', 'rb')
         pred_dic = pickle.load(p)
 
-    next(itertools.combinations(pred_dic.keys(), 2))
+    print next(itertools.combinations(pred_dic.keys(), 2))
 
     # Run all combinations
     def _fn(cbn_models):  # cbn_models  ==> combinatation models
