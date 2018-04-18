@@ -242,10 +242,15 @@ if __name__ == '__main__':
     test_normal_imgs, test_normal_labs = _load_images_labels(test_normalDir, NORMAL, 172, True)
     test_abnormal_imgs, test_abnormal_labs = _load_images_labels(test_abnormalDir, ABNORMAL, None, False)
 
+    test_imgs = np.vstack([test_normal_imgs, test_abnormal_imgs])
+    test_labs = np.vstack([test_normal_labs, test_abnormal_labs])
+    test_normal_imgs = None
+    test_abnormal_imgs = None
+
     models_path=get_models_paths(args.models_path)
     print 'number of model paths : {}'.format(len(models_path))
-    acc, max_list , pred =ensemble_with_all_combination(models_path ,test_images , test_labels ,None)
-    np.save('./best_preds', pred)
-    np.save('./test_labels', test_labels) #
+    acc, max_list , pred =ensemble_with_all_combination(models_path ,test_imgs , test_labs ,None)
+    np.save('./N_VS_R_ensemble_best_preds', pred)
+    np.save('./N_VS_R_ensemble_test_labels', test_labs) #
     names=map(lambda path: path.split('/')[-2]  ,max_list)
     print 'best model list : ',names
