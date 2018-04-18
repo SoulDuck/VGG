@@ -89,71 +89,42 @@ def get_models_paths(dir_path):
     return ret_subdir_paths
 
 
-def ensemble_with_all_combibation(model_paths , test_images , test_labels):
+def ensemble_with_all_combination(model_paths , test_images , test_labels ,actmap_folder):
     max_acc=0
     max_pred=None
     max_list = []
-    f = open('best_ensemble.txt', 'w')
+    f = open('best_ensemble.txt', 'w') # Each Combination holds a list of file paths that have the best accuracy
+    # Predictions from Eval is saved in the form of a pickle.
     if not os.path.isfile('predcitions.pkl'):
-        p = open('predcitions.pkl' , 'w')
+        p = open('predcitions.pkl' , 'wb')
         pred_dic={}
         for path in model_paths:
-            name=path.split('/')[-1]
-            print 'path : ', path
-            print 'name : ', name
-
+            fname=os.path.split(path)[-1]
+            name=os.path.splitext(fname)[0]
             path=os.path.join(path , 'model')
-            #./models/vgg_11/step_12500_acc_0.841666698456 --> ./models/vgg_11/step_12500_acc_0.841666698456/model
-            # activation 이 저장될 세이브 장소를 만든다
-            # 파일 경로는 ./activation_map/model_name/
-            save_root_folder = './activation_map/{}'.format(name)
-
-            os.mkdir(save_root_folder)
-            tmp_pred = eval.eval(path, test_images , batch_size=60 , save_root_folder=save_root_folder)
-            print 'tmp_pred' , tmp_pred
-            pred_dic[path]=tmp_pred
-        #pred_model_path_list=zip(pred_list , model_paths)
+            tmp_pred = eval.eval(path, test_images , batch_size=60 , actmap_folder=actmap_folder)
+            pred_dic[name]=tmp_pred
         pickle.dump(pred_dic,p)
     else:
-        p = open('predcitions.pkl', 'r')
+        p = open('predcitions.pkl', 'rb')
         pred_dic=pickle.load(p)
-    print pred_dic.keys()
+
+    # run All Combinations
     for k in range(2,len(pred_dic.keys())+1):
         k_max_acc = 0
         k_max_list = []
         print 'K : {}'.format(k)
         for cbn_models in itertools.combinations(pred_dic.keys(),k):
             print cbn_models
-            #cbn_preds=map(lambda cbn_model: pred_dic[cbn_model],cbn_models)
             for idx, model in enumerate(cbn_models):
                 pred = pred_dic[model]
                 print 'pred shape : {}'.format(np.shape(pred))
-                #print idx
                 if idx == 0:
                     pred_sum = pred
                 else:
                     pred_sum += pred
-
-            """
-                for idx ,pred in enumerate(cbn_preds):
-                print cbn_models[idx]
-                print idx
-                print pred[:10]
-                if idx ==0 :
-                    pred_sum = pred
-                else:
-                    pred_sum += pred
-            """
-            print len(cbn_models)
-
             pred_sum = pred_sum / float(len(cbn_models))
-            print 'pred' ,pred[:10]
             acc=eval.get_acc(pred_sum , test_labels)
-            print 'accuracy : {}'.format(acc)
-            #print cbn_models ,':',acc
-
-            p = open('predcitions.pkl', 'r')
-            pred_dic=pickle.load(p)
             if max_acc < acc :
                 max_acc=acc
                 max_pred=pred_sum
@@ -164,10 +135,10 @@ def ensemble_with_all_combibation(model_paths , test_images , test_labels):
         msg = 'k : {} , list : {} , accuracy : {}\n'.format(k, k_max_list , k_max_acc)
         f.write(msg)
         f.flush()
+
     msg='model list : {} , accuracy : {}'.format(max_list , max_acc)
     f.write(msg)
     f.flush()
-
     return acc , max_list , max_pred
 
 
