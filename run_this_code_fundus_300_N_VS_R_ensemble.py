@@ -18,7 +18,7 @@ import pickle
 import argparse
 
 parser=argparse.ArgumentParser()
-parser.add_argument('--models_path' , type = str , default='./models/fundus_300_N_VS_R/VGG_11/ensemble')
+parser.add_argument('--models_path' , type = str , default='./models/fundus_300_N_VS_R/VGG_11/ensemble_2')
 args=parser.parse_args()
 
 
