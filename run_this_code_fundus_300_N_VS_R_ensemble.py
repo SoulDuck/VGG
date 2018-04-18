@@ -115,7 +115,6 @@ def ensemble_with_all_combination(model_paths, test_images, test_labels, actmap_
         print 'K : {}'.format(k)
 
         for cbn_models in itertools.combinations(pred_dic.keys(),k):
-            print cbn_models
             for idx, model in enumerate(cbn_models):
                 pred = pred_dic[model]
                 if idx == 0:
@@ -179,6 +178,7 @@ def ensemble_with_all_combination_multiproc(model_paths, test_images, test_label
         k_max_acc = 0
         k_max_list = []
         print 'K : {}'.format(k)
+
         for acc, cbn_models , pred_sum in pool.imap( _fn, itertools.combinations(pred_dic.keys(), k)):
             if max_acc < acc:
                 max_acc = acc
@@ -245,7 +245,7 @@ if __name__ == '__main__':
 
     models_path=get_models_paths(args.models_path)
     print 'number of model paths : {}'.format(len(models_path))
-    acc, max_list, pred = ensemble_with_all_combination(models_path, test_imgs, test_labs, None)
+    acc, max_list, pred = ensemble_with_all_combination_multiproc(models_path, test_imgs, test_labs, None)
     np.save('./N_VS_R_ensemble_best_preds', pred)
     np.save('./N_VS_R_ensemble_test_labels', test_labs) #
     print 'max Accuracy : ', acc
