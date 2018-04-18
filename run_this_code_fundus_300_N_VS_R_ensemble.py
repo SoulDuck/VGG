@@ -159,12 +159,13 @@ def ensemble_with_all_combination_multiproc(model_paths, test_images, test_label
     else:
         p = open('predcitions.pkl', 'rb')
         pred_dic = pickle.load(p)
-
-    print next(itertools.combinations(pred_dic.keys(), 2))
-
     # Run all combinations
     def _fn(cbn_models):  # cbn_models  ==> combinatation models
 
+        print cbn_models
+        acc=3
+        pred_sum=3
+        """
         for idx, model in enumerate(cbn_models):
             pred = pred_dic[model]
             if idx == 0:
@@ -173,7 +174,7 @@ def ensemble_with_all_combination_multiproc(model_paths, test_images, test_label
                 pred_sum += pred
         pred_sum = pred_sum / float(len(cbn_models))
         acc = eval.get_acc(pred_sum, test_labels)
-
+        """
         return acc , cbn_models , pred_sum
 
     pool=multiprocessing.Pool()
@@ -182,7 +183,7 @@ def ensemble_with_all_combination_multiproc(model_paths, test_images, test_label
         k_max_list = []
         print 'K : {}'.format(k)
 
-        for acc, cbn_models , pred_sum in pool.imap( _fn, itertools.combinations(pred_dic.keys(), k)):
+        for acc, cbn_models, pred_sum in pool.imap(_fn, itertools.combinations(pred_dic.keys(), k)):
             if max_acc < acc:
                 max_acc = acc
                 max_pred = pred_sum
