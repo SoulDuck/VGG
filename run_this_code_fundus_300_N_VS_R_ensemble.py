@@ -102,6 +102,8 @@ def ensemble_with_all_combination(model_paths, test_images, test_labels, actmap_
             name=os.path.splitext(fname)[0]
             path=os.path.join(path , 'model')
             tmp_pred = eval.eval(path, test_images , batch_size=60 , actmap_folder=actmap_folder)
+            tmp_acc=eval.get_acc(tmp_pred, test_labels)
+            print 'ACC : {} , model name : {}'.format(tmp_acc , tmp_pred)
             pred_dic[name]=tmp_pred
         pickle.dump(pred_dic,p)
     else:
@@ -185,6 +187,8 @@ if __name__ == '__main__':
     test_labs = np.vstack([test_normal_labs, test_abnormal_labs])
     test_normal_imgs = None
     test_abnormal_imgs = None
+
+
 
     models_path=get_models_paths(args.models_path)
     print 'number of model paths : {}'.format(len(models_path))
