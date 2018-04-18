@@ -118,7 +118,6 @@ def ensemble_with_all_combination(model_paths, test_images, test_labels, actmap_
             print cbn_models
             for idx, model in enumerate(cbn_models):
                 pred = pred_dic[model]
-                print 'pred shape : {}'.format(np.shape(pred))
                 if idx == 0:
                     pred_sum = pred
                 else:
