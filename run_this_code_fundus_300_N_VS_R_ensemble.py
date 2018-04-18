@@ -248,5 +248,5 @@ if __name__ == '__main__':
     acc, max_list, pred = ensemble_with_all_combination(models_path, test_imgs, test_labs, None)
     np.save('./N_VS_R_ensemble_best_preds', pred)
     np.save('./N_VS_R_ensemble_test_labels', test_labs) #
-    print acc
+    print 'max Accuracy : ', acc
     print 'best model list : ',max_list
