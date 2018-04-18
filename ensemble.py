@@ -88,12 +88,12 @@ def get_models_paths(dir_path):
             ret_subdir_paths.append(path)
     return ret_subdir_paths
 
-
-def ensemble_with_all_combination(model_paths , test_images , test_labels ,actmap_folder):
+def ensemble_with_all_combination(model_paths, test_images, test_labels, actmap_folder):
     max_acc=0
     max_pred=None
     max_list = []
     f = open('best_ensemble.txt', 'w') # Each Combination holds a list of file paths that have the best accuracy
+
     # Predictions from Eval is saved in the form of a pickle.
     if not os.path.isfile('predcitions.pkl'):
         p = open('predcitions.pkl' , 'wb')
@@ -109,7 +109,7 @@ def ensemble_with_all_combination(model_paths , test_images , test_labels ,actma
         p = open('predcitions.pkl', 'rb')
         pred_dic=pickle.load(p)
 
-    # run All Combinations
+    # Run all combinations
     for k in range(2,len(pred_dic.keys())+1):
         k_max_acc = 0
         k_max_list = []
@@ -171,7 +171,7 @@ if __name__ == '__main__':
     train_images, train_labels, train_filenames, test_images, test_labels, test_filenames = fundus.type1(
         './fundus_300', resize=(299, 299))
 
-    acc, max_list , pred =ensemble_with_all_combibation(models_path ,test_images , test_labels)
+    acc, max_list , pred =ensemble_with_all_combination(models_path ,test_images , test_labels)
     np.save('./best_preds', pred)
     np.save('./test_labels', test_labels) #
     np.save('./test_images',train_images)
