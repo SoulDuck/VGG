@@ -13,8 +13,6 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 
 import eval
-import roc
-import fundus
 import itertools
 import pickle
 import argparse
