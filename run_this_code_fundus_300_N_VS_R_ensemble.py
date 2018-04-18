@@ -188,7 +188,7 @@ if __name__ == '__main__':
 
     models_path=get_models_paths(args.models_path)
     print 'number of model paths : {}'.format(len(models_path))
-    acc, max_list, pred = ensemble_with_all_combination_multiproc(models_path, test_imgs, test_labs, None)
+    acc, max_list, pred = ensemble_with_all_combination(models_path, test_imgs, test_labs, None)
     np.save('./N_VS_R_ensemble_best_preds', pred)
     np.save('./N_VS_R_ensemble_test_labels', test_labs) #
     print 'max Accuracy : ', acc
