@@ -103,7 +103,7 @@ def ensemble_with_all_combination(model_paths, test_images, test_labels, actmap_
             path=os.path.join(path , 'model')
             tmp_pred = eval.eval(path, test_images , batch_size=60 , actmap_folder=actmap_folder)
             tmp_acc=eval.get_acc(tmp_pred, test_labels)
-            print 'ACC : {} , model name : {}'.format(tmp_acc , tmp_pred)
+            print 'ACC : {} , model name : {}'.format(tmp_acc , path)
             pred_dic[name]=tmp_pred
         pickle.dump(pred_dic,p)
     else:
