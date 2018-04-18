@@ -163,6 +163,7 @@ def ensemble_with_all_combination_multiproc(model_paths, test_images, test_label
     # Run all combinations
     def _fn(cbn_models):  # cbn_models  ==> combinatation models
         for idx, model in enumerate(cbn_models):
+            print model
             pred = pred_dic[model]
             if idx == 0:
                 pred_sum = pred
