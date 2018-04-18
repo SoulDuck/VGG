@@ -5,6 +5,7 @@ import numpy as np
 import os , glob
 from skimage import color
 from skimage import io
+import multiprocessing
 
 import matplotlib
 if "DISPLAY" not in os.environ:
@@ -88,6 +89,8 @@ def get_models_paths(dir_path):
             ret_subdir_paths.append(path)
     return ret_subdir_paths
 
+
+
 def ensemble_with_all_combination(model_paths, test_images, test_labels, actmap_folder):
     max_acc=0
     max_pred=None
@@ -114,6 +117,7 @@ def ensemble_with_all_combination(model_paths, test_images, test_labels, actmap_
         k_max_acc = 0
         k_max_list = []
         print 'K : {}'.format(k)
+
         for cbn_models in itertools.combinations(pred_dic.keys(),k):
             print cbn_models
             for idx, model in enumerate(cbn_models):
@@ -134,11 +138,68 @@ def ensemble_with_all_combination(model_paths, test_images, test_labels, actmap_
         msg = 'k : {} , list : {} , accuracy : {}\n'.format(k, k_max_list , k_max_acc)
         f.write(msg)
         f.flush()
-
     msg='model list : {} , accuracy : {}'.format(max_list , max_acc)
     f.write(msg)
     f.flush()
-    return acc , max_list , max_pred
+    return max_acc , max_list , max_pred
+
+
+def ensemble_with_all_combination_multiproc(model_paths, test_images, test_labels, actmap_folder):
+    max_acc = 0
+    max_pred = None
+    max_list = []
+    f = open('best_ensemble.txt', 'w')  # Each Combination holds a list of file paths that have the best accuracy
+
+    # Predictions from Eval is saved in the form of a pickle.
+    if not os.path.isfile('predcitions.pkl'):
+        p = open('predcitions.pkl', 'wb')
+        pred_dic = {}
+        for path in model_paths:
+            fname = os.path.split(path)[-1]
+            name = os.path.splitext(fname)[0]
+            path = os.path.join(path, 'model')
+            tmp_pred = eval.eval(path, test_images, batch_size=60, actmap_folder=actmap_folder)
+            pred_dic[name] = tmp_pred
+        pickle.dump(pred_dic, p)
+    else:
+        p = open('predcitions.pkl', 'rb')
+        pred_dic = pickle.load(p)
+
+    # Run all combinations
+    def _fn(cbn_models):  # cbn_models  ==> combinatation models
+        for idx, model in enumerate(cbn_models):
+            pred = pred_dic[model]
+            if idx == 0:
+                pred_sum = pred
+            else:
+                pred_sum += pred
+        pred_sum = pred_sum / float(len(cbn_models))
+        acc = eval.get_acc(pred_sum, test_labels)
+
+        return acc , cbn_models , pred_sum
+
+    pool=multiprocessing.Pool()
+    for k in range(2, len(pred_dic.keys()) + 1):
+        k_max_acc = 0
+        k_max_list = []
+        print 'K : {}'.format(k)
+        for acc, cbn_models , pred_sum in pool.imap( _fn, itertools.combinations(pred_dic.keys(), k)):
+            if max_acc < acc:
+                max_acc = acc
+                max_pred = pred_sum
+                max_list = cbn_models
+            if k_max_acc < acc:
+                k_max_acc = acc
+                k_max_list = cbn_models
+        msg = 'k : {} , list : {} , accuracy : {}\n'.format(k, k_max_list, k_max_acc)
+        f.write(msg)
+        f.flush()
+    msg = 'model list : {} , accuracy : {}'.format(max_list, max_acc)
+    f.write(msg)
+    f.flush()
+    return max_acc, max_list, max_pred
+
+
 
 
 def ensemble(model_paths , test_images):
