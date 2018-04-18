@@ -23,7 +23,7 @@ import pickle
 import argparse
 
 parser=argparse.ArgumentParser()
-parser.add_argument('--models_path')
+parser.add_argument('--models_path' , type = str , default='./models/fundus_300_N_VS_R/VGG_11/ensemble')
 args=parser.parse_args()
 
 
@@ -236,6 +236,7 @@ def _load_images_labels(dir , label ,limit , random_flag):
 if __name__ == '__main__':
     NORMAL = 0
     ABNORMAL = 1
+
     test_normalDir = '../fundus_data/cropped_original_fundus_300x300/normal_0/Test'
     test_abnormalDir = '../fundus_data/cropped_original_fundus_300x300/retina/Test'
 
