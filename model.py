@@ -184,8 +184,6 @@ def build_graph(x_ , y_ ,cam_ind, is_training ,aug_flag, actmap_flag, model , ra
     print "logits's shape : {}".format(logits)
     return  logits
 
-
-
 def train_algorithm_momentum(logits, labels, learning_rate , use_nesterov , l2_loss):
     print 'Optimizer : Momentum'
     print 'Use Nesterov : ', use_nesterov
