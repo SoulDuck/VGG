@@ -18,7 +18,7 @@ import pickle
 import argparse
 
 parser=argparse.ArgumentParser()
-parser.add_argument('--models_path' , type = str , default='./models/fundus_300_N_VS_R/VGG_11/ensemble_2')
+parser.add_argument('--models_path' , type = str , default='./models/fundus_300_N_VS_R/VGG_11/ensemble_3')
 args=parser.parse_args()
 
 
@@ -103,7 +103,7 @@ def ensemble_with_all_combination(model_paths, test_images, test_labels, actmap_
             path=os.path.join(path , 'model')
             tmp_pred = eval.eval(path, test_images , batch_size=60 , actmap_folder=actmap_folder)
             tmp_acc=eval.get_acc(tmp_pred, test_labels)
-            print 'ACC : {} , model name : {}'.format(tmp_acc , path)
+            print 'ACC : {} , model name : {}'.format(tmp_acc , tmp_acc)
             pred_dic[name]=tmp_pred
         pickle.dump(pred_dic,p)
     else:
