@@ -97,6 +97,7 @@ def ensemble_with_all_combination(model_paths, test_images, test_labels, actmap_
     f = open('best_ensemble.txt', 'w') # Each Combination holds a list of file paths that have the best accuracy
 
     # Predictions from Eval is saved in the form of a pickle.
+    # Predictions from Eval is saved in the form of a pickle.
     if not os.path.isfile('predcitions.pkl'):
         p = open('predcitions.pkl' , 'wb')
         pred_dic={}
@@ -105,6 +106,8 @@ def ensemble_with_all_combination(model_paths, test_images, test_labels, actmap_
             name=os.path.splitext(fname)[0]
             path=os.path.join(path , 'model')
             tmp_pred = eval.eval(path, test_images , batch_size=60 , actmap_folder=actmap_folder)
+            tmp_acc=eval.get_acc(tmp_pred, test_labels)
+            print 'ACC : {} , model name : {}'.format(tmp_acc , tmp_acc)
             pred_dic[name]=tmp_pred
         pickle.dump(pred_dic,p)
     else:
@@ -182,14 +185,22 @@ if __name__ == '__main__':
     NORMAL = 0
     ABNORMAL = 1
     test_normalDir = '../fundus_data/cropped_original_fundus_300x300/normal_0/Test'
-    test_abnormalDir = '../fundus_data/cropped_original_fundus_300x300/retina/Test'
-    test_normal_imgs, test_normal_labs = _load_images_labels(test_normalDir, NORMAL, 172, True)
+    test_abnormalDir = '../fundus_data/cropped_original_fundus_300x300/cataract/Test'
+    test_normal_imgs, test_normal_labs = _load_images_labels(test_normalDir, NORMAL, 200, True)
     test_abnormal_imgs, test_abnormal_labs = _load_images_labels(test_abnormalDir, ABNORMAL, None, False)
+
+
+    test_imgs = np.vstack([test_normal_imgs, test_abnormal_imgs])
+    test_labs = np.vstack([test_normal_labs, test_abnormal_labs])
+    print np.shape(test_imgs)
+    print np.shape(test_labs)
+    test_normal_imgs = None
+    test_abnormal_imgs = None
 
     models_path=get_models_paths(args.models_path)
     print 'number of model paths : {}'.format(len(models_path))
-    acc, max_list , pred =ensemble_with_all_combination(models_path ,test_images , test_labels ,None)
+    acc, max_list , pred =ensemble_with_all_combination(models_path ,test_imgs , test_labs ,None)
     np.save('./best_preds', pred)
-    np.save('./test_labels', test_labels) #
+    np.save('./test_labels', test_labs) #
     names=map(lambda path: path.split('/')[-2]  ,max_list)
     print 'best model list : ',names
