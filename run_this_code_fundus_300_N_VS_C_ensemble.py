@@ -121,7 +121,7 @@ def ensemble_with_all_combination(model_paths, test_images, test_labels, actmap_
         print 'K : {}'.format(k)
 
         for cbn_models in itertools.combinations(pred_dic.keys(),k):
-            print cbn_models
+
             for idx, model in enumerate(cbn_models):
                 pred = pred_dic[model]
                 if idx == 0:
@@ -202,5 +202,4 @@ if __name__ == '__main__':
     acc, max_list , pred =ensemble_with_all_combination(models_path ,test_imgs , test_labs ,None)
     np.save('./best_preds', pred)
     np.save('./test_labels', test_labs) #
-    names=map(lambda path: path.split('/')[-2]  ,max_list)
-    print 'best model list : ',names
+    print 'best model list : ',max_list
