@@ -122,7 +122,7 @@ def ensemble_with_all_combination(model_paths, test_images, test_labels, actmap_
         print 'K : {}'.format(k)
 
         for cbn_models in itertools.combinations(pred_dic.keys(),k):
-            print cbn_models
+            #print cbn_models
             for idx, model in enumerate(cbn_models):
                 pred = pred_dic[model]
                 if idx == 0:
