@@ -190,7 +190,6 @@ if __name__ == '__main__':
     test_abnormal_imgs, test_abnormal_labs = _load_images_labels(test_abnormalDir, ABNORMAL, None, False)
     test_imgs = np.vstack([test_normal_imgs, test_abnormal_imgs])
     test_labs = np.vstack([test_normal_labs, test_abnormal_labs])
-
     print np.shape(test_imgs)
     print np.shape(test_labs)
 
