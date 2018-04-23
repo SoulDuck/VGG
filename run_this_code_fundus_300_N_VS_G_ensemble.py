@@ -198,5 +198,4 @@ if __name__ == '__main__':
     acc, max_list , pred =ensemble_with_all_combination(models_path ,test_imgs , test_labs ,None)
     np.save('./best_preds', pred)
     np.save('./test_labels', test_labs) #
-    names=map(lambda path: path.split('/')[-2]  ,max_list)
-    print 'best model list : ',names
+    print 'best model list : ',max_list
