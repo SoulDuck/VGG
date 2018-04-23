@@ -217,7 +217,7 @@ train_val=0
 
 share=len(test_labs)/batch_size
 remainder=len(test_labs)/batch_size
-
+ㄷ
 train_acc=0.
 train_loss=1000.
 

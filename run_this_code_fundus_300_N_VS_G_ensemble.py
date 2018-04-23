@@ -22,9 +22,11 @@ import itertools
 import pickle
 import argparse
 
+
 parser=argparse.ArgumentParser()
-parser.add_argument('--models_path')
+parser.add_argument('--models_path' , type = str , default='./models/fundus_300_N_VS_G/VGG_11/ensemble_0')
 args=parser.parse_args()
+
 
 
 def get_ensemble_actmap(model_list , actmap_folder):
