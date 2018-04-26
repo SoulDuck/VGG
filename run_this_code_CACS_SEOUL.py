@@ -59,6 +59,12 @@ print 'batch size : ',args.batch_size
 print 'max iter  : ',args.max_iter
 print 'data dir  : ',args.data_dir
 
+def cls2onehot(cls , depth):
+
+    labs=np.zeros([len(cls) , depth])
+    for i,c in enumerate(cls):
+        labs[i,c]=1
+    return labs
 
 
 def reconstruct_tfrecord_rawdata(tfrecord_path):
@@ -115,7 +121,8 @@ print 'Data dir : {}'.format(root_dir)
 #Load Train imgs ,labs , Test imgs , labs
 train_imgs , train_labs , train_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'train.tfrecord'))
 test_imgs , test_labs , test_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'test.tfrecord'))
-print test_labs
+train_labs=cls2onehot(train_labs , 2)
+test_labs=cls2onehot(test_labs , 2)
 print 'train Images Shape : {} '.format(np.shape(train_imgs))
 print 'Test Images Shape : {} '.format(np.shape(test_imgs))
 
