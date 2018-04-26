@@ -120,7 +120,7 @@ print 'Test Images Shape : {} '.format(np.shape(test_imgs))
 
 # Apply Clahe
 if args.use_clahe:
-    print 'clahe 적용중입니다....'
+    print 'Apply clahe ....'
     import matplotlib.pyplot as plt
     train_imgs= map(aug.clahe_equalized, train_imgs)
     test_imgs = map(aug.clahe_equalized, test_imgs)
@@ -133,10 +133,6 @@ if np.max(test_imgs) > 1:
     #train_imgs=train_imgs/255.
     test_imgs=test_imgs/255.
 
-if np.max(train_imgs) > 1:
-    #train_imgs=train_imgs/255.
-    test_imgs=train_imgs/255.
-print 'train_imgs max :',np.max(train_imgs)
 print 'test_imgs max :', np.max(test_imgs)
 
 
@@ -287,7 +283,7 @@ for step in range(max_iter):
     batch_xs, batch_ys , batch_fname= input.next_batch(batch_size, train_imgs, train_labs )
     if args.use_aug:
         batch_xs=aug.random_rotate_90(batch_xs) # random 으로 90 180 , 270 , 360 도를 회전합니다.
-    #batch_xs=batch_xs/255.
+    batch_xs=batch_xs/255.
     train_feedDict = {x_: batch_xs, y_: batch_ys, cam_ind:ABNORMAL ,lr_: learning_rate, is_training: True}
     _ , train_acc, train_loss = sess.run( fetches=train_fetches, feed_dict=train_feedDict )
     #print 'train acc : {} loss : {}'.format(train_acc, train_loss)
