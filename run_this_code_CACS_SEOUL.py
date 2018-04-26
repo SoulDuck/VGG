@@ -123,9 +123,10 @@ train_imgs , train_labs , train_fnames = reconstruct_tfrecord_rawdata(os.path.jo
 test_imgs , test_labs , test_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'test.tfrecord'))
 train_labs=cls2onehot(train_labs , 2)
 test_labs=cls2onehot(test_labs , 2)
-print 'train Images Shape : {} '.format(np.shape(train_imgs))
+print 'Train Images Shape : {} '.format(np.shape(train_imgs))
+print 'Train Labels Shape : {} '.format(np.shape(train_labs))
 print 'Test Images Shape : {} '.format(np.shape(test_imgs))
-
+print 'Test Labels Shape : {} '.format(np.shape(test_labs))
 # Apply Clahe
 if args.use_clahe:
     print 'Apply clahe ....'
