@@ -68,7 +68,7 @@ def cls2onehot(cls , depth):
     return labs
 
 
-def reconstruct_tfrecord_rawdata(tfrecord_path):
+def reconstruct_tfrecord_rawdata(tfrecord_path , ch):
     debug_flag_lv0 = True
     debug_flag_lv1 = True
     if __debug__ == debug_flag_lv0:
@@ -96,6 +96,8 @@ def reconstruct_tfrecord_rawdata(tfrecord_path):
         filename = (example.features.feature['filename'].bytes_list.value[0])
         image = np.fromstring(raw_image, dtype=np.uint8)
         image = image.reshape((height, width, -1))
+        if ch ==1:
+            image=np.asarray(Image.fromarray(image).convert('L'))
         ret_img_list.append(image)
         ret_lab_list.append(label)
         ret_filename_list.append(filename)
@@ -120,8 +122,62 @@ root_dir =args.data_dir
 print 'Data dir : {}'.format(root_dir)
 
 #Load Train imgs ,labs , Test imgs , labs
-train_imgs , train_labs , train_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'train.tfrecord'))
-test_imgs , test_labs , test_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'test.tfrecord'))
+#Seoul CALC
+print '서울역 검진 데이터셋을 로드합니다'
+
+seoul_train_nor_imgs , seoul_train_nor_labs , seoul_train_nor_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'normal_test.tfrecord') , ch=1)
+seoul_train_abnor_imgs , seoul_train_abnor_labs , seoul_train_abnor_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'abnormal_test.tfrecord') , ch=1)
+seoul_test_imgs , seoul_test_labs , seoul_test_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'test.tfrecord'),ch=1)
+
+print '# Seoul Normal Training Images : {}'.format(np.shape(seoul_train_nor_imgs))
+print '# Seoul ABNormal Training Images : {}'.format(np.shape(seoul_train_abnor_imgs))
+#Color Image to Grey
+
+
+print '흑백 영상의 기존 Fundus 데이터를 로드합니다'
+# 1년 이내의 데이터를 가져옵니다
+# pickle 형태로 저장되어 있는 데이터를 불러옵니다.
+root_dir=os.path.join(root_dir , '350_350' , 1)
+pkl_list=['train_normal_examId_imgs','train_abnormal_examId_imgs','test_normal_examId_imgs','test_abnormal_examId_imgs']
+for pkl_name in pkl_list:
+    pkl_path=os.path.join(root_dir ,pkl_name+'.pkl')
+    ret_imgs=[]
+    f=open(pkl_path,'rb')
+    examIds_imgs=pickle.load(f)
+    for examid in examIds_imgs:
+        ret_imgs.extend(examIds_imgs[examid])
+    print os.path.split(pkl_path)[1], ' : ' , np.shape(ret_imgs)
+    imgs_list.append(np.asarray(ret_imgs))
+train_normal_imgs,train_abnormal_imgs,test_normal_imgs,test_abnormal_imgs=imgs_list
+
+# Label
+train_normal_labs=np.zeros([len(train_normal_imgs) , 2 ])
+train_abnormal_labs=np.zeros([len(train_abnormal_imgs) , 2 ])
+test_normal_labs=np.zeros([len(test_normal_imgs) , 2 ])
+test_abnormal_labs=np.zeros([len(test_abnormal_imgs) , 2 ])
+
+train_normal_labs[:,0]=1
+test_normal_labs[:,0]=1
+train_abnormal_labs[:,1]=1
+test_abnormal_labs[:,1]=1
+
+print '# InfraRed Fundus Training Normal Images {}'.format(np.shape(train_normal_imgs))
+print '# InfraRed Fundus Training ABnromal Images {}'.format(np.shape(train_abnormal_imgs))
+
+
+exit()
+if args.use_clahe:
+    print 'clahe 적용중입니다....'
+    import matplotlib.pyplot as plt
+    train_abnormal_imgs= map(aug.clahe_equalized, train_abnormal_imgs)
+    train_normal_imgs = map(aug.clahe_equalized, train_normal_imgs)
+    test_abnormal_imgs = map(aug.clahe_equalized, test_abnormal_imgs)
+    test_normal_imgs = map(aug.clahe_equalized, test_normal_imgs)
+    train_abnormal_imgs, train_normal_imgs, test_abnormal_imgs, test_normal_imgs=\
+        map(np.asarray , [train_abnormal_imgs , train_normal_imgs , test_abnormal_imgs , test_normal_imgs])
+
+
+
 train_labs=cls2onehot(train_labs , 2)
 test_labs=cls2onehot(test_labs , 2)
 print 'Train Images Shape : {} '.format(np.shape(train_imgs))
