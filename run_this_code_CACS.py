@@ -90,12 +90,6 @@ def _load_images_labels(dir , label ,limit , random_flag):
 NORMAL=0
 ABNORMAL =1
 
-start=time.time()
-train_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0'
-test_normalDir ='../fundus_data/cropped_original_fundus_300x300/normal_0/Test'
-
-
-
 # pickle 형태로 저장되어 있는 데이터를 불러옵니다.
 imgs_list=[]
 root_dir =args.data_dir
@@ -114,7 +108,7 @@ train_normal_imgs,train_abnormal_imgs,test_normal_imgs,test_abnormal_imgs=imgs_l
 
 
 if args.use_clahe:
-    print 'clahe 적용중입니다.'
+    print 'clahe 적용중입니다....'
     import matplotlib.pyplot as plt
     train_abnormal_imgs= map(aug.clahe_equalized, train_abnormal_imgs)
     train_normal_imgs = map(aug.clahe_equalized, train_normal_imgs)
@@ -130,6 +124,7 @@ train_abnormal_imgs=np.load(os.path.join(root_dir ,'train_abnor_imgs.npy'))
 test_normal_imgs=np.load(os.path.join(root_dir ,'test_nor_imgs.npy'))
 test_abnormal_imgs=np.load(os.path.join(root_dir ,'test_abnor_imgs.npy'))
 """
+
 train_normal_labs=np.zeros([len(train_normal_imgs) , 2 ])
 train_abnormal_labs=np.zeros([len(train_abnormal_imgs) , 2 ])
 test_normal_labs=np.zeros([len(test_normal_imgs) , 2 ])
@@ -175,11 +170,6 @@ print h,w,ch
 n_classes=np.shape(train_labs)[-1]
 print 'the # classes : {}'.format(n_classes)
 x_ , y_ , cam_ind, lr_ , is_training = model.define_inputs(shape=[None, h ,w, ch ] , n_classes=n_classes )
-
-
-
-
-
 logits=model.build_graph(x_=x_ , y_=y_ , cam_ind= cam_ind , is_training=is_training , aug_flag=args.use_aug, \
                          actmap_flag=args.use_actmap  , model=args.vgg_model,random_crop_resize=args.random_crop_resize , bn = args.use_BN)
 
@@ -290,12 +280,6 @@ for step in range(max_iter):
             best_acc_folder=os.path.join( best_acc_root, 'step_{}_acc_{}'.format(step , max_acc))
             os.mkdir(best_acc_folder)
             saver.save(sess=sess,save_path=os.path.join(best_acc_folder  , 'model'))
-        if val_loss_mean < min_loss: # best loss
-            min_loss = val_loss_mean
-            print 'min loss : {}'.format(min_loss)
-            best_loss_folder = os.path.join(best_loss_root, 'step_{}_loss_{}'.format(step, min_loss ))
-            os.mkdir(best_loss_folder)
-            saver.save(sess=sess,save_path=os.path.join(best_loss_folder, 'model'))
         print 'Step : {} '.format(step)
         print 'Learning Rate : {} '.format(learning_rate)
         print 'Train acc : {} Train loss : {}'.format( train_acc , train_loss)
