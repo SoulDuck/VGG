@@ -158,7 +158,7 @@ def build_graph(x_ , y_ ,cam_ind, is_training ,aug_flag, actmap_flag, model , ra
     cam_ = cam.get_class_map('gap', end_conv_layer, cam_ind, image_size)
 
     ##### define fully connected layer #######
-    fc_out_features = [1024,1024]
+    fc_out_features = [4096,4096]
     before_act_bn_mode = [False, False ]
     after_act_bn_mode = [False ,False]
     for i in range(len(fc_out_features)):
