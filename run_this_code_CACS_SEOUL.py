@@ -115,6 +115,7 @@ print 'Data dir : {}'.format(root_dir)
 #Load Train imgs ,labs , Test imgs , labs
 train_imgs , train_labs , train_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'train.tfrecord'))
 test_imgs , test_labs , test_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'test.tfrecord'))
+print test_labs
 print 'train Images Shape : {} '.format(np.shape(train_imgs))
 print 'Test Images Shape : {} '.format(np.shape(test_imgs))
 
