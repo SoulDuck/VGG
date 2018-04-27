@@ -188,8 +188,8 @@ if args.use_clahe:
 
 train_nor_imgs=np.vstack([seoul_train_nor_imgs ,train_normal_imgs ])
 train_abnor_imgs=np.vstack([seoul_train_abnor_imgs ,train_abnormal_imgs ])
-train_nor_labs=np.hstack([seoul_train_nor_labs ,train_normal_labs ])
-train_abnor_labs=np.hstack([seoul_train_abnor_labs ,train_abnormal_labs ])
+train_nor_labs=np.vstack([seoul_train_nor_labs ,train_normal_labs ])
+train_abnor_labs=np.vstack([seoul_train_abnor_labs ,train_abnormal_labs ])
 
 seoul_train_nor_imgs=None
 seoul_train_abnor_imgs=None
