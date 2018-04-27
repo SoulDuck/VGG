@@ -193,7 +193,7 @@ seoul_train_abnor_imgs=None
 train_normal_imgs=None
 train_abnormal_imgs=None
 
-train_imgs=np.vstack([train_nor_imgs , train_abnormal_imgs , train_abnormal_imgs,train_abnormal_imgs,train_abnormal_imgs])
+train_imgs=np.vstack([train_nor_imgs , train_abnor_imgs , train_abnor_imgs,train_abnor_imgs,train_abnor_imgs])
 print '# Normal Training Images shape {} ',np.shape(train_nor_imgs)
 print '# ABNormal Training Images shape {} ',np.shape(train_abnor_imgs)
 print '# Training Data shape {} ',np.shape(train_abnor_imgs)
