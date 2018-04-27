@@ -122,6 +122,7 @@ root_dir = os.path.join(root_root_dir , 'seoulfundus')
 print '########################'
 print '서울역 검진 데이터셋을 로드합니다'
 print '########################'
+print 'path : {} '.format(root_dir)
 
 seoul_train_nor_imgs , seoul_train_nor_labs , seoul_train_nor_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'normal_test.tfrecord') , ch=1)
 seoul_train_abnor_imgs , seoul_train_abnor_labs , seoul_train_abnor_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'abnormal_test.tfrecord') , ch=1)
@@ -135,6 +136,7 @@ print '########################'
 print '흑백 영상의 Infrared Fundus 데이터를 로드합니다'
 print '########################'
 root_dir = os.path.join(root_root_dir , 'infrared')
+print 'path : {} '.format(root_dir )
 # 1년 이내의 데이터를 가져옵니다
 # pickle 형태로 저장되어 있는 데이터를 불러옵니다.
 pkl_list=['train_normal_examId_imgs','train_abnormal_examId_imgs','test_normal_examId_imgs','test_abnormal_examId_imgs']
