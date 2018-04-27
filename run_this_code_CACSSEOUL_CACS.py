@@ -188,6 +188,11 @@ if args.use_clahe:
 train_nor_imgs=np.vstack([seoul_train_nor_imgs ,train_normal_imgs ])
 train_abnor_imgs=np.vstack([seoul_train_abnor_imgs ,train_abnormal_imgs ])
 
+seoul_train_nor_imgs=None
+seoul_train_abnor_imgs=None
+train_normal_imgs=None
+train_abnormal_imgs=None
+
 train_imgs=np.vstack([train_nor_imgs , train_abnormal_imgs , train_abnormal_imgs,train_abnormal_imgs,train_abnormal_imgs])
 print '# Normal Training Images shape {} ',np.shape(train_nor_imgs)
 print '# ABNormal Training Images shape {} ',np.shape(train_abnor_imgs)
