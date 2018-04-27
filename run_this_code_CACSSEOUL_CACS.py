@@ -186,6 +186,9 @@ if args.use_clahe:
         map(np.asarray , [train_abnormal_imgs , train_normal_imgs , test_abnormal_imgs , test_normal_imgs])
 
 
+print np.shape(seoul_train_nor_labs)
+print np.shape(train_normal_labs)
+
 train_nor_imgs=np.vstack([seoul_train_nor_imgs ,train_normal_imgs ])
 train_abnor_imgs=np.vstack([seoul_train_abnor_imgs ,train_abnormal_imgs ])
 train_nor_labs=np.vstack([seoul_train_nor_labs ,train_normal_labs ])
