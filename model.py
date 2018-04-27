@@ -128,6 +128,7 @@ def build_graph(x_ , y_ ,cam_ind, is_training ,aug_flag, actmap_flag, model , ra
 
     if aug_flag:
         print 'aug : True'
+        print 'Input shape : {}'.format(x_.get_shape())
         if random_crop_resize is None:
             random_crop_resize = int(x_.get_shape()[-2])
         x_=tf.map_fn(lambda image : aug.aug_lv0(image,is_training, image_size=random_crop_resize) , x_ )
