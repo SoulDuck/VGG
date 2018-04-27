@@ -128,6 +128,7 @@ seoul_train_nor_imgs , seoul_train_nor_labs , seoul_train_nor_fnames = reconstru
 seoul_train_abnor_imgs , seoul_train_abnor_labs , seoul_train_abnor_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'abnormal_train.tfrecord') , ch=1)
 seoul_test_imgs , seoul_test_labs , seoul_test_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'test.tfrecord'),ch=1)
 
+seoul_test_labs =cls2onehot(seoul_test_labs , 2)
 print '# Seoul Normal Training Images : {}'.format(np.shape(seoul_train_nor_imgs))
 print '# Seoul ABNormal Training Images : {}'.format(np.shape(seoul_train_abnor_imgs))
 #Color Image to Grey
@@ -197,10 +198,10 @@ train_abnormal_imgs=None
 
 train_imgs=np.vstack([train_nor_imgs , train_abnor_imgs , train_abnor_imgs,train_abnor_imgs,train_abnor_imgs])
 train_labs=np.vstack([train_nor_labs , train_abnor_labs , train_abnor_labs,train_abnor_labs,train_abnor_labs])
-print '# Normal Training Images shape {} ',np.shape(train_nor_imgs)
-print '# ABNormal Training Images shape {} ',np.shape(train_abnor_imgs)
-print '# Training Image shape {} ',np.shape(train_imgs)
-print '# Training Label shape {} ',np.shape(train_labs)
+print '# Normal Training Images shape {} '.format(np.shape(train_nor_imgs))
+print '# ABNormal Training Images shape {} '.format(np.shape(train_abnor_imgs))
+print '# Training Image shape {} '.format(np.shape(train_imgs))
+print '# Training Label shape {} '.format(np.shape(train_labs))
 
 
 
