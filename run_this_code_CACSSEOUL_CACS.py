@@ -221,6 +221,7 @@ train_imgs=np.vstack([train_nor_imgs , train_abnor_imgs , train_abnor_imgs,train
 train_labs=np.vstack([train_nor_labs , train_abnor_labs , train_abnor_labs,train_abnor_labs,train_abnor_labs])
 
 
+
 print '# Normal Training Images shape {} '.format(np.shape(train_nor_imgs))
 print '# ABNormal Training Images shape {} '.format(np.shape(train_abnor_imgs))
 print '# Training Image shape {} '.format(np.shape(train_imgs))
@@ -238,6 +239,13 @@ if np.max(test_normal_imgs) > 1:
 if np.max(test_abnormal_imgs) > 1:
     #train_imgs=train_imgs/255.
     test_abnormal_imgs=test_abnormal_imgs/255.
+
+
+#Concatenate
+train_imgs =np.expand_dims(train_imgs , axis=3)
+seoul_test_imgs=np.expand_dims(seoul_test_imgs, axis=3)
+test_normal_imgs=np.expand_dims(test_normal_imgs, axis=3)
+test_abnormal_imgs=np.expand_dims(test_abnormal_imgs, axis=3)
 
 
 
