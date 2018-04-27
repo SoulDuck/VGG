@@ -44,8 +44,7 @@ parser.add_argument('--vgg_model' ,'-m' , choices=['vgg_11','vgg_13','vgg_16', '
 parser.add_argument('--BN' , dest='use_BN'  , action='store_true' ,   help = 'bn True or not')
 parser.add_argument('--no_BN',dest='use_BN' , action = 'store_false', help = 'bn True or not')
 
-parser.add_argument('--data_dir' , help='the folder where the data is saved ' )
-
+parser.add_argument('--data_dir' , help='the folder where the data is saved ')
 parser.add_argument('--folder_name' ,help='ex model/fundus_300/folder_name/0 .. logs/fundus_300/folder_name/0 , type2/folder_name/0')
 args=parser.parse_args()
 
@@ -61,12 +60,10 @@ print 'max iter  : ',args.max_iter
 print 'data dir  : ',args.data_dir
 
 def cls2onehot(cls , depth):
-
     labs=np.zeros([len(cls) , depth])
     for i,c in enumerate(cls):
         labs[i,c]=1
     return labs
-
 
 def reconstruct_tfrecord_rawdata(tfrecord_path , ch):
     debug_flag_lv0 = True
@@ -115,15 +112,16 @@ def reconstruct_tfrecord_rawdata(tfrecord_path , ch):
 
 NORMAL=0
 ABNORMAL =1
-
-# pickle 형태로 저장되어 있는 데이터를 불러옵니다.
 imgs_list=[]
-root_dir =args.data_dir
-print 'Data dir : {}'.format(root_dir)
+root_root_dir =args.data_dir
+print 'Data dir : {}'.format(root_root_dir)
 
+root_dir = os.path.join(root_root_dir , 'seoulfundus')
 #Load Train imgs ,labs , Test imgs , labs
 #Seoul CALC
+print '########################'
 print '서울역 검진 데이터셋을 로드합니다'
+print '########################'
 
 seoul_train_nor_imgs , seoul_train_nor_labs , seoul_train_nor_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'normal_test.tfrecord') , ch=1)
 seoul_train_abnor_imgs , seoul_train_abnor_labs , seoul_train_abnor_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'abnormal_test.tfrecord') , ch=1)
@@ -133,11 +131,12 @@ print '# Seoul Normal Training Images : {}'.format(np.shape(seoul_train_nor_imgs
 print '# Seoul ABNormal Training Images : {}'.format(np.shape(seoul_train_abnor_imgs))
 #Color Image to Grey
 
-
-print '흑백 영상의 기존 Fundus 데이터를 로드합니다'
+print '########################'
+print '흑백 영상의 Infrared Fundus 데이터를 로드합니다'
+print '########################'
+root_dir = os.path.join(root_root_dir , 'infrared')
 # 1년 이내의 데이터를 가져옵니다
 # pickle 형태로 저장되어 있는 데이터를 불러옵니다.
-root_dir=os.path.join(root_dir , '350_350' , 1)
 pkl_list=['train_normal_examId_imgs','train_abnormal_examId_imgs','test_normal_examId_imgs','test_abnormal_examId_imgs']
 for pkl_name in pkl_list:
     pkl_path=os.path.join(root_dir ,pkl_name+'.pkl')
