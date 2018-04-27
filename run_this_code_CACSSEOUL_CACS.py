@@ -166,10 +166,17 @@ print '# InfraRed Fundus Training Normal Images {}'.format(np.shape(train_normal
 print '# InfraRed Fundus Training ABnromal Images {}'.format(np.shape(train_abnormal_imgs))
 
 
-exit()
+
 if args.use_clahe:
     print 'clahe 적용중입니다....'
     import matplotlib.pyplot as plt
+
+    seoul_train_nor_imgs = map(aug.clahe_equalized, seoul_train_nor_imgs)
+    seoul_train_abnor_imgs = map(aug.clahe_equalized, seoul_train_abnor_imgs)
+    seoul_test_imgs = map(aug.clahe_equalized, seoul_test_imgs)
+    seoul_train_abnor_imgs, seoul_train_nor_imgs,seoul_test_imgs =\
+        map(np.asarray , [seoul_train_abnor_imgs , seoul_train_nor_imgs , seoul_test_imgs])
+
     train_abnormal_imgs= map(aug.clahe_equalized, train_abnormal_imgs)
     train_normal_imgs = map(aug.clahe_equalized, train_normal_imgs)
     test_abnormal_imgs = map(aug.clahe_equalized, test_abnormal_imgs)
@@ -178,7 +185,13 @@ if args.use_clahe:
         map(np.asarray , [train_abnormal_imgs , train_normal_imgs , test_abnormal_imgs , test_normal_imgs])
 
 
+train_nor_imgs=np.vstack([seoul_train_nor_imgs ,train_normal_imgs ])
+train_abnor_imgs=np.vstack([seoul_train_abnor_imgs ,train_abnormal_imgs ])
 
+print '# Normal Training Images shape {} ',np.shape(train_nor_imgs)
+print '# ABNormal Training Images shape {} ',np.shape(train_abnor_imgs)
+
+exit()
 train_labs=cls2onehot(train_labs , 2)
 test_labs=cls2onehot(test_labs , 2)
 print 'Train Images Shape : {} '.format(np.shape(train_imgs))
