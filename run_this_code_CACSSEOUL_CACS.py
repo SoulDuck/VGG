@@ -124,8 +124,8 @@ print '서울역 검진 데이터셋을 로드합니다'
 print '########################'
 print 'path : {} '.format(root_dir)
 
-seoul_train_nor_imgs , seoul_train_nor_labs , seoul_train_nor_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'normal_train.tfrecord') , ch=1)
-seoul_train_abnor_imgs , seoul_train_abnor_labs , seoul_train_abnor_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'abnormal_train.tfrecord') , ch=1)
+seoul_train_nor_imgs , seoul_train_nor_labs , seoul_train_nor_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'normal_test.tfrecord') , ch=1)
+seoul_train_abnor_imgs , seoul_train_abnor_labs , seoul_train_abnor_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'abnormal_test.tfrecord') , ch=1)
 seoul_test_imgs , seoul_test_labs , seoul_test_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'test.tfrecord'),ch=1)
 
 seoul_test_labs =cls2onehot(seoul_test_labs , 2)
