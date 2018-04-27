@@ -188,10 +188,10 @@ if args.use_clahe:
 train_nor_imgs=np.vstack([seoul_train_nor_imgs ,train_normal_imgs ])
 train_abnor_imgs=np.vstack([seoul_train_abnor_imgs ,train_abnormal_imgs ])
 
-train_imgs=np.vstack([train_nor_imgs , train_abnormal_imgs])
+train_imgs=np.vstack([train_nor_imgs , train_abnormal_imgs , train_abnormal_imgs,train_abnormal_imgs,train_abnormal_imgs])
 print '# Normal Training Images shape {} ',np.shape(train_nor_imgs)
 print '# ABNormal Training Images shape {} ',np.shape(train_abnor_imgs)
-print '# Training Data shape {} ',np.shape(train_imgs)
+print '# Training Data shape {} ',np.shape(train_abnor_imgs)
 
 exit()
 train_labs=cls2onehot(train_labs , 2)
