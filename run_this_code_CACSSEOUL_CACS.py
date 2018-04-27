@@ -225,9 +225,7 @@ print '# Normal Training Images shape {} '.format(np.shape(train_nor_imgs))
 print '# ABNormal Training Images shape {} '.format(np.shape(train_abnor_imgs))
 print '# Training Image shape {} '.format(np.shape(train_imgs))
 print '# Training Label shape {} '.format(np.shape(train_labs))
-train_labs=cls2onehot(train_labs , 2)
-print 'Train Images Shape : {} '.format(np.shape(train_imgs))
-print 'Train Labels Shape : {} '.format(np.shape(train_labs))
+
 
 
 #normalize
