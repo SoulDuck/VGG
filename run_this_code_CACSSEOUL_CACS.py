@@ -141,6 +141,12 @@ print 'path : {} '.format(root_dir)
 seoul_train_nor_imgs , seoul_train_nor_labs , seoul_train_nor_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'normal_train.tfrecord') , ch=1)
 seoul_train_abnor_imgs , seoul_train_abnor_labs , seoul_train_abnor_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'abnormal_train.tfrecord') , ch=1)
 seoul_test_imgs , seoul_test_labs , seoul_test_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'test.tfrecord'),ch=1)
+random.seed(123)
+indices=random.sample(range(len(seoul_train_nor_labs)) , 4000)
+seoul_train_nor_imgs=seoul_train_nor_imgs[indices]
+seoul_train_nor_labs=seoul_train_nor_labs[indices]
+
+
 
 seoul_train_nor_labs =cls2onehot(seoul_train_nor_labs , 2)
 seoul_train_abnor_labs =cls2onehot(seoul_train_abnor_labs , 2)
