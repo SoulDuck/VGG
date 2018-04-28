@@ -145,6 +145,7 @@ random.seed(123)
 indices=random.sample(range(len(seoul_train_nor_labs)) , 4000)
 seoul_train_nor_imgs=seoul_train_nor_imgs[indices]
 seoul_train_nor_labs=seoul_train_nor_labs[indices]
+seoul_train_nor_fnames=seoul_train_nor_fnames[indices]
 
 
 
