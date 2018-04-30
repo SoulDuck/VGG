@@ -232,13 +232,13 @@ for step in range(max_iter):
     if step < 5000:
         learning_rate = 0.0001
     elif step < 45000:
-        learning_rate = 0.00007
+        learning_rate = 0.0001
     elif step < 60000:
-        learning_rate = 0.00005
+        learning_rate = 0.0001
     elif step < 120000:
-        learning_rate = 0.00001
+        learning_rate = 0.0001
     else:
-        learning_rate = 0.00001
+        learning_rate = 0.0001
         ####
     if step % ckpt==0:
         """ #### testing ### """
