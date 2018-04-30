@@ -121,12 +121,30 @@ print 'Data dir : {}'.format(root_dir)
 #Load Train imgs ,labs , Test imgs , labs
 train_imgs , train_labs , train_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'train.tfrecord'))
 test_imgs , test_labs , test_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'test.tfrecord'))
+
+normal_train_imgs = np.load('normal_train.npy')
+abnormal_train_imgs = np.load('abnormal_train.npy')
+normal_test_imgs = np.load('normal_test.npy')
+abnormal_test_imgs = np.load('abnormal_test.npy')
+
+print np.shape(normal_train_imgs)
+print np.shape(normal_test_imgs)
+print np.shape(abnormal_train_imgs)
+print np.shape(abnormal_test_imgs)
+
+
 train_labs=cls2onehot(train_labs , 2)
 test_labs=cls2onehot(test_labs , 2)
+
+
+
 print 'Train Images Shape : {} '.format(np.shape(train_imgs))
 print 'Train Labels Shape : {} '.format(np.shape(train_labs))
 print 'Test Images Shape : {} '.format(np.shape(test_imgs))
 print 'Test Labels Shape : {} '.format(np.shape(test_labs))
+
+
+
 # Apply Clahe
 if args.use_clahe:
     print 'Apply clahe ....'
