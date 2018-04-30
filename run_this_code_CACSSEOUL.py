@@ -149,8 +149,11 @@ print 'ABNormal Training Labelsshape : {}'.format(np.shape(abnormal_train_labs))
 print 'Normal Test Labelsshape : {}'.format(np.shape(normal_test_labs))
 print 'ABNormal Test Labels shape : {}'.format(np.shape(abnormal_test_labs))
 
+# normal 과 abnormal 의 balance 을 맞춥니다
+train_imgs = np.vstack([normal_train_imgs , abnormal_train_imgs ,abnormal_train_imgs,abnormal_train_imgs,\
+                        abnormal_train_imgs,abnormal_train_imgs,abnormal_train_imgs])
 
-train_imgs = np.vstack([normal_train_imgs , abnormal_train_imgs])
+
 test_imgs = np.vstack([normal_test_imgs , abnormal_test_imgs])
 train_labs = np.vstack([normal_train_labs, abnormal_train_labs])
 test_labs = np.vstack([normal_test_labs, abnormal_test_labs])
@@ -162,6 +165,9 @@ print 'Train Images Shape : {} '.format(np.shape(train_imgs))
 print 'Train Labels Shape : {} '.format(np.shape(train_labs))
 print 'Test Images Shape : {} '.format(np.shape(test_imgs))
 print 'Test Labels Shape : {} '.format(np.shape(test_labs))
+
+
+
 
 
 
