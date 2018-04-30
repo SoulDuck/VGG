@@ -114,7 +114,6 @@ def reconstruct_tfrecord_rawdata(tfrecord_path):
 # pickle 형태로 저장되어 있는 데이터를 불러옵니다.
 imgs_list=[]
 root_dir =args.data_dir
-print 'Data dir : {}'.format(root_dir)
 
 #Load Train imgs ,labs , Test imgs , labs
 """
