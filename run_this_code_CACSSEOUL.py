@@ -275,15 +275,15 @@ for step in range(max_iter):
         sys.stdout.flush()
     #### learning rate schcedule
     if step < 5000:
-        learning_rate = 0.0001
+        learning_rate = 0.001
     elif step < 45000:
-        learning_rate = 0.0001
+        learning_rate = 0.001
     elif step < 60000:
-        learning_rate = 0.0001
+        learning_rate = 0.001
     elif step < 120000:
-        learning_rate = 0.0001
+        learning_rate = 0.001
     else:
-        learning_rate = 0.0001
+        learning_rate = 0.001
         ####
     if step % ckpt==0:
         """ #### testing ### """
