@@ -119,8 +119,10 @@ root_dir =args.data_dir
 print 'Data dir : {}'.format(root_dir)
 
 #Load Train imgs ,labs , Test imgs , labs
+"""
 train_imgs , train_labs , train_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'train.tfrecord'))
 test_imgs , test_labs , test_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'test.tfrecord'))
+"""
 names = ['normal_train.npy' , 'normal_test.npy' ,'abnormal_train.npy' , 'normal_test.npy']
 normal_train_imgs , normal_test_imgs, abnormal_train_imgs , abnormal_test_imgs,  =\
     map( lambda name : np.load(os.path.join(root_dir ,name)) , names)
