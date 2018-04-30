@@ -134,7 +134,7 @@ normal_train_labs[:,NORMAL]=1
 abnormal_train_labs=np.zeros([len(abnormal_train_imgs) , 2])
 abnormal_train_labs[:,ABNORMAL]=1
 normal_test_labs=np.zeros([len(normal_test_imgs) , 2])
-normal_train_labs[:,NORMAL]=1
+normal_test_labs[:,NORMAL]=1
 abnormal_test_labs=np.zeros([len(abnormal_test_imgs) , 2])
 abnormal_test_labs[:,ABNORMAL]=1
 
