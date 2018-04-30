@@ -121,7 +121,7 @@ print 'Data dir : {}'.format(root_dir)
 train_imgs , train_labs , train_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'train.tfrecord'))
 test_imgs , test_labs , test_fnames = reconstruct_tfrecord_rawdata(os.path.join(root_dir , 'test.tfrecord'))
 """
-names = ['normal_train.npy' , 'normal_test.npy' ,'abnormal_train.npy' , 'normal_test.npy']
+names = ['normal_train.npy' , 'normal_test.npy' ,'abnormal_train.npy' , 'abnormal_test.npy']
 normal_train_imgs , normal_test_imgs, abnormal_train_imgs , abnormal_test_imgs,  =\
     map( lambda name : np.load(os.path.join(root_dir ,name)) , names)
 
@@ -155,8 +155,8 @@ test_imgs = np.vstack([normal_test_imgs , abnormal_test_imgs])
 train_labs = np.vstack([normal_train_labs, abnormal_train_labs])
 test_labs = np.vstack([normal_test_labs, abnormal_test_labs])
 
-train_labs=cls2onehot(train_labs , 2)
-test_labs=cls2onehot(test_labs , 2)
+#train_labs=cls2onehot(train_labs , 2)
+#test_labs=cls2onehot(test_labs , 2)
 
 print 'Train Images Shape : {} '.format(np.shape(train_imgs))
 print 'Train Labels Shape : {} '.format(np.shape(train_labs))
