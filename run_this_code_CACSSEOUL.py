@@ -157,7 +157,6 @@ train_labs = np.vstack([normal_train_labs , abnormal_train_labs ,abnormal_train_
 
 
 test_imgs = np.vstack([normal_test_imgs , abnormal_test_imgs])
-train_labs = np.vstack([normal_train_labs, abnormal_train_labs])
 test_labs = np.vstack([normal_test_labs, abnormal_test_labs])
 
 #train_labs=cls2onehot(train_labs , 2)
