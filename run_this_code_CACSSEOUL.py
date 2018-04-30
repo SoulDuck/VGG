@@ -110,8 +110,6 @@ def reconstruct_tfrecord_rawdata(tfrecord_path):
 
 
 
-NORMAL=0
-ABNORMAL =1
 
 # pickle 형태로 저장되어 있는 데이터를 불러옵니다.
 imgs_list=[]
@@ -127,16 +125,38 @@ names = ['normal_train.npy' , 'normal_test.npy' ,'abnormal_train.npy' , 'normal_
 normal_train_imgs , normal_test_imgs, abnormal_train_imgs , abnormal_test_imgs,  =\
     map( lambda name : np.load(os.path.join(root_dir ,name)) , names)
 
-print np.shape(normal_train_imgs)
-print np.shape(normal_test_imgs)
-print np.shape(abnormal_train_imgs)
-print np.shape(abnormal_test_imgs)
+NORMAL = 0
+ABNORMAL = 1
 
+
+normal_train_labs=np.zeros([len(normal_train_imgs) , 2])
+normal_train_labs[:,NORMAL]=1
+abnormal_train_labs=np.zeros([len(abnormal_train_imgs) , 2])
+abnormal_train_labs[:,ABNORMAL]=1
+normal_test_labs=np.zeros([len(normal_test_imgs) , 2])
+normal_train_labs[:,NORMAL]=1
+abnormal_test_labs=np.zeros([len(abnormal_test_imgs) , 2])
+abnormal_test_labs[:,ABNORMAL]=1
+
+
+print 'Normal Training Data shape : {}'.format(np.shape(normal_train_imgs))
+print 'ABNormal Training Data shape : {}'.format(np.shape(abnormal_train_imgs))
+print 'Normal Test Data shape : {}'.format(np.shape(normal_test_imgs))
+print 'ABNormal Test Data shape : {}'.format(np.shape(abnormal_test_imgs))
+
+print 'Normal Training Labels shape : {}'.format(np.shape(normal_train_labs))
+print 'ABNormal Training Labelsshape : {}'.format(np.shape(abnormal_train_labs))
+print 'Normal Test Labelsshape : {}'.format(np.shape(normal_test_labs))
+print 'ABNormal Test Labels shape : {}'.format(np.shape(abnormal_test_labs))
+
+
+train_imgs = np.vstack([normal_train_imgs , abnormal_train_imgs])
+test_imgs = np.vstack([normal_test_imgs , abnormal_test_imgs])
+train_labs = np.vstack([normal_train_labs, abnormal_train_labs])
+test_labs = np.vstack([normal_test_labs, abnormal_test_labs])
 
 train_labs=cls2onehot(train_labs , 2)
 test_labs=cls2onehot(test_labs , 2)
-
-
 
 print 'Train Images Shape : {} '.format(np.shape(train_imgs))
 print 'Train Labels Shape : {} '.format(np.shape(train_labs))
