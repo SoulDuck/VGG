@@ -45,8 +45,8 @@ parser.add_argument('--no_BN',dest='use_BN' , action = 'store_false', help = 'bn
 
 parser.add_argument('--data_dir' , help='the folder where the data is saved ' )
 
-parser.add_argument('--init_lr' , type = int)
-parser.add_argument('--weight_decay', type = float)
+parser.add_argument('--init_lr' , type = int , help='init learning rate ')
+parser.add_argument('--weight_decay', type = float , help='L2 weight decay ')
 
 parser.add_argument('--folder_name' ,help='ex model/fundus_300/folder_name/0 .. logs/fundus_300/folder_name/0 , type2/folder_name/0')
 args=parser.parse_args()

@@ -186,6 +186,7 @@ def build_graph(x_ , y_ ,cam_ind, is_training ,aug_flag, actmap_flag, model , ra
     return  logits
 
 def train_algorithm(optimizer , logits, labels, learning_rate  , l2_loss , weight_decay):
+    #weight_decay = 1e-4 Default
 
     print 'Optimizer : {}'.format(optimizer)
     print 'L2 Loss : ', l2_loss
