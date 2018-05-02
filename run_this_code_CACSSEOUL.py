@@ -166,11 +166,6 @@ print 'Train Labels Shape : {} '.format(np.shape(train_labs))
 print 'Test Images Shape : {} '.format(np.shape(test_imgs))
 print 'Test Labels Shape : {} '.format(np.shape(test_labs))
 
-
-
-
-
-
 # Apply Clahe
 if args.use_clahe:
     print 'Apply clahe ....'
@@ -196,18 +191,8 @@ print 'the # classes : {}'.format(n_classes)
 x_ , y_ , cam_ind, lr_ , is_training = model.define_inputs(shape=[None, h ,w, ch ] , n_classes=n_classes )
 logits=model.build_graph(x_=x_ , y_=y_ , cam_ind= cam_ind , is_training=is_training , aug_flag=args.use_aug, \
                          actmap_flag=args.use_actmap  , model=args.vgg_model,random_crop_resize=args.random_crop_resize , bn = args.use_BN)
-
-if args.optimizer=='sgd':
-    train_op, accuracy_op , loss_op , pred_op = model.train_algorithm_grad(logits=logits,labels=y_ , learning_rate=lr_ ,
-                                                                           l2_loss=args.use_l2_loss)
-if args.optimizer=='momentum':
-    train_op, accuracy_op, loss_op, pred_op = model.train_algorithm_momentum(logits=logits, labels=y_,
-                                                                             learning_rate=lr_,
-                                                                             use_nesterov=args.use_nesterov , l2_loss=args.use_l2_loss)
-if args.optimizer == 'adam':
-    train_op, accuracy_op, loss_op, pred_op = model.train_algorithm_adam(logits=logits, labels=y_, learning_rate=lr_,
-                                                                         l2_loss=args.use_l2_loss)
-
+train_op, accuracy_op , loss_op , pred_op = \
+    model.train_algorithm(args.optimizer ,logits=logits,labels=y_ , learning_rate=lr_ ,l2_loss=args.use_l2_loss )
 
 log_count =0;
 while True:
@@ -316,21 +301,6 @@ for step in range(max_iter):
         model_path=os.path.join(models_path, str(step))
         os.mkdir(model_path) # e.g) models/fundus_300/100/model.ckpt or model.meta
         #saver.save(sess=sess,save_path=os.path.join(model_path,'model' , folder_name))
-        """image augmentation debug code"""
-        """
-        aug_images_train = tf.get_default_graph().get_tensor_by_name('aug_:0')
-        tf.summary.image(name='ori_images', tensor=x_)
-        tf.summary.image(name='aug_images_train', tensor=aug_images_train)
-        merged = tf.summary.merge_all()
-        summary_train = sess.run(merged, feed_dict={x_: test_imgs[:3], y_: test_labs[:3], lr_: 0.001, is_training: True})
-        summary_writer.add_summary(summary_train, step)
-        aug_images_test = tf.get_default_graph().get_tensor_by_name('aug_:0')
-        tf.summary.image(name='aug_images_test', tensor=aug_images_test)
-        summary_test = sess.run(aug_images_test, feed_dict={x_: test_imgs[:3], y_: test_labs[:3], lr_: 0.001, is_training: False})
-        print np.shape(summary_test)
-        print np.save('test_images.npy', summary_test)
-        summary_writer.add_summary(summary_test, step)
-        """
     """ #### training ### """
     train_fetches = [train_op, accuracy_op, loss_op]
     batch_xs, batch_ys , batch_fname= input.next_batch(batch_size, train_imgs, train_labs )

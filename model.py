@@ -185,6 +185,33 @@ def build_graph(x_ , y_ ,cam_ind, is_training ,aug_flag, actmap_flag, model , ra
     print "logits's shape : {}".format(logits)
     return  logits
 
+def train_algorithm(optimizer , logits, labels, learning_rate  , l2_loss , weight_decay):
+
+    print 'Optimizer : {}'.format(optimizer)
+    print 'L2 Loss : ', l2_loss
+    print 'Weight Decay : ', weight_decay
+    prediction = tf.nn.softmax(logits, name='softmax')
+    cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels),
+                                   name='cross_entropy')
+    # Optimizer
+    if optimizer == 'sgd':
+        optimizer = tf.train.GradientDescentOptimizer(learning_rate)
+
+    elif optimizer =='momentum':
+        momentum = 0.9;
+        optimizer = tf.train.MomentumOptimizer(learning_rate, momentum=momentum, use_nesterov=True)
+
+    # L2 Loss
+    if l2_loss:
+        l2_loss = tf.add_n([tf.nn.l2_loss(var) for var in tf.trainable_variables()], name='l2_loss')
+        train_op = optimizer.minimize(cross_entropy + l2_loss * weight_decay, name='train_op')
+    else:
+        train_op = optimizer.minimize(cross_entropy, name='train_op')
+    correct_prediction = tf.equal(tf.argmax(prediction, 1), tf.argmax(labels, 1), name='correct_prediction')
+    accuracy = tf.reduce_mean(tf.cast(correct_prediction, dtype=tf.float32), name='accuracy')
+    return train_op, accuracy, cross_entropy, prediction
+
+
 def train_algorithm_momentum(logits, labels, learning_rate , use_nesterov , l2_loss):
     print 'Optimizer : Momentum'
     print 'Use Nesterov : ', use_nesterov
