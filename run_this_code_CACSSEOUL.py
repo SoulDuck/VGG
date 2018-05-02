@@ -243,6 +243,8 @@ best_loss_root = os.path.join(models_path, 'best_loss')
 os.mkdir(best_acc_root)
 os.mkdir(best_loss_root)
 
+print 'Logs savedir: {}'.format(logs_path)
+print 'Model savedir : {}'.format(models_path)
 min_loss = 1000.
 max_acc = 0.
 
