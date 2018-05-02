@@ -281,7 +281,8 @@ def define_inputs(shape, n_classes):
     cam_ind = tf.placeholder(tf.int32,shape=[],name='cam_ind')
     learning_rate = tf.placeholder(tf.float32,shape=[],name='learning_rate')
     is_training = tf.placeholder(tf.bool, shape=[] ,name='is_training')
-    return images, labels, cam_ind ,learning_rate, is_training
+    global_step = tf.placeholder(tf.int32)
+    return images, labels, cam_ind ,learning_rate, is_training , global_step
 
 def sess_start(logs_path):
     saver=tf.train.Saver(max_to_keep=10000000)
@@ -299,7 +300,7 @@ def write_acc_loss(summary_writer ,prefix , loss , acc  , step):
     summary_writer.add_summary(summary, step)
 
 if __name__ == '__main__':
-    x_ , y_ , lr_ , is_training =define_inputs(shape=[ None , 299,299, 3 ] , n_classes=2 )
+    x_ , y_ , lr_ , is_training ,global_step = define_inputs(shape=[ None , 299,299, 3 ] , n_classes=2 )
     build_graph( x_=x_ , y_=y_ ,is_training=is_training, aug_flag=True , actmap_flag=True , model='vgg_11' , random_crop_resize=224 )
 
 

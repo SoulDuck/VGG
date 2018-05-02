@@ -193,12 +193,14 @@ h,w,ch=train_imgs.shape[1:]
 print h,w,ch
 n_classes=np.shape(train_labs)[-1]
 print 'the # classes : {}'.format(n_classes)
-x_ , y_ , cam_ind, lr_ , is_training = model.define_inputs(shape=[None, h ,w, ch ] , n_classes=n_classes )
+x_ , y_ , cam_ind, lr_ , is_training ,global_step = model.define_inputs(shape=[None, h ,w, ch ] , n_classes=n_classes )
 logits=model.build_graph(x_=x_ , y_=y_ , cam_ind= cam_ind , is_training=is_training , aug_flag=args.use_aug,\
                          actmap_flag=args.use_actmap  , model=args.vgg_model,random_crop_resize=args.random_crop_resize, \
                          bn = args.use_BN)
+lr_op= tf.train.exponential_decay(args.init_lr, global_step , decay_steps=int(args.max_iter / 10), decay_rate=0.96,
+                                           staircase=False)
 train_op, accuracy_op , loss_op , pred_op = \
-    model.train_algorithm(args.optimizer, logits=logits, labels=y_, learning_rate=lr_, l2_loss=args.use_l2_loss,
+    model.train_algorithm(args.optimizer, logits=logits, labels=y_, learning_rate=lr_op, l2_loss=args.use_l2_loss,
                           weight_decay=args.weight_decay)
 
 log_count =0;
@@ -218,8 +220,6 @@ while True:
     else:
         log_count+=1
 sess, saver , summary_writer =model.sess_start(logs_path)
-
-
 
 
 model_count =0;
@@ -259,21 +259,24 @@ remainder=len(test_labs)/batch_size
 train_acc=0.
 train_loss=1000.
 
-for step in range(max_iter):
-    def show_progress(step, max_iter):
-        msg = '\r progress {}/{}'.format(i, max_iter)
-        sys.stdout.write(msg)
-        sys.stdout.flush()
 
-    learning_rate = tf.train.exponential_decay(args.init_lr , step , decay_steps = int(max_iter/10) , decay_rate = 0.96 , staircase=False)
+def show_progress(step, max_iter):
+    msg = '\r progress {}/{}'.format(step, max_iter)
+    sys.stdout.write(msg)
+    sys.stdout.flush()
+
+
+for step in range(max_iter):
     if step % ckpt==0:
         """ #### testing ### """
-        print 'test'
-        test_fetches = [ accuracy_op, loss_op, pred_op ]
+        print '### Testing ###'
+        test_fetches = [ accuracy_op, loss_op, pred_op , lr_op]
         val_acc_mean , val_loss_mean , pred_all = [] , [] , []
         for i in range(share): #여기서 테스트 셋을 sess.run()할수 있게 쪼갭니다
-            test_feedDict = { x_: test_imgs[i*batch_size:(i+1)*batch_size], y_: test_labs[i*batch_size:(i+1)*batch_size],  is_training: False }
-            val_acc ,val_loss , pred = sess.run( fetches=test_fetches, feed_dict=test_feedDict )
+            test_feedDict = {x_: test_imgs[i * batch_size:(i + 1) * batch_size],
+                             y_: test_labs[i * batch_size:(i + 1) * batch_size], is_training: False, global_step: step}
+
+            val_acc, val_loss, pred, learning_rate = sess.run(fetches=test_fetches, feed_dict=test_feedDict)
             val_acc_mean.append(val_acc)
             val_loss_mean.append(val_loss)
             pred_all.append(pred)
