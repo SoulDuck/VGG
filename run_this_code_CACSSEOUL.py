@@ -45,13 +45,19 @@ parser.add_argument('--no_BN',dest='use_BN' , action = 'store_false', help = 'bn
 
 parser.add_argument('--data_dir' , help='the folder where the data is saved ' )
 
+parser.add_argument('--init_lr' , type = int)
+parser.add_argument('--weight_decay', type = float)
+
 parser.add_argument('--folder_name' ,help='ex model/fundus_300/folder_name/0 .. logs/fundus_300/folder_name/0 , type2/folder_name/0')
 args=parser.parse_args()
 
 print 'aug : ' , args.use_aug
 print 'actmap : ' , args.use_actmap
 print 'use_l2_loss: ' , args.use_l2_loss
+print 'weight_decay' , args.weight_decay
 print 'BN : ' , args.use_BN
+print 'Init Learning rate ' , args.init_lr
+
 print 'optimizer : ', args.optimizer
 print 'use nesterov : ',args.use_nesterov
 print 'random crop size : ',args.random_crop_resize
@@ -126,7 +132,6 @@ normal_train_imgs , normal_test_imgs, abnormal_train_imgs , abnormal_test_imgs, 
 
 NORMAL = 0
 ABNORMAL = 1
-
 
 normal_train_labs=np.zeros([len(normal_train_imgs) , 2])
 normal_train_labs[:,NORMAL]=1
@@ -257,18 +262,8 @@ for step in range(max_iter):
         msg = '\r progress {}/{}'.format(i, max_iter)
         sys.stdout.write(msg)
         sys.stdout.flush()
-    #### learning rate schcedule
-    if step < 5000:
-        learning_rate = 0.0001
-    elif step < 45000:
-        learning_rate = 0.00007
-    elif step < 60000:
-        learning_rate = 0.00007
-    elif step < 120000:
-        learning_rate = 0.001
-    else:
-        learning_rate = 0.001
-        ####
+
+    learning_rate = tf.train.exponential_decay(args.init_lr , step , decay_steps = int(max_iter/10) , decay_rate = 0.96 , staircase=False)
     if step % ckpt==0:
         """ #### testing ### """
         print 'test'
