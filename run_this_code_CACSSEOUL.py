@@ -275,7 +275,6 @@ for step in range(max_iter):
         for i in range(share): #여기서 테스트 셋을 sess.run()할수 있게 쪼갭니다
             test_feedDict = {x_: test_imgs[i * batch_size:(i + 1) * batch_size],
                              y_: test_labs[i * batch_size:(i + 1) * batch_size], is_training: False, global_step: step}
-
             val_acc, val_loss, pred, learning_rate = sess.run(fetches=test_fetches, feed_dict=test_feedDict)
             val_acc_mean.append(val_acc)
             val_loss_mean.append(val_loss)
@@ -302,12 +301,13 @@ for step in range(max_iter):
         os.mkdir(model_path) # e.g) models/fundus_300/100/model.ckpt or model.meta
         #saver.save(sess=sess,save_path=os.path.join(model_path,'model' , folder_name))
     """ #### training ### """
-    train_fetches = [train_op, accuracy_op, loss_op]
+    train_fetches = [train_op, accuracy_op, loss_op ]
     batch_xs, batch_ys , batch_fname= input.next_batch(batch_size, train_imgs, train_labs )
     if args.use_aug:
         batch_xs=aug.random_rotate_90(batch_xs) # random 으로 90 180 , 270 , 360 도를 회전합니다.
     batch_xs=batch_xs/255.
-    train_feedDict = {x_: batch_xs, y_: batch_ys, cam_ind:ABNORMAL ,lr_: learning_rate, is_training: True}
+    train_feedDict = {x_: batch_xs, y_: batch_ys, cam_ind: ABNORMAL, lr_: learning_rate, is_training: True,
+                      global_step: step}
     _ , train_acc, train_loss = sess.run( fetches=train_fetches, feed_dict=train_feedDict )
     #print 'train acc : {} loss : {}'.format(train_acc, train_loss)
     model.write_acc_loss(summary_writer ,'train' , loss= train_loss , acc=train_acc  ,step= step)
