@@ -202,9 +202,9 @@ def train_algorithm(optimizer , logits, labels, learning_rate  , l2_loss , weigh
         momentum = 0.9;
         optimizer = tf.train.MomentumOptimizer(learning_rate, momentum=momentum, use_nesterov=True)
     elif optimizer =='momentum':
-        momentum = 0.9;
         optimizer = tf.train.AdamOptimizer(learning_rate)
-
+    else:
+        raise AssertionError
     # L2 Loss
     if l2_loss:
         l2_loss = tf.add_n([tf.nn.l2_loss(var) for var in tf.trainable_variables()], name='l2_loss')
