@@ -37,6 +37,9 @@ parser.add_argument('--max_iter', '-i' , type=int , help='iteration')
 
 parser.add_argument('--l2_loss', dest='use_l2_loss', action='store_true' ,help='l2 loss true or False')
 parser.add_argument('--no_l2_loss', dest='use_l2_loss', action='store_false' ,help='l2 loss true or False')
+parser.add_argument('--weight_decay', type = float , help='L2 weight decay ')
+
+
 
 parser.add_argument('--vgg_model' ,'-m' , choices=['vgg_11','vgg_13','vgg_16', 'vgg_19'])
 
@@ -46,7 +49,7 @@ parser.add_argument('--no_BN',dest='use_BN' , action = 'store_false', help = 'bn
 parser.add_argument('--data_dir' , help='the folder where the data is saved ' )
 
 parser.add_argument('--init_lr' , type = float , help='init learning rate ')
-parser.add_argument('--weight_decay', type = float , help='L2 weight decay ')
+parser.add_argument('--lr_decay_step' ,type=int , help='decay step for learning rate')
 
 parser.add_argument('--folder_name' ,help='ex model/fundus_300/folder_name/0 .. logs/fundus_300/folder_name/0 , type2/folder_name/0')
 args=parser.parse_args()
