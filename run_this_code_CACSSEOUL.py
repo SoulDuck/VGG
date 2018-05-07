@@ -60,6 +60,7 @@ print 'use_l2_loss: ' , args.use_l2_loss
 print 'weight_decay' , args.weight_decay
 print 'BN : ' , args.use_BN
 print 'Init Learning rate ' , args.init_lr
+print 'Decay step for learning rate, ',args.lr_decay_step
 
 print 'optimizer : ', args.optimizer
 print 'use nesterov : ',args.use_nesterov
@@ -211,7 +212,7 @@ x_ , y_ , cam_ind, lr_ , is_training ,global_step = model.define_inputs(shape=[N
 logits=model.build_graph(x_=x_ , y_=y_ , cam_ind= cam_ind , is_training=is_training , aug_flag=args.use_aug,\
                          actmap_flag=args.use_actmap  , model=args.vgg_model,random_crop_resize=args.random_crop_resize, \
                          bn = args.use_BN)
-lr_op= tf.train.exponential_decay(args.init_lr, global_step , decay_steps=int(args.max_iter / 10), decay_rate=0.96,
+lr_op= tf.train.exponential_decay(args.init_lr, global_step , decay_steps=int(args.max_iter / args.lr_decay_step ), decay_rate=0.96,
                                            staircase=False)
 train_op, accuracy_op , loss_op , pred_op = \
     model.train_algorithm(args.optimizer, logits=logits, labels=y_, learning_rate=lr_op, l2_loss=args.use_l2_loss,
