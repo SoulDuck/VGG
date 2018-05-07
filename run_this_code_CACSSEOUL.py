@@ -65,6 +65,17 @@ print 'batch size : ',args.batch_size
 print 'max iter  : ',args.max_iter
 print 'data dir  : ',args.data_dir
 
+
+def count_trainable_params():
+    total_parameters = 0
+    for variable in tf.trainable_variables():
+        shape = variable.get_shape()
+        variable_parametes = 1
+        for dim in shape:
+            variable_parametes *= dim.value
+        total_parameters += variable_parametes
+    print("Total training params: %.1fM" % (total_parameters / 1e6))
+
 def cls2onehot(cls , depth):
 
     labs=np.zeros([len(cls) , depth])
@@ -268,6 +279,7 @@ def show_progress(step, max_iter):
     sys.stdout.flush()
 
 
+count_trainable_params()
 for step in range(max_iter):
     if step % ckpt==0:
         """ #### testing ### """
