@@ -22,8 +22,10 @@ def batch_norm(x, phase_train, scope_bn='BN'):
         gamma = tf.Variable(tf.constant(1.0, shape=[n_out]),
                             name='gamma', trainable=True)
         if len(x.get_shape()) == 4: # for convolution Batch Normalization
+            print 'BN for Convolution was applied'
             batch_mean, batch_var = tf.nn.moments(x, [0, 1, 2], name='moments')
         if len(x.get_shape()) == 2: # for Fully Convolution Batch Normalization:
+            print 'BN for FC was applied'
             batch_mean, batch_var = tf.nn.moments(x, [0], name='moments')
         ema = tf.train.ExponentialMovingAverage(decay=0.5)
 
