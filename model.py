@@ -204,6 +204,37 @@ def build_graph(x_ , y_ ,cam_ind, is_training ,aug_flag, actmap_flag, model , ra
     print "logits's shape : {}".format(logits)
     return  logits
 
+def train_algorithm(optimizer , logits, labels, learning_rate  , l2_loss , weight_decay):
+    #weight_decay = 1e-4 Default
+
+    print 'Optimizer : {}'.format(optimizer)
+    print 'L2 Loss : ', l2_loss
+    print 'Weight Decay : ', weight_decay
+    prediction = tf.nn.softmax(logits, name='softmax')
+    cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels),
+                                   name='cross_entropy')
+    # Optimizer
+    if optimizer == 'sgd':
+        optimizer = tf.train.GradientDescentOptimizer(learning_rate)
+
+    elif optimizer =='momentum':
+        momentum = 0.9;
+        optimizer = tf.train.MomentumOptimizer(learning_rate, momentum=momentum, use_nesterov=True)
+    elif optimizer =='adam':
+        optimizer = tf.train.AdamOptimizer(learning_rate)
+    else:
+        raise AssertionError
+    # L2 Loss
+    if l2_loss:
+        l2_loss = tf.add_n([tf.nn.l2_loss(var) for var in tf.trainable_variables()], name='l2_loss')
+        train_op = optimizer.minimize(cross_entropy + l2_loss * weight_decay, name='train_op')
+    else:
+        train_op = optimizer.minimize(cross_entropy, name='train_op')
+    correct_prediction = tf.equal(tf.argmax(prediction, 1), tf.argmax(labels, 1), name='correct_prediction')
+    accuracy = tf.reduce_mean(tf.cast(correct_prediction, dtype=tf.float32), name='accuracy')
+    return train_op, accuracy, cross_entropy, prediction
+
+
 def train_algorithm_momentum(logits, labels, learning_rate , use_nesterov , l2_loss):
     print 'Optimizer : Momentum'
     print 'Use Nesterov : ', use_nesterov
@@ -269,7 +300,8 @@ def define_inputs(shape, n_classes):
     cam_ind = tf.placeholder(tf.int32,shape=[],name='cam_ind')
     learning_rate = tf.placeholder(tf.float32,shape=[],name='learning_rate')
     is_training = tf.placeholder(tf.bool, shape=[] ,name='is_training')
-    return images, labels, cam_ind ,learning_rate, is_training
+    global_step = tf.placeholder(tf.int32)
+    return images, labels, cam_ind ,learning_rate, is_training , global_step
 
 def sess_start(logs_path):
     saver=tf.train.Saver(max_to_keep=10000000)
@@ -287,7 +319,7 @@ def write_acc_loss(summary_writer ,prefix , loss , acc  , step):
     summary_writer.add_summary(summary, step)
 
 if __name__ == '__main__':
-    x_ , y_ , lr_ , is_training =define_inputs(shape=[ None , 299,299, 3 ] , n_classes=2 )
+    x_ , y_ , lr_ , is_training ,global_step = define_inputs(shape=[ None , 299,299, 3 ] , n_classes=2 )
     build_graph( x_=x_ , y_=y_ ,is_training=is_training, aug_flag=True , actmap_flag=True , model='vgg_11' , random_crop_resize=224 )
 
 
