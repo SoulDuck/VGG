@@ -13,11 +13,32 @@ def dropout( _input , is_training , keep_prob=0.8):
     return output
 
 
-def batch_norm( _input , is_training):
-    output = tf.contrib.layers.batch_norm(_input, scale=True, \
-                                          is_training=is_training, updates_collections=None)
-    return output
+#def batch_norm( _input , is_training):
+def batch_norm(x, phase_train, scope_bn='BN'):
+    with tf.variable_scope(scope_bn):
+        n_out = int(x.get_shape()[-1])
+        beta = tf.Variable(tf.constant(0.0, shape=[n_out]),
+                           name='beta', trainable=True)
+        gamma = tf.Variable(tf.constant(1.0, shape=[n_out]),
+                            name='gamma', trainable=True)
+        if len(x.get_shape()) == 4: # for convolution Batch Normalization
+            print 'BN for Convolution was applied'
+            batch_mean, batch_var = tf.nn.moments(x, [0, 1, 2], name='moments')
+        if len(x.get_shape()) == 2: # for Fully Convolution Batch Normalization:
+            print 'BN for FC was applied'
+            batch_mean, batch_var = tf.nn.moments(x, [0], name='moments')
+        ema = tf.train.ExponentialMovingAverage(decay=0.5)
 
+        def mean_var_with_update():
+            ema_apply_op = ema.apply([batch_mean, batch_var])
+            with tf.control_dependencies([ema_apply_op]):
+                return tf.identity(batch_mean), tf.identity(batch_var)
+
+        mean, var = tf.cond(phase_train,
+                            mean_var_with_update,
+                            lambda: (ema.average(batch_mean), ema.average(batch_var)))
+        normed = tf.nn.batch_normalization(x, mean, var, beta, gamma, 1e-3)
+    return normed
 def weight_variable_msra(shape , name):
     return tf.get_variable(name=name , shape=shape , initializer=tf.contrib.layers.variance_scaling_initializer())
 def weight_variable_xavier( shape , name):
@@ -159,25 +180,25 @@ def build_graph(x_ , y_ ,cam_ind, is_training ,aug_flag, actmap_flag, model , ra
     cam_ = cam.get_class_map('gap', end_conv_layer, cam_ind, image_size)
 
     ##### define fully connected layer #######
-    fc_out_features = [4096,4096]
-    before_act_bn_mode = [False, False ]
-    after_act_bn_mode = [False ,False]
-    for i in range(len(fc_out_features)):
-        with tf.variable_scope('fc_{}'.format(str(i))) as scope:
-            if before_act_bn_mode[i] ==True :
-                print 'batch normalization {}'.format(i)
-                layer=batch_norm(layer , is_training)
-            layer=fc_with_bias(layer , fc_out_features[i])
-            layer=tf.nn.relu(layer)
-            layer=tf.cond(is_training , lambda: tf.nn.dropout(layer , keep_prob=0.5) , lambda: layer)
-            if after_act_bn_mode[i]==True:
-                layer=batch_norm(layer, is_training)
     print n_classes
     logits_fc=fc_layer_to_clssses(layer , n_classes)
     if actmap_flag:
         print "logits from Global Average Pooling , No Fully Connected layer "
         logits=logits_gap
     else:
+        fc_out_features = [4096, 4096]
+        before_act_bn_mode = [False, False]
+        after_act_bn_mode = [False, False]
+        for i in range(len(fc_out_features)):
+            with tf.variable_scope('fc_{}'.format(str(i))) as scope:
+                if before_act_bn_mode[i] == True:
+                    print 'batch normalization {}'.format(i)
+                    layer = batch_norm(layer, is_training)
+                layer = fc_with_bias(layer, fc_out_features[i])
+                layer = tf.nn.relu(layer)
+                layer = tf.cond(is_training, lambda: tf.nn.dropout(layer, keep_prob=0.5), lambda: layer)
+                if after_act_bn_mode[i] == True:
+                    layer = batch_norm(layer, is_training)
         print "logits from fully connected layer "
         logits = logits_fc
 
