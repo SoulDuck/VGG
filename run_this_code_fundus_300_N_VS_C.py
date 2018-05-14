@@ -176,9 +176,9 @@ train_imgs = np.vstack([normal_train_imgs , abnormal_train_imgs ,abnormal_train_
                         abnormal_train_imgs, abnormal_train_imgs, abnormal_train_imgs])
 
 train_labs = np.vstack([normal_train_labs , abnormal_train_labs ,abnormal_train_labs ,abnormal_train_labs, \
-                        abnormal_train_imgs, abnormal_train_imgs, abnormal_train_imgs,
-                        abnormal_train_imgs, abnormal_train_imgs, abnormal_train_imgs,
-                        abnormal_train_imgs, abnormal_train_imgs, abnormal_train_imgs])
+                        abnormal_train_labs, abnormal_train_labs, abnormal_train_labs,
+                        abnormal_train_labs, abnormal_train_labs, abnormal_train_labs,
+                        abnormal_train_labs, abnormal_train_labs, abnormal_train_labs])
 
 
 
