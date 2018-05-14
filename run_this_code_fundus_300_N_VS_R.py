@@ -190,7 +190,7 @@ print 'Test Labels Shape : {} '.format(np.shape(test_labs))
 if args.use_clahe:
     print 'Apply clahe ....'
     import matplotlib.pyplot as plt
-    train_imgs= map(aug.clahe_equalized, train_imgs)
+    #train_imgs= map(aug.clahe_equalized, train_imgs)
     test_imgs = map(aug.clahe_equalized, test_imgs)
     train_imgs , test_imgs = map(np.asarray , [train_imgs , test_imgs])
 
@@ -321,9 +321,14 @@ for step in range(max_iter):
     """ #### training ### """
     train_fetches = [train_op, accuracy_op, loss_op ]
     batch_xs, batch_ys , batch_fname= input.next_batch(batch_size, train_imgs, train_labs )
+
+    # Preprocessing
+    batch_xs=map(aug.clahe_equalized, batch_xs) # apply Clahe
     if args.use_aug:
         batch_xs=aug.random_rotate_90(batch_xs) # random 으로 90 180 , 270 , 360 도를 회전합니다.
     batch_xs=batch_xs/255.
+
+
     train_feedDict = {x_: batch_xs, y_: batch_ys, cam_ind: ABNORMAL, lr_: learning_rate, is_training: True,
                       global_step: step}
     _ , train_acc, train_loss = sess.run( fetches=train_fetches, feed_dict=train_feedDict )
