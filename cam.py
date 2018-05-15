@@ -128,7 +128,7 @@ def eval_inspect_cam(sess, cam ,cam_ind, top_conv ,test_imgs , x, y_ ,phase_trai
         cam_vis_abnormal = cam_vis_abnormal.reshape([img.shape[1] , img.shape[2]])
         cam_vis_normal = cam_vis_normal.reshape([img.shape[1], img.shape[2]])
 
-        overlay(cam_vis_abnormal, img, '{}/blend_actmap.png'.format(save_dir) , 0.5)
+        blend_img=overlay(cam_vis_abnormal, img, '{}/blend_actmap.png'.format(save_dir) , 0.5)
 
         cmap = plt.cm.jet
         #plt.imshow(cam_vis_abnormal, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
@@ -140,6 +140,7 @@ def eval_inspect_cam(sess, cam ,cam_ind, top_conv ,test_imgs , x, y_ ,phase_trai
 
         plt.imsave('{}/abnormal_actmap.png'.format(save_dir), cam_vis_abnormal)
         plt.imsave('{}/normal_actmap.png'.format(save_dir), cam_vis_normal)
+        plt.imsave('{}/blend_img.png'.format(save_dir), Image.fromarray(blend_img))
 
 
 
