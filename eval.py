@@ -3,6 +3,7 @@ import tensorflow as tf
 import cam
 import numpy as np
 import os
+import aug
 def get_acc(preds , trues):
     #onehot vector check
     assert np.ndim(preds) == np.ndim(trues) , 'predictions and True Values has same shape and has to be OneHot Vector'
@@ -16,7 +17,7 @@ def get_acc(preds , trues):
     acc=np.sum([preds_cls == trues_cls])/float(len(preds_cls))
     return acc
 
-def eval(model_path ,test_images , batch_size  , actmap_folder):
+def eval(model_path ,test_images , batch_size  , actmap_folder , ):
     """
     만약 actmap folder 가 None 이면 actmap 을 저장하지 않습니다.
     actmap folder 을 지정하고 만약 해당 폴더가 없으면 생상합니다.
@@ -63,7 +64,13 @@ def eval(model_path ,test_images , batch_size  , actmap_folder):
     tf.reset_default_graph()
     return np.asarray(predList)
 if __name__ =='__main__':
+
     test_images=np.load('./Test_Data/retina_test.npy')
+
+    train_imgs = map(aug.clahe_equalized, train_imgs)
+    test_imgs = map(aug.clahe_equalized, test_imgs)
+    train_imgs, test_imgs = map(np.asarray, [train_imgs, test_imgs])
+
     print np.shape(test_images)
     test_images=np.reshape(test_images,[-1,300,300,3])
     model_path = './models/step_23300_acc_0.892063558102/model'

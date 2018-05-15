@@ -10,6 +10,10 @@ from skimage.io import imsave
 import scipy.misc
 import sys
 from PIL import Image
+import matplotlib.pyplot as plt
+
+import numpy as np; np.random.seed(0)
+import seaborn as sns;sns.set()
 def get_class_map(name,x , cam_ind , im_width):
     out_ch = int(x.get_shape()[-1])
     conv_resize=tf.image.resize_bilinear(x,[im_width , im_width])
@@ -117,15 +121,22 @@ def eval_inspect_cam(sess, cam ,cam_ind, top_conv ,test_imgs , x, y_ ,phase_trai
         cam_vis_abnormal=list(map(lambda x: (x-x.min())/(x.max()-x.min()) , cam_ans_abnormal))
         cam_vis_normal=list(map(lambda x: (x-x.min())/(x.max()-x.min()) , cam_ans_normal))
 
+
+
+
+
         cam_vis_abnormal, cam_vis_normal = map(lambda x: np.squeeze(x), [cam_vis_abnormal, cam_vis_normal])
         cam_vis_abnormal = cam_vis_abnormal.reshape([img.shape[1] , img.shape[2]])
         cam_vis_normal = cam_vis_normal.reshape([img.shape[1], img.shape[2]])
 
         cmap = plt.cm.jet
         #plt.imshow(cam_vis_abnormal, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
+
+        cam_vis_abnormal_1 = sns.heatmap(cam_vis_abnormal, annot=True, vmin=0, vmax=1,cmap="YlGnBu")  # sns Heatmap is applied
         cam_vis_abnormal=cmap(cam_vis_abnormal)
         plt.imsave('{}/abnormal_actmap.png'.format(save_dir), cam_vis_abnormal)
         plt.imsave('{}/normal_actmap.png'.format(save_dir), cam_vis_normal)
+        plt.imsave('{}/abnormal_actmap_1.png'.format(save_dir), cam_vis_abnormal_1)
         """
         print np.shape(cam_vis_abnormal)
         print np.shape(cam_vis_normal)
