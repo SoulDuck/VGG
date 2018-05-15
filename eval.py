@@ -54,9 +54,9 @@ def eval(model_path ,test_images , batch_size  , actmap_folder):
     for s in range(share):
         pred = sess.run(pred_ , feed_dict={x_ : test_images[s*batch_size:(s+1)*batch_size],is_training_:False})
         predList.extend(pred)
-    if not remainder ==0:
+    if not remainder == 0:
         pred = sess.run(pred_, feed_dict={x_: test_images[-1*remainder:], is_training_: False})
-    predList.extend(pred)
+        predList.extend(pred)
     assert len(predList) == len(test_images), '# pred : {} # imgaes : {} should be SAME!'.format(len(predList),
                                                                                                  len(test_images))
     # Reset Graph
