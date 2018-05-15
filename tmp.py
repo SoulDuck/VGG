@@ -1,49 +1,56 @@
-import tensorflow as tf
+import time
+from PIL import Image
+import numpy as np
+import glob
 import matplotlib.pyplot as plt
+import os , copy
+def crop_resize_fundus(path):
+    debug_flag=False
+    """
+    file name =1002959_20130627_L.png
+    """
+    name = path.split('/')[-1]
+    start_time = time.time()
+    im = Image.open(path)  # Can be many different formats.
+    np_img = np.asarray(im)
+    mean_pix = np.mean(np_img)
+    pix = im.load()
+    height, width = im.size  # Get the width and hight of the image for iterating over
+    # pix[1000,1000] #Get the RGBA Value of the a pixel of an image
+    c_x, c_y = (int(height / 2), int(width / 2))
 
-import numpy as np; np.random.seed(0)
-#import seaborn as sns;sns.set()
-#uniform_data = np.random.rand(10, 12)
-#ax = sns.heatmap(uniform_data , annot=True , vmin=0, vmax=1 ,cmap="YlGnBu")
-#fig=ax.get_figure()
+    for y in range(c_y):
+        if sum(pix[c_x, y]) > mean_pix:
+            left = (c_x, y)
+            break;
 
-#fig.savefig('tmp_heatmap.png')
+    for x in range(c_x):
+        if sum(pix[x, c_y]) > mean_pix:
+            up = (x, c_y)
+            break;
 
-#plt.show(fig)
-#plt.imsave('tmp_heatmap.png' , ax)
-#plt.show(ax)
+    crop_img = im.crop((up[0], left[1], left[0], up[1]))
 
-a=range(256)
-a=np.asarray(a)
-a=a.reshape([16,16])
-a=a/255.
-a[:]
-cmap = plt.cm.jet
-a=cmap(a)
-print a
-print np.shape(a)
-a[:,:4]=0
-plt.imsave('tmp.png',a)
-exit()
-plt.imsave('tmp.png',cmap(a))
-r=range(256)
-g=range(256)
-g.reverse()
-b=range(256)
+    #plt.imshow(crop_img)
 
-"""
-r,g,b=map(lambda channel: np.asarray(channel).reshape([16,16]) , [r,g,b])
+    diameter_height = up[1] - left[1]
+    diameter_width = left[0] - up[0]
 
-rgb = np.zeros([16,16,3])
+    crop_img = im.crop((up[0], left[1], left[0] + diameter_width, up[1] + diameter_height))
+    end_time = time.time()
 
-rgb[:,:,0] =r
-rgb[:,:,1] = 0
-rgb[:,:,2] = 0
-print rgb[0,0,:]
-print rgb[0,1,:]
-print np.shape(rgb)
-plt.imshow(rgb)
-plt.show()
-"""
+    if __debug__ == debug_flag:
+        print end_time - start_time
+        print np.shape(np_img)
+
+    return crop_img ,path
+paths=glob.glob('./Test_Data/cata_test/*.png')
+for path in paths[:25]:
+    print path
+    crop_img, _ = crop_resize_fundus(path=path)
+    crop_img=copy.deepcopy(crop_img)
+    name=os.path.split(path)[-1]
+    plt.imsave(os.path.join('./Test_Data/cata_test_cropped/' , name) ,crop_img)
+
 
 

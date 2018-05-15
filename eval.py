@@ -65,14 +65,12 @@ def eval(model_path ,test_images , batch_size  , actmap_folder , ):
     return np.asarray(predList)
 if __name__ =='__main__':
 
-    test_images=np.load('./Test_Data/retina_test.npy')
+    test_imgs=np.load('./Test_Data/retina_test.npy')
 
-    train_imgs = map(aug.clahe_equalized, train_imgs)
+
     test_imgs = map(aug.clahe_equalized, test_imgs)
-    train_imgs, test_imgs = map(np.asarray, [train_imgs, test_imgs])
 
-    print np.shape(test_images)
-    test_images=np.reshape(test_images,[-1,300,300,3])
+    test_images=np.reshape(test_imgs,[-1,300,300,3])
     model_path = './models/step_23300_acc_0.892063558102/model'
     pred=eval(model_path, test_images , batch_size =1 , actmap_folder= './activation_maps/N_VS_R_SEOULSEV_FUNDUS_CLASSIFIER')
     print np.shape(pred)
