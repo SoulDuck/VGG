@@ -134,7 +134,7 @@ def eval_inspect_cam(sess, cam ,cam_ind, top_conv ,test_imgs , x, y_ ,phase_trai
 
         plt.imsave('{}/abnormal_actmap.png'.format(save_dir), cam_vis_abnormal)
         plt.imsave('{}/normal_actmap.png'.format(save_dir), cam_vis_normal)
-        overlay(cam_vis_abnormal, img, '{}/blend_actmap.png'.format(save_dir) , 0,5)
+        overlay(cam_vis_abnormal, img, '{}/blend_actmap.png'.format(save_dir) , 0.5)
 
 
 
