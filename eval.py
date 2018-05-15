@@ -65,6 +65,6 @@ if __name__ =='__main__':
     test_images=np.load('./Test_Data/retina_test.npy')
     print np.shape(test_images)
     test_images=np.reshape(test_images,[-1,300,300,3])
-    model_path = '/Users/seongjungkim/PycharmProjects/VGG/models/step_23300_acc_0.892063558102/model'
+    model_path = './models/step_23300_acc_0.892063558102/model'
     pred=eval(model_path, test_images , batch_size =1 , actmap_folder= './activation_maps/N_VS_R_SEOULSEV_FUNDUS_CLASSIFIER')
     print np.shape(pred)
