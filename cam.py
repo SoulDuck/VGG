@@ -127,7 +127,7 @@ def eval_inspect_cam(sess, cam ,cam_ind, top_conv ,test_imgs , x, y_ ,phase_trai
         cam_vis_abnormal, cam_vis_normal = map(lambda x: np.squeeze(x), [cam_vis_abnormal, cam_vis_normal])
         cam_vis_abnormal = cam_vis_abnormal.reshape([img.shape[1] , img.shape[2]])
         cam_vis_normal = cam_vis_normal.reshape([img.shape[1], img.shape[2]])
-
+        print np.shape(cam_vis_abnormal)
         blend_img=overlay(cam_vis_abnormal, img, '{}/blend_actmap.png'.format(save_dir) , 0.5)
 
         cmap = plt.cm.jet
