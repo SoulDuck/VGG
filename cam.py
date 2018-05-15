@@ -136,7 +136,6 @@ def eval_inspect_cam(sess, cam ,cam_ind, top_conv ,test_imgs , x, y_ ,phase_trai
         cam_vis_abnormal=cmap(cam_vis_abnormal)
         plt.imsave('{}/abnormal_actmap.png'.format(save_dir), cam_vis_abnormal)
         plt.imsave('{}/normal_actmap.png'.format(save_dir), cam_vis_normal)
-        print 'a'
         plt.imsave('{}/abnormal_actmap_1.png'.format(save_dir), cam_vis_abnormal_1)
 
         """
