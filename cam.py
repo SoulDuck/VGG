@@ -69,6 +69,9 @@ def overlay(actmap , ori_img ,save_path , factor):
     #np_cam_img=np.asarray(cam_img).astype('uint8') #img 2 numpy
     ori_img=Image.fromarray(ori_img.astype('uint8')).convert("RGBA")
     overlay_img = Image.blend(ori_img, cam_img, factor).convert('RGB')
+    return np.asarray(overlay_img)
+
+
     plt.imshow(overlay_img)
     plt.imsave(save_path, overlay_img)
     save_dir,name=os.path.split(save_path)
@@ -124,6 +127,9 @@ def eval_inspect_cam(sess, cam ,cam_ind, top_conv ,test_imgs , x, y_ ,phase_trai
         cam_vis_abnormal, cam_vis_normal = map(lambda x: np.squeeze(x), [cam_vis_abnormal, cam_vis_normal])
         cam_vis_abnormal = cam_vis_abnormal.reshape([img.shape[1] , img.shape[2]])
         cam_vis_normal = cam_vis_normal.reshape([img.shape[1], img.shape[2]])
+
+        overlay(cam_vis_abnormal, img, '{}/blend_actmap.png'.format(save_dir) , 0.5)
+
         cmap = plt.cm.jet
         #plt.imshow(cam_vis_abnormal, cmap=plt.cm.jet, alpha=0.5, interpolation='nearest', vmin=0, vmax=1)
         cam_vis_abnormal=cmap(cam_vis_abnormal)
@@ -134,7 +140,7 @@ def eval_inspect_cam(sess, cam ,cam_ind, top_conv ,test_imgs , x, y_ ,phase_trai
 
         plt.imsave('{}/abnormal_actmap.png'.format(save_dir), cam_vis_abnormal)
         plt.imsave('{}/normal_actmap.png'.format(save_dir), cam_vis_normal)
-        overlay(cam_vis_abnormal, img, '{}/blend_actmap.png'.format(save_dir) , 0.5)
+
 
 
 
