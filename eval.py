@@ -41,12 +41,13 @@ def eval(model_path ,test_images , batch_size  , actmap_folder):
     top_conv = tf.get_default_graph().get_tensor_by_name('top_conv:0')
     logits = tf.get_default_graph().get_tensor_by_name('logits:0')
     cam_ = tf.get_default_graph().get_tensor_by_name('classmap:0')
+    cam_ind = tf.get_default_graph().get_tensor_by_name('cam_ind:0')
 
     # Get Predictions from model.
     if not actmap_folder is None:
-        if os.path.isdir(actmap_folder):
+        if not os.path.isdir(actmap_folder):
             os.makedirs(actmap_folder)
-        cam.eval_inspect_cam(sess, cam_, top_conv, test_images[:], x_, y_, is_training_,logits,actmap_folder)
+        cam.eval_inspect_cam(sess, cam_, cam_ind ,top_conv, test_images[:], x_, y_, is_training_, logits,actmap_folder)
     share=len(test_images)/batch_size
     remainder=len(test_images)%batch_size
     predList=[]
@@ -61,9 +62,9 @@ def eval(model_path ,test_images , batch_size  , actmap_folder):
     tf.reset_default_graph()
     return np.asarray(predList)
 if __name__ =='__main__':
-    test_images=np.load('/Users/seongjungkim/PycharmProjects/VGG/fundus_300/russian_eyes.npy')
+    test_images=np.load('./Test_Data/retina_test.npy')
     print np.shape(test_images)
-    test_images=np.reshape(test_images,[-1,299,299,3])
-    model_path = '/Users/seongjungkim/PycharmProjects/VGG/models/ensemble/step_5900_acc_0.841071486473/model'
-    pred=eval(model_path, test_images,batch_size =1 , save_root_folder= './activation_map_/russian_eye_actmap')
+    test_images=np.reshape(test_images,[-1,300,300,3])
+    model_path = '/Users/seongjungkim/PycharmProjects/VGG/models/step_23300_acc_0.892063558102/model'
+    pred=eval(model_path, test_images , batch_size =1 , actmap_folder= './activation_maps/N_VS_R_SEOULSEV_FUNDUS_CLASSIFIER')
     print np.shape(pred)
