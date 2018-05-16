@@ -267,7 +267,6 @@ max_iter=args.max_iter
 ckpt=100
 batch_size=args.batch_size
 start_time=0
-train_acc=0
 train_val=0
 
 share=len(test_labs)/batch_size
@@ -282,7 +281,7 @@ def show_progress(step, max_iter):
     sys.stdout.write(msg)
     sys.stdout.flush()
 
-
+start_time=time.time()
 count_trainable_params()
 for step in range(max_iter):
     if step % ckpt==0:
@@ -330,5 +329,4 @@ for step in range(max_iter):
     #print 'train acc : {} loss : {}'.format(train_acc, train_loss)
     model.write_acc_loss(summary_writer ,'train' , loss= train_loss , acc=train_acc  ,step= step)
 
-
-
+print 'Consume time {}'.format(start_time - time.time())
