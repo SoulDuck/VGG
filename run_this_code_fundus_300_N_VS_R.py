@@ -284,6 +284,7 @@ def show_progress(step, max_iter):
 
 
 count_trainable_params()
+start_time=time.time()
 for step in range(max_iter):
     if step % ckpt==0:
         """ #### testing ### """
@@ -337,3 +338,5 @@ for step in range(max_iter):
 
 
 
+consume_time=time.time()-start_time
+print consume_time

@@ -45,12 +45,15 @@ def crop_resize_fundus(path):
 
     return crop_img ,path
 paths=glob.glob('./Test_Data/cata_test/*.png')
-for path in paths[:25]:
+
+paths=['/Users/seongjungkim/PycharmProjects/VGG/activation_maps/N_VS_R_SEOULSEV_FUNDUS_CLASSIFIER/img_9/2310544_20130315_L.png']
+for path in paths:
     print path
     crop_img, _ = crop_resize_fundus(path=path)
     crop_img=copy.deepcopy(crop_img)
     name=os.path.split(path)[-1]
-    plt.imsave(os.path.join('./Test_Data/cata_test_cropped/' , name) ,crop_img)
+    print np.shape(crop_img)
+    plt.imsave(os.path.join('/Users/seongjungkim/PycharmProjects/VGG/activation_maps/N_VS_R_SEOULSEV_FUNDUS_CLASSIFIER/img_9' , name) ,crop_img)
 
 
 
