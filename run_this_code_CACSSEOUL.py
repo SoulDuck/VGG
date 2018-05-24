@@ -144,7 +144,6 @@ test_imgs , test_labs , test_fnames = reconstruct_tfrecord_rawdata(os.path.join(
 names = ['normal_train.npy' , 'normal_test.npy' ,'abnormal_train.npy' , 'abnormal_test.npy']
 normal_train_imgs , normal_test_imgs, abnormal_train_imgs , abnormal_test_imgs,  =\
     map( lambda name : np.load(os.path.join(root_dir ,name)) , names)
-
 NORMAL = 0
 ABNORMAL = 1
 
@@ -156,7 +155,6 @@ normal_test_labs=np.zeros([len(normal_test_imgs) , 2])
 normal_test_labs[:,NORMAL]=1
 abnormal_test_labs=np.zeros([len(abnormal_test_imgs) , 2])
 abnormal_test_labs[:,ABNORMAL]=1
-
 
 print 'Normal Training Data shape : {}'.format(np.shape(normal_train_imgs))
 print 'ABNormal Training Data shape : {}'.format(np.shape(abnormal_train_imgs))
@@ -173,13 +171,8 @@ train_imgs = np.vstack([normal_train_imgs , abnormal_train_imgs ,abnormal_train_
                         abnormal_train_imgs,abnormal_train_imgs,abnormal_train_imgs])
 train_labs = np.vstack([normal_train_labs , abnormal_train_labs ,abnormal_train_labs ,abnormal_train_labs,\
                         abnormal_train_labs ,abnormal_train_labs ,abnormal_train_labs])
-
-
 test_imgs = np.vstack([normal_test_imgs , abnormal_test_imgs])
 test_labs = np.vstack([normal_test_labs, abnormal_test_labs])
-
-#train_labs=cls2onehot(train_labs , 2)
-#test_labs=cls2onehot(test_labs , 2)
 
 print 'Train Images Shape : {} '.format(np.shape(train_imgs))
 print 'Train Labels Shape : {} '.format(np.shape(train_labs))
@@ -194,7 +187,6 @@ if args.use_clahe:
     test_imgs = map(aug.clahe_equalized, test_imgs)
     train_imgs , test_imgs = map(np.asarray , [train_imgs , test_imgs])
 
-
 #normalize
 print np.shape(test_labs)
 if np.max(test_imgs) > 1:
@@ -202,7 +194,6 @@ if np.max(test_imgs) > 1:
     test_imgs=test_imgs/255.
 
 print 'test_imgs max :', np.max(test_imgs)
-
 
 h,w,ch=train_imgs.shape[1:]
 print h,w,ch
@@ -236,7 +227,6 @@ while True:
         log_count+=1
 sess, saver , summary_writer =model.sess_start(logs_path)
 
-
 model_count =0;
 while True:
     models_root_path='./models/{}'.format(args.folder_name)
@@ -252,7 +242,6 @@ while True:
     else:
         model_count+=1
 
-
 best_acc_root = os.path.join(models_path, 'best_acc')
 best_loss_root = os.path.join(models_path, 'best_loss')
 os.mkdir(best_acc_root)
@@ -267,21 +256,18 @@ max_iter=args.max_iter
 ckpt=100
 batch_size=args.batch_size
 start_time=0
+train_acc=0
 train_val=0
+train_loss=1000.
 
 share=len(test_labs)/batch_size
 remainder=len(test_labs)/batch_size
-
-train_acc=0.
-train_loss=1000.
-
 
 def show_progress(step, max_iter):
     msg = '\r progress {}/{}'.format(step, max_iter)
     sys.stdout.write(msg)
     sys.stdout.flush()
 
-start_time=time.time()
 count_trainable_params()
 for step in range(max_iter):
     if step % ckpt==0:
@@ -329,4 +315,5 @@ for step in range(max_iter):
     #print 'train acc : {} loss : {}'.format(train_acc, train_loss)
     model.write_acc_loss(summary_writer ,'train' , loss= train_loss , acc=train_acc  ,step= step)
 
-print 'Consume time {}'.format(start_time - time.time())
+
+
