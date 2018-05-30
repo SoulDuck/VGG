@@ -25,8 +25,8 @@ parser.add_argument('--use_nesterov' , type=bool , help='only for momentum , use
 parser.add_argument('--aug' , dest='use_aug', action='store_true' , help='augmentation')
 parser.add_argument('--no_aug' , dest='use_aug', action='store_false' , help='augmentation')
 
-parser.add_argument('--aug' , dest='use_aug_lv1', action='store_true' , help='augmentation')
-parser.add_argument('--no_aug' , dest='use_aug_lv1', action='store_false' , help='augmentation')
+parser.add_argument('--aug_lv1' , dest='use_aug_lv1', action='store_true' , help='augmentation')
+parser.add_argument('--no_aug_lv1' , dest='use_aug_lv1', action='store_false' , help='augmentation')
 
 
 parser.add_argument('--clahe' , dest='use_clahe', action='store_true' , help='augmentation')
@@ -60,8 +60,10 @@ parser.add_argument('--folder_name' ,help='ex model/fundus_300/folder_name/0 .. 
 args=parser.parse_args()
 
 print 'aug : ' , args.use_aug
+print 'aug_lv1 : ' , args.use_aug_lv1
 print 'actmap : ' , args.use_actmap
 print 'use_l2_loss: ' , args.use_l2_loss
+
 print 'weight_decay' , args.weight_decay
 print 'BN : ' , args.use_BN
 print 'Init Learning rate ' , args.init_lr
