@@ -7,6 +7,7 @@ import argparse
 import sys
 import tensorflow as tf
 import aug
+import numpy as np
 import random
 from PIL import Image
 import time
@@ -313,7 +314,9 @@ for step in range(max_iter):
     if args.use_aug:
         batch_xs=aug.random_rotate_90(batch_xs) # random 으로 90 180 , 270 , 360 도를 회전합니다.
     if args.use_aug_lv1:
-        batch_xs = aug.random_rotate_90(batch_xs)  # random 으로 90 180 , 270 , 360 도를 회전합니다.
+        batch_xs = aug.aug_lv1(batch_xs)  # random 으로 90 180 , 270 , 360 도를 회전합니다.
+        if i ==0 :
+            np.save('aug_lv1_batch_sample.npy' , batch_xs)
     batch_xs=batch_xs/255.
     train_feedDict = {x_: batch_xs, y_: batch_ys, cam_ind: ABNORMAL, lr_: learning_rate, is_training: True,
                       global_step: step}
