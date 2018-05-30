@@ -24,6 +24,10 @@ parser.add_argument('--use_nesterov' , type=bool , help='only for momentum , use
 parser.add_argument('--aug' , dest='use_aug', action='store_true' , help='augmentation')
 parser.add_argument('--no_aug' , dest='use_aug', action='store_false' , help='augmentation')
 
+parser.add_argument('--aug' , dest='use_aug_lv1', action='store_true' , help='augmentation')
+parser.add_argument('--no_aug' , dest='use_aug_lv1', action='store_false' , help='augmentation')
+
+
 parser.add_argument('--clahe' , dest='use_clahe', action='store_true' , help='augmentation')
 parser.add_argument('--no_clahe' , dest='use_clahe', action='store_false' , help='augmentation')
 
@@ -322,6 +326,8 @@ for step in range(max_iter):
     batch_xs, batch_ys , batch_fname= input.next_batch(batch_size, train_imgs, train_labs )
     if args.use_aug:
         batch_xs=aug.random_rotate_90(batch_xs) # random 으로 90 180 , 270 , 360 도를 회전합니다.
+    if args.use_aug_lv1:
+        batch_xs = aug.random_rotate_90(batch_xs)  # random 으로 90 180 , 270 , 360 도를 회전합니다.
     batch_xs=batch_xs/255.
     train_feedDict = {x_: batch_xs, y_: batch_ys, cam_ind: ABNORMAL, lr_: learning_rate, is_training: True,
                       global_step: step}

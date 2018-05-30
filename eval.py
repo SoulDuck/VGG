@@ -4,6 +4,8 @@ import cam
 import numpy as np
 import os
 import aug
+import glob
+from PIL import Image
 def get_acc(preds , trues):
     #onehot vector check
     assert np.ndim(preds) == np.ndim(trues) , 'predictions and True Values has same shape and has to be OneHot Vector'
@@ -65,12 +67,16 @@ def eval(model_path ,test_images , batch_size  , actmap_folder , ):
     return np.asarray(predList)
 if __name__ =='__main__':
 
-    test_imgs=np.load('./Test_Data/retina_test.npy')
 
-
+    paths=glob.glob('./Test_data/retina_test_cropped/*.png')
+    names=map(lambda path: os.path.split(path)[-1] , paths)
+    print names
+    print len(paths)
+    test_imgs=map(lambda path : np.asarray(Image.open(path).resize([300,300] , Image.ANTIALIAS).convert('RGB')) , paths)
+    print np.shape(test_imgs)
+    #test_imgs=np.load('./Test_Data/retina_test.npy')
     test_imgs = map(aug.clahe_equalized, test_imgs)
-
     test_images=np.reshape(test_imgs,[-1,300,300,3])
     model_path = './models/step_23300_acc_0.892063558102/model'
-    pred=eval(model_path, test_images , batch_size =1 , actmap_folder= './activation_maps/N_VS_R_SEOULSEV_FUNDUS_CLASSIFIER')
-    print np.shape(pred)
+    pred=eval(model_path, test_images , batch_size =1 , actmap_folder= './activation_maps/N_VS_R_SEOULSEV_FUNDUS_CLASSIFIER/retina_1')
+    print pred

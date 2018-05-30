@@ -44,9 +44,9 @@ def crop_resize_fundus(path):
         print np.shape(np_img)
 
     return crop_img ,path
-paths=glob.glob('./Test_Data/cata_test/*.png')
+paths=glob.glob('./Test_Data/normal_test/*.png')
 
-paths=['/Users/seongjungkim/PycharmProjects/VGG/activation_maps/N_VS_R_SEOULSEV_FUNDUS_CLASSIFIER/img_9/2310544_20130315_L.png']
+#paths=['/Users/seongjungkim/PycharmProjects/VGG/activation_maps/N_VS_R_SEOULSEV_FUNDUS_CLASSIFIER/img_9/2310544_20130315_L.png']
 for path in paths:
     print path
     crop_img, _ = crop_resize_fundus(path=path)

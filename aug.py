@@ -4,6 +4,9 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
+import imgaug as ia
+from imgaug import augmenters as iaa
+
 def clahe_equalized(img):
     if len(img.shape) == 2:
         img=np.reshape(img, list(np.shape(img)) +[1])
@@ -76,6 +79,22 @@ def aug_lv0(image_ , is_training , image_size , channel=3 , color =False):
 
     return image
 
+
+def aug_lv1(images):
+    seq = iaa.Sequential([
+        iaa.OneOf([
+            iaa.ContrastNormalization((0.5, 1.5)),
+            iaa.ContrastNormalization((0.5, 1.5), per_channel=0.5),
+        ]),
+        iaa.Affine(scale=(0.8, 1.2), translate_percent={"x": (-0.1, 0.1), "y": (-0.1, 0.1)}, rotate=(-30, 30)),
+        iaa.OneOf([
+            iaa.AdditiveGaussianNoise(loc=0, scale=(0.0, 0.05 * 255), per_channel=0.5),
+            iaa.Dropout((0.01, 0.1), per_channel=0.5),
+            iaa.CoarseDropout((0.03, 0.15), size_percent=(0.02, 0.05), per_channel=0.2),
+        ]),
+    ])
+    augimgs = seq.augment_images(images)
+    return augimgs
 
 
 
